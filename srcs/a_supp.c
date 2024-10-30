@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   a_supp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/10/30 14:08:02 by junguyen         ###   ########.fr       */
+/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
+/*   Updated: 2024/10/30 15:53:31 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-int	main(int ac, char **av, char **envp)
+void	print_token(t_token *tok)
 {
-	t_token	*tok;
-	(void)ac;
-	(void)envp;
-	check_syntax(av[1]);
-	tok = ft_token(av[1]);
-	ft_free(&tok);
-	return (0);
+	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
+		"HERE_DOC", "ENV"};
+	char	*tmp;
+
+	tmp = NULL;
+	while (tok != NULL)
+	{
+		tmp = ft_strdup(type[tok->type]);
+		printf("value : %s | type : %s\n", tok->value, tmp);
+		free(tmp);
+		tok = tok->next;
+	}
 }

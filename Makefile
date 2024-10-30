@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/28 16:10:13 by junguyen          #+#    #+#              #
-#    Updated: 2024/10/29 18:57:32 by junguyen         ###   ########.fr        #
+#    Updated: 2024/10/30 16:18:52 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 SRC_PATH = srcs/
 
-SRC =	main.c syntax_checker.c token.c tok_utiils.c\
+SRC =	main.c syntax_checker.c token.c tok_utils.c a_supp.c \
 
 SRCS = $(addprefix $(SRC_PATH), $(SRC))
 
