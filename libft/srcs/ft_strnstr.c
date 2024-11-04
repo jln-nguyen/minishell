@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:43:10 by bvkm              #+#    #+#             */
+/*   Updated: 2024/11/04 14:23:15 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+char	*ft_strnstr(const char *str, const char *to_find, size_t n)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	size_t	i;
+	size_t	j;
 
-	tmp = NULL;
-	while (tok != NULL)
+	if (!to_find[0])
+		return ((char *)str);
+	i = 0;
+	while (str[i] && i < n)
 	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
+		j = 0;
+		while (to_find[j] == str[i + j] && str[i + j] && i + j < n)
+		{
+			if (to_find[j + 1] == '\0')
+				return ((char *)&str[i]);
+			j++;
+		}
+		i++;
 	}
+	return (0);
 }

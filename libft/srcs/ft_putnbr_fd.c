@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:41:54 by bvkm              #+#    #+#             */
+/*   Updated: 2024/07/16 14:55:46 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	long	nb;
 
-	tmp = NULL;
-	while (tok != NULL)
+	nb = n;
+	if (nb < 0)
 	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
+		ft_putchar_fd('-', fd);
+		nb = -nb;
 	}
+	if (nb >= 10)
+		ft_putnbr_fd(nb / 10, fd);
+	ft_putchar_fd(nb % 10 + '0', fd);
 }

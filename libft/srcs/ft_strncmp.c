@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:43:56 by bvkm              #+#    #+#             */
+/*   Updated: 2024/07/16 14:56:06 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	size_t	i;
 
-	tmp = NULL;
-	while (tok != NULL)
-	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
-	}
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] == s2[i] && s1[i] && s2[i] && i < n - 1)
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

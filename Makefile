@@ -3,64 +3,73 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
+#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/28 16:10:13 by junguyen          #+#    #+#              #
-#    Updated: 2024/10/30 16:18:52 by junguyen         ###   ########.fr        #
+#    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
+#    Updated: 2024/11/04 15:00:33 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+MAKEFLAGS += -s
 
-GREEN = \033[0;32m
-
-BLUE = \033[0;34m
-
-RED = \033[0;31m
-
-YELLOW = \033[0;33m
-
-BOLD = \033[1m
-
-RESET = \033[0m
-
-CC = cc
-
-CFLAGS = -Wall -Wextra -Werror -g
+NAME	= minishell
 
 SRC_PATH = srcs/
+OBJ_PATH = obj/
+LIBFT_PATH = libft/
 
-SRC =	main.c syntax_checker.c token.c tok_utils.c a_supp.c \
+SRC		= a_supp.c			\
+		syntax_checker.c	\
+		tok_utils.c			\
+		token.c				\
+		main.c
+SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
-SRCS = $(addprefix $(SRC_PATH), $(SRC))
+OBJ		= $(SRC:.c=.o)
+OBJS	= ${addprefix $(OBJ_PATH), $(OBJ)}
 
-LIBFT = libft
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror 	
+INCLUDES = -I incs/
+LIB		= libft.a
 
-OBJ = $(SRCS:.c=.o)
+RM		= rm -rfd
 
-.c.o:
-		@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+RED			:= "\033[0;31m\033[1m"
+GREEN		:= "\033[0;32m\033[1m"
+BLUE		:= "\033[0;34m\033[1m"
+YELLOW		:= "\033[1;33m\033[1m"
+PURPLE		:= "\033[0;35m\033[1m"
+CYAN		:= "\033[0;36m\033[1m"
+WHITE		:= "\033[0;37m\033[1m"
+NO_STYLE	:= "\033[0m"
 
-$(NAME): $(OBJ)
-		@echo "$(BLUE)...Compiling LIBFT...$(RESET)"
-		@make -sC $(LIBFT)
-		@echo "$(GREEN)LIBFT created$(RESET)"
-		@echo "$(BLUE)...Compiling minishell...$(RESET)"
-		@$(CC) $(CFLAGS) $(OBJ) ./libft/libft.a $(MLX_FLAGS) -o $(NAME)
-		@echo "$(GREEN)$(BOLD)minishell created$(RESET)"
-    
-all: $(NAME)
 
-clean:
-		@rm -f $(OBJ)
-		@make clean -sC $(LIBFT)
-		@echo "$(YELLOW)objects cleaned$(RESET)"
+all:		$(OBJ_PATH) $(NAME)
 
-fclean: clean
-		@rm -f $(NAME) 
-		@make fclean -sC $(LIBFT)
-		@echo "$(RED)$(BOLD)all clean$(RESET)"
-    
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+			$(CC) $(CFLAGS) $(INCLUDES) -c  $< -o $@
+
+$(OBJ_PATH):
+			mkdir -p $(OBJ_PATH)
+
+$(NAME): $(OBJS)
+		make -C $(LIBFT_PATH)
+		mv $(LIBFT_PATH)$(LIB) .
+		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB)
+		echo $(GREEN)$(NAME) compiled!$(NO_STYLE)
+
+clean:	
+		$(RM) $(OBJ_PATH)
+		make clean -C $(LIBFT_PATH)
+		echo $(YELLOW)object clean! $(NO_STYLE)
+
+fclean: 	
+		$(RM) $(OBJ_PATH) $(NAME) $(LIB)
+		make fclean -C $(LIBFT_PATH)
+		echo $(RED)$(NAME) deleted!$(NO_STYLE)
+
 re: fclean all
+		echo $(PURPLE)$(NAME) reloaded!$(NO_STYLE)
 
-.PHONY: all clean fclean re
+.PHONY:  all clean fclean re

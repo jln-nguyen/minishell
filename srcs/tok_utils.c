@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tok_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:50:01 by junguyen          #+#    #+#             */
-/*   Updated: 2024/10/30 19:33:39 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:00:59 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing.h"
+#include "parsing.h"
 
 t_token	*ft_del_last(t_token *tok)
 {

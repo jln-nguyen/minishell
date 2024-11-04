@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:41:34 by bvkm              #+#    #+#             */
+/*   Updated: 2024/11/04 14:22:47 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+void	*ft_memset(void *ptr, int value, size_t count)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	char	*str;
 
-	tmp = NULL;
-	while (tok != NULL)
+	str = (char *)ptr;
+	while (count--)
 	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
+		*str = (unsigned char)value;
+		str++;
 	}
+	return (ptr);
 }

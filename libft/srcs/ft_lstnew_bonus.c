@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:41:12 by bvkm              #+#    #+#             */
+/*   Updated: 2024/11/04 14:22:24 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+t_list	*ft_lstnew(void *content)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	t_list	*new;
 
-	tmp = NULL;
-	while (tok != NULL)
-	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
-	}
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	return (new);
 }

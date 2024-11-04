@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_supp.c                                           :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:01:19 by bvictoir         ###   ########.fr       */
+/*   Created: 2024/03/20 22:42:55 by bvkm              #+#    #+#             */
+/*   Updated: 2024/07/16 14:56:01 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "libft.h"
 
-void	print_token(t_token *tok)
+size_t	ft_strlcat(char *dst, const char *src, size_t len)
 {
-	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
-		"HERE_DOC", "ENV"};
-	char	*tmp;
+	size_t	i;
+	size_t	j;
+	size_t	src_len;
+	size_t	dst_len;
 
-	tmp = NULL;
-	while (tok != NULL)
+	src_len = ft_strlen(src);
+	dst_len = ft_strlen(dst);
+	i = 0;
+	j = dst_len;
+	if (dst_len < len - 1 && len > 0)
 	{
-		tmp = ft_strdup(type[tok->type]);
-		printf("value : %s | type : %s\n", tok->value, tmp);
-		free(tmp);
-		tok = tok->next;
+		while (src[i] && dst_len + i < len - 1)
+			dst[j++] = src[i++];
+		dst[j] = '\0';
 	}
+	if (dst_len >= len)
+		dst_len = len;
+	return (dst_len + src_len);
 }
