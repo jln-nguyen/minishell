@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:25:32 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:56:56 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing.h"
+#include "parsing.h"
 
 int	move_to_end_quote(char *str, char c)
 {
