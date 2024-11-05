@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/05 11:55:31 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:30:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_token	*check_env_var(char *str)
 			break ;
 		i++;
 	}
+	if (str[i] == '\0')
+		i -= 1;
 	tmp = ft_substr(str, 0, i);
 	if (!tmp)
 		return (NULL);
@@ -58,7 +60,10 @@ t_token	*expand_var(t_token *tok)
 	while (tok != NULL)
 	{
 		if (tok->type == TOKEN_ENV_VAR)
+		{
+			printf("%s\n", tok->value);
 			tok->value = change_value(tok->value);
+		}
 		tok = tok->next;
 	}
 	return (tok);
