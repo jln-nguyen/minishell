@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/04 15:00:54 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:53:15 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	ft_exit(char *str, int fd)
+void	ft_exit(char *str, int fd, char *arg)
 {
 	ft_putstr_fd(str, fd);
+	if (arg)
+		free(arg);
 	exit(EXIT_FAILURE);
 }
 
@@ -26,7 +28,7 @@ int	ft_check_redirect(char *str, char c)
 	if (str[i] == c)
 		i++;
 	if (str[i] == c)
-		ft_exit("Invalid redirection\n", STDERR_FILENO);
+		ft_exit("Invalid redirection\n", STDERR_FILENO, str);
 	return (i);
 }
 
@@ -36,11 +38,11 @@ int	check_op(char *str)
 
 	i = 0;
 	if (str[i] == '&' && str[i + 1] == '&')
-		ft_exit("Non supported operators\n", STDERR_FILENO);
+		ft_exit("Non supported operators\n", STDERR_FILENO, str);
 	else if (str[i] == '|')
 	{
 		if (str[i + 1] == '|')
-			ft_exit("Non supported operators\n", STDERR_FILENO);
+			ft_exit("Non supported operators\n", STDERR_FILENO, str);
 		else
 			i++;
 			// ft_check_place_pipe(&str[i]);
@@ -57,14 +59,14 @@ int	check_end_quote(char *str, char c)
 
 	i = 1;
 	if (!str[i])
-		ft_exit("Non closed quote\n", STDERR_FILENO);
+		ft_exit("Non closed quote\n", STDERR_FILENO,str);
 	while (str[i])
 	{
 		if (str[i] == c)
 			return (i);
 		i++;
 	}
-	ft_exit("Non closed quote\n", STDERR_FILENO);
+	ft_exit("Non closed quote\n", STDERR_FILENO, str);
 	return (-1);
 }
 
