@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/05 14:33:04 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:56:41 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ char	*change_value(char *tok)
 	tmp = NULL;
 	tmp = getenv(tok);
 	if (!tmp)
-		return (NULL);
+		return (free(tok), NULL);
 	free(tok);
 	tok = ft_strdup(tmp);
-	if (!tok)
-		return (NULL);
+	// free(tmp);
 	return (tok);
 }
 
@@ -49,19 +48,46 @@ t_token	*check_env_var(char *str)
 	if (!tmp)
 		return (NULL);
 	tok = new_tok(TOKEN_ENV_VAR, tmp);
-	if (!tok)
-		return (NULL);
 	free(tmp);
 	return (tok);
 }
 
+void	sup_node_if(t_token **begin_list)
+{
+	t_token	*cur;
+
+	cur = *begin_list;
+	if (begin_list == NULL || *begin_list == NULL)
+		return ;
+	if (cur->value == NULL)
+	{
+		*begin_list = cur->next;
+		// free(cur->value);
+		free(cur);
+		sup_node_if(begin_list);
+	}
+	else
+	{
+		cur = *begin_list;
+		sup_node_if(&cur->next);
+	}
+}
+
 t_token	*expand_var(t_token *tok)
 {
+	t_token	*tmp;
+
+	tmp = tok;
 	while (tok != NULL)
 	{
 		if (tok->type == TOKEN_ENV_VAR)
+		{
 			tok->value = change_value(tok->value);
+			tok->type = TOKEN_STR;
+		}
 		tok = tok->next;
 	}
+	tok = tmp;
+	sup_node_if(&tok);
 	return (tok);
 }
