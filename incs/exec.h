@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:18:15 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/05 14:53:16 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/06 10:02:46 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "libft.h"
 
-void	ft_pwd(void)
-
+void	ft_pwd(void);
 
 #endif
