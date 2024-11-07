@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/05 14:30:46 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/06 17:25:07 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,15 @@ SRC		= a_supp.c			\
 		token.c				\
 		main.c				\
 		env_var.c			\
-		handle_quote.c
+		handle_quote.c		\
+		ast.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)
 OBJS	= ${addprefix $(OBJ_PATH), $(OBJ)}
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror 	
+CFLAGS	= -Wall -Wextra -Werror -g
 INCLUDES = -I incs/
 LIB		= libft.a
 

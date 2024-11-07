@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/05 11:56:56 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:55:01 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,36 +50,36 @@ char	*handle_double_quote(char *str)
 		{
 			end = 0;
 			i++;
-			while (new_str[i + end] != 34 && new_str[i + end] != 32 && str[i + end])
+			while (new_str[i + end] != 32 && new_str[i + end])
 				end++;
-			tmp1 = ft_substr(new_str, i, end);
+			tmp1 = ft_substr(new_str, i, end); //protect malloc
 			tmp1 = change_value(tmp1);
-			if (!tmp1)
-				return (NULL);
 			tmp2 = ft_substr(new_str, 0, i - 1);
 			if (!tmp2)
 				return (NULL);
 			tmp3 = ft_strjoin(tmp2, tmp1);
-			if (!new_str)
+			if (!tmp3)
 				return (NULL);
 			free(tmp2);
 			tmp2 = ft_substr(new_str, i + end, ft_strlen(new_str));
 			if (!tmp2)
 				return (NULL);
-			free(tmp1);
+			if (tmp1)
+				free(tmp1);
 			tmp1 = ft_strjoin(tmp3, tmp2);
 			if (!tmp1)
 				return (NULL);
 			free(tmp2);
+			i = ft_strlen(tmp3);
 			free(tmp3);
 			free(new_str);
 			new_str = ft_strdup(tmp1);
 			if (!new_str)
-				return (NULL);
+				return (free(tmp1), NULL);
 			free(tmp1);
-			i += end;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (new_str);
 }
