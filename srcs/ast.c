@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 14:23:36 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:02:33 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,19 @@ void	ft_free_ast(t_ast_node **ast)
 
 	tmp = NULL;
 	i = 0;
-	while (*ast != NULL)
+	if (!*ast)
+		return ;
+	ft_free_ast(&(*ast)->left);
+	ft_free_ast(&(*ast)->right);
+	if ((*ast)->args)
 	{
-		tmp = (*ast)->left;
-		// ft_free_ast((*ast)->left);
-		// ft_free_ast((*ast)->right);
-		if ((*ast)->args)
-		{
-			while ((*ast)->args[i])
-				i++;
-			while (i-- > 0)
-				free((*ast)->args[i]);
-			free((*ast)->args);
-		}
-		free(*ast);
-		*ast = tmp;
+		while ((*ast)->args[i])
+			i++;
+		while (i-- > 0)
+			free((*ast)->args[i]);
+		free((*ast)->args);
 	}
+	free(*ast);
 	*ast = NULL;
 }
 
