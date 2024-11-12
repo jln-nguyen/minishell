@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/08 15:37:29 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 14:23:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@ void	ft_free_ast(t_ast_node **ast)
 	i = 0;
 	while (*ast != NULL)
 	{
-		tmp = (*ast)->right;
-		while ((*ast)->args[i])
-			i++;
-		while (i-- > 0)
-			free((*ast)->args[i]);
-		free((*ast)->args);
+		tmp = (*ast)->left;
+		// ft_free_ast((*ast)->left);
+		// ft_free_ast((*ast)->right);
+		if ((*ast)->args)
+		{
+			while ((*ast)->args[i])
+				i++;
+			while (i-- > 0)
+				free((*ast)->args[i]);
+			free((*ast)->args);
+		}
 		free(*ast);
 		*ast = tmp;
 	}
@@ -47,36 +52,40 @@ t_ast_node	*new_node(t_enum_type type)
 	return (ast);
 }
 
-void	add_left(t_ast_node **lst, t_ast_node *new)
+void	add_node(t_ast_node **lst, t_ast_node *new, char c)
 {
 	t_ast_node	*tmp;
 
 	if (*lst == NULL)
 		*lst = new;
-	else
+	else if (c == 'L')
 	{
 		tmp = *lst;
 		while (tmp->left != NULL)
 			tmp = tmp->left;
 		tmp->left = new;
 	}
+	else
+	{
+		tmp = *lst;
+		while (tmp->right != NULL)
+			tmp = tmp->right;
+		tmp->right = new;
+	}
 }
 
-void	expand_ast_left(t_ast_node **ast, t_token *tok)
+void	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 {
 	t_ast_node	*node;
 
 	node = NULL;
-	node = parsing_token(tok, ft_strlen_tok(tok, TOKEN_PIPE));
+	node = parsing_token(tok, limit);
 	if (!node)
 	{
 		printf("NULL\n");
 		return ;
 	}
-	printf("%s\n", node->args[0]);
-	printf("%s\n", node->args[1]);
-	// printf("%s\n", node->args[2]);
-	add_left(ast, node);
+	add_node(ast, node, c);
 }
 
 t_ast_node	*parse_pipe(t_token pipe, t_token *tok)
@@ -87,17 +96,11 @@ t_ast_node	*parse_pipe(t_token pipe, t_token *tok)
 	ast = new_node(pipe.type);
 	if (!ast)
 		return (NULL);
-	ast->args = malloc(sizeof(char *) * 2);
-	if (!ast->args)
-		return (NULL);
-	ast->args[0] = ft_strdup(pipe.value);
-	if (!ast->args[0])
-		return (free(ast->args), NULL);
-	printf("%s\n", ast->args[0]);
-	ast->args[1] = 0;
-	printf("%s\n", ast->args[1]);
-	printf("%s\n", ast->args[2]);
-	expand_ast_left(&ast, tok);
+	expand_ast(&ast, tok, TOKEN_PIPE, 'L');
+	while (tok->type != pipe.type)
+		tok = tok->next;
+	tok = tok->next;
+	expand_ast(&ast, &(*tok), -1, 'R');
 	return (ast);
 }
 
@@ -136,12 +139,12 @@ int	ft_strlen_tok(t_token *tok, t_enum_type limit)
 	return (i);
 }
 
-void	ft_fill_args(t_ast_node **head, t_token *tok)
+void	ft_fill_args(t_ast_node **head, t_token *tok, t_enum_type limit)
 {
 	int	i;
 
 	i = 0;
-	while (tok)
+	while (tok && tok->type != limit)
 	{
 		(*head)->args[i] = ft_strdup(tok->value);
 		if (!(*head)->args[i])
@@ -158,12 +161,12 @@ void	ft_fill_args(t_ast_node **head, t_token *tok)
 	(*head)->args[i] = 0;
 }
 
-t_ast_node	*parse_str(t_token *tok)
+t_ast_node	*parse_str(t_token *tok, t_enum_type limit)
 {
 	t_ast_node	*head;
 	int			len;
 
-	len = ft_strlen_tok(tok, -1);
+	len = ft_strlen_tok(tok, limit);
 	head = NULL;
 	head = new_node(tok->type);
 	if (!head)
@@ -171,30 +174,29 @@ t_ast_node	*parse_str(t_token *tok)
 	head->args = malloc(sizeof(char *) * (len + 1));
 	if (!head->args)
 		return (NULL);
-	ft_fill_args(&head, tok);
+	ft_fill_args(&head, tok, limit);
 	if (!head->args)
 		return (NULL);
 	return (head);
 }
 
-t_ast_node	*parsing_token(t_token *tok, int len)
+t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
 {
 	t_ast_node	*ast;
 	t_token		*tmp;
 
 	tmp = tok;
 	ast = NULL;
-	if (!tok || len <= 0)
+	if (!tok)
 		return (NULL);
-	while (tmp != NULL && len - 1 > 0)
+	while (tmp && tmp->next && tmp->next->type != limit)
 	{
 		if (tmp->type != TOKEN_STR && tmp->type != TOKEN_ENV_VAR)
 			break ;
 		tmp = tmp->next;
-		len--;
 	}
 	if (tmp == NULL || tmp->type == TOKEN_STR || tmp->type == TOKEN_ENV_VAR)
-		ast = parse_str(tok);
+		ast = parse_str(tok, limit);
 	else if (tmp->type == TOKEN_PIPE)
 		ast = parse_pipe(*tmp, tok);
 	else if (tmp->type == TOKEN_REDIR_HEREDOC)

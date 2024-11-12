@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/08 14:44:30 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:41:50 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token	*check_env_var(char *str);
 t_token	*expand_var(t_token *tok);
 t_token	*check_quote(char *str, char c);
 
-t_ast_node	*parsing_token(t_token *tok, int len);
+t_ast_node	*parsing_token(t_token *tok, t_enum_type limit);
 
 void	ft_tokadd_back(t_token **lst, t_token *new);
 void	ft_free(t_token **tok);
