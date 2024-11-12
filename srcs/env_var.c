@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 15:56:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:17:13 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*change_value(char *tok)
 		return (free(tok), NULL);
 	free(tok);
 	tok = ft_strdup(tmp);
-	// free(tmp);
 	return (tok);
 }
 
@@ -62,7 +61,6 @@ void	sup_node_if(t_token **begin_list)
 	if (cur->value == NULL)
 	{
 		*begin_list = cur->next;
-		// free(cur->value);
 		free(cur);
 		sup_node_if(begin_list);
 	}
