@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 17:31:03 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:40:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ int	main(int ac, char **av, char **envp)
 	tmp = prompt();
 	check_syntax(tmp);
 	tok = ft_token(tmp);
-	print_token(tok);
+	print_token(tok); //a supp
 	free(tmp);
-	ast = parsing_token(tok);
-	print_ast(ast);
+	ast = parsing_token(tok, -1);
+	// print_ast(ast); //a supp
+	generate_ast_diagram(ast); // a supp
 	ft_free(&tok);
 	ft_free_ast(&ast);
 	return (0);
