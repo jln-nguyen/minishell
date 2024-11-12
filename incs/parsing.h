@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 13:41:50 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/12 15:44:35 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 
 typedef enum e_enum_type
 {
