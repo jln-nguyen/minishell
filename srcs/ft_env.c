@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:35 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/07 10:20:56 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:18:55 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
-
-void	ft_env(char **env)
+void	ft_env(t_env *env)
 {
-	int i;
+	// int i;
 
-	i = 0;
-	while (env[i])
+	// i = 0;
+	while (env)
 	{
-		printf("%s\n", env[i]);
-		i++;
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:18:15 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/06 10:02:46 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:19:26 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define EXEC_H
 
 # include "libft.h"
+# include "parsing.h"
 
 void	ft_pwd(void);
+void	ft_env(t_env *env);
 
 #endif

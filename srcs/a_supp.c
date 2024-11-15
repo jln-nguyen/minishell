@@ -6,18 +6,20 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 17:47:10 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:02:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	print_ast(t_ast_node *ast)
 {
 	char	*type[7] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT", "APPEND",
 		"HERE_DOC", "ENV"};
 	char	*tmp;
+	int		i;
 
+	i = 0;
 	tmp = NULL;
 	if (!ast)
 		return ;
@@ -25,7 +27,13 @@ void	print_ast(t_ast_node *ast)
 	while (ast != NULL)
 	{
 		tmp = ft_strdup(type[ast->type]);
-		printf("value : %s | type : %s\n", ast->args, tmp);
+		printf("value : ");
+		while (ast->args[i])
+		{
+			printf("%s ", ast->args[i]);
+			i++;
+		}
+		printf("| type : %s\n", tmp);
 		free(tmp);
 		ast = ast->right;
 	}

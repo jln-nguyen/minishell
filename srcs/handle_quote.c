@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 16:55:01 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:02:37 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	move_to_end_quote(char *str, char c)
 {
@@ -50,7 +50,7 @@ char	*handle_double_quote(char *str)
 		{
 			end = 0;
 			i++;
-			while (new_str[i + end] != 32 && new_str[i + end])
+			while (new_str[i + end] != 32 && new_str[i + end] && new_str[i + end] != '$')
 				end++;
 			tmp1 = ft_substr(new_str, i, end); //protect malloc
 			tmp1 = change_value(tmp1);

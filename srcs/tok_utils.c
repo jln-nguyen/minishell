@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:50:01 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 13:56:45 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:42:16 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_token	*ft_del_last(t_token *tok)
 {
@@ -37,13 +37,18 @@ t_token	*ft_del_last(t_token *tok)
 	return (tok);
 }
 
-int	move_index(t_token *tok)
+int	move_index(t_token *tok, char *str, int i)
 {
 	if (!tok)
 		return (0);
-	while (tok->next != NULL)
-		tok = tok->next;
-	return (ft_strlen(tok->value));
+	if (str[i] == 39 || str[i] == 34)
+		return (move_to_end_quote(&str[i], str[i]));
+	else
+	{
+		while (tok->next != NULL)
+			tok = tok->next;
+		return (ft_strlen(tok->value));
+	}
 }
 
 void	ft_free(t_token **tok)

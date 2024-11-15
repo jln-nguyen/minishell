@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/06 17:25:07 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/12 16:55:43 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,16 @@ OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
 SRC		= a_supp.c			\
+		ast_visu.c			\
 		syntax_checker.c	\
 		tok_utils.c			\
 		token.c				\
 		main.c				\
 		env_var.c			\
 		handle_quote.c		\
-		ast.c
+		ast.c				\
+		ft_env.c			\
+		set_env.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)

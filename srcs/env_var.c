@@ -6,23 +6,39 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 15:56:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:21:48 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 char	*change_value(char *tok)
 {
 	char	*tmp;
+	char	*tmp2;
+	int		i;
 
+	i = 0;
 	tmp = NULL;
-	tmp = getenv(tok);
+	tmp2 = NULL;
+	while (tok[i])
+	{
+		if (tok[i] == '$')
+			break ;
+		i++;
+	}
+	tmp = getenv(&tok[i + 1]);
 	if (!tmp)
 		return (free(tok), NULL);
+	if (i != 0)
+	{
+		tmp2 = ft_strtrim(tok, &tok[i]); //protect
+		free(tok);
+		tok = ft_strjoin(tmp2, tmp); //protect
+		free(tmp2);
+	}
 	free(tok);
 	tok = ft_strdup(tmp);
-	// free(tmp);
 	return (tok);
 }
 
@@ -62,7 +78,6 @@ void	sup_node_if(t_token **begin_list)
 	if (cur->value == NULL)
 	{
 		*begin_list = cur->next;
-		// free(cur->value);
 		free(cur);
 		sup_node_if(begin_list);
 	}
