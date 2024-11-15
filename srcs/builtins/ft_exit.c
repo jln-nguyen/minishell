@@ -6,8 +6,10 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/05 14:54:55 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:20:54 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- 
+#include "minishell.h"
+
+void	ft_exit(void);
