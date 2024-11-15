@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 16:55:08 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:59:30 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_ast_node
 char	*change_value(char *tok);
 
 int		check_syntax(char *str);
-int		move_index(t_token *tok);
+int	move_index(t_token *tok, char *str, int i);
 int		move_to_end_quote(char *str, char c);
 int		ft_strlen_tok(t_token *tok, t_enum_type limit);
 

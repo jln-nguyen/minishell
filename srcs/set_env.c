@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 17:05:44 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:05:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	ft_envadd_back(t_env **head, t_env *new)
 t_env	*new_node_env(char *envp)
 {
 	t_env	*node;
-	char	**tmp;
+	// char	**tmp;
 	int		i;
 
 	i = 0;
 	node = NULL;
-	tmp = NULL;
+	// tmp = NULL;
 	node = malloc(sizeof(t_env));
 	if (!node)
 		return (NULL);

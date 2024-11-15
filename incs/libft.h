@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 23:01:01 by bvkm              #+#    #+#             */
-/*   Updated: 2024/11/04 14:09:40 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:03:04 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ft_printf.h"
 # include "get_next_line.h"
-# include <bsd/string.h>
+// # include <bsd/string.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>

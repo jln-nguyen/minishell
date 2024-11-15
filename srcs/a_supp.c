@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/08 14:59:11 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:02:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	print_ast(t_ast_node *ast)
 {

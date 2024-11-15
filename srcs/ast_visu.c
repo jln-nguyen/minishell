@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 14:22:41 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/07 14:59:20 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:02:21 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void print_escaped(FILE *stream, const char *str)
 {

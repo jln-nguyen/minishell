@@ -6,18 +6,18 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 15:02:33 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:13:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	ft_free_ast(t_ast_node **ast)
 {
-	t_ast_node	*tmp;
+	// t_ast_node	*tmp;
 	int			i;
 
-	tmp = NULL;
+	// tmp = NULL;
 	i = 0;
 	if (!*ast)
 		return ;
@@ -78,10 +78,7 @@ void	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 	node = NULL;
 	node = parsing_token(tok, limit);
 	if (!node)
-	{
-		printf("NULL\n");
-		return ;
-	}
+		return ; //free exit
 	add_node(ast, node, c);
 }
 

@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/06 15:32:25 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:42:01 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_token	*word(char *str)
 {
@@ -24,7 +24,7 @@ t_token	*word(char *str)
 	while (str[i] && str[i] != 32)
 	{
 		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == 39
-			|| str[i] == 34 || str[i] == '$' || (str[i] >= 9 && str[i] <= 13))
+			|| str[i] == 34 || (str[i] >= 9 && str[i] <= 13))
 			break ;
 		i++;
 	}
@@ -33,6 +33,8 @@ t_token	*word(char *str)
 	if (!tok)
 		return (NULL);
 	free(tmp);
+	if (ft_strchr(tok->value, '$') != NULL)
+		tok->type = TOKEN_ENV_VAR;
 	return (tok);
 }
 
@@ -65,11 +67,9 @@ t_token	*check_redirect(char *str)
 t_token	*check_token(char *str, t_token *tok)
 {
 	int		i;
-	t_token	*element;
-	char	*tmp;	
+	t_token	*element;	
 
 	i = 0;
-	tmp = NULL;
 	element = NULL;
 	if (str[i] == '|')
 		element = new_tok(TOKEN_PIPE, "|");
@@ -78,7 +78,7 @@ t_token	*check_token(char *str, t_token *tok)
 	else if (str[i] == 39 || str[i] == 34)
 		element = check_quote(&str[i + 1], str[i]);
 	else if (str[i] == '$')
-		element = check_env_var(&str[i + 1]);
+		element = check_env_var(&str[i]);
 	else
 		element = word(&str[i]);
 	if (!element)
@@ -103,15 +103,8 @@ void	expand_lst(t_token **tok, char *str)
 			*tok = check_token(&str[i], *tok);
 			if (!tok)
 				return ;
-			if (str[i] == 39 || str[i] == 34)
-				i += move_to_end_quote(&str[i], str[i]);
-			else
-			{
-				if (str[i] == '$')
-					i++;
-				i += move_index(*tok);
-			}
-			if (move_index(*tok) == 0)
+			i += move_index(*tok, str, i);
+			if (move_index(*tok, str, i) == 0)
 				*tok = ft_del_last(*tok);
 		}
 	}
@@ -135,15 +128,8 @@ t_token	*ft_token(char *str)
 			tok = check_token(&str[i], tok);
 			if (!tok)
 				return (NULL);
-			if (str[i] == 39 || str[i] == 34)
-				i += move_to_end_quote(&str[i], str[i]);
-			else
-			{
-				if (str[i] == '$')
-					i++;
-				i += move_index(tok);
-			}
-			if (move_index(tok) == 0)
+			i += move_index(tok, str, i);
+			if (move_index(tok, str, i) == 0)
 				tok = ft_del_last(tok);
 		}
 	}

@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/12 17:44:50 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:02:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	ft_check_redirect(char *str, char c)
 {
