@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
+#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/12 16:55:43 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/15 14:16:28 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SRC		= a_supp.c			\
 		env_var.c			\
 		handle_quote.c		\
 		ast.c				\
-		ft_env.c			\
 		set_env.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
