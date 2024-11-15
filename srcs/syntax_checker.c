@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/05 11:53:15 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:36:21 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	check_syntax(char *str)
 		}
 		if (str[i] == '\'' || str[i] == '"')
 			i += check_end_quote(&str[i], str[i]);
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == '&')
+		if (str[i] == '|' || str[i] == '<' || str[i] == '>')
 			i += check_op(&str[i]);
 		else
 			i++;

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/05 12:28:29 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:30:53 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ typedef struct s_token
 	struct s_token	*next;	
 }	t_token;
 
+typedef struct s_ast_node
+{
+	t_enum_type			type;
+	char				*args;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+}	t_ast_node;
+
 char	*change_value(char *tok);
 
 int		check_syntax(char *str);
@@ -47,10 +55,14 @@ t_token	*check_env_var(char *str);
 t_token	*expand_var(t_token *tok);
 t_token	*check_quote(char *str, char c);
 
+t_ast_node	*parsing_token(t_token *tok);
+
 void	ft_tokadd_back(t_token **lst, t_token *new);
 void	ft_free(t_token **tok);
+void	ft_free_ast(t_ast_node **tok);
 void	ft_tokadd_back(t_token **lst, t_token *new);
 
 void	print_token(t_token *tok); //a supp
+void	print_ast(t_ast_node *ast);
 
 #endif 
