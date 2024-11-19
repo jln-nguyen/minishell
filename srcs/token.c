@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/15 10:42:01 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:41:51 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ t_token	*check_token(char *str, t_token *tok)
 		element = check_redirect(&str[i]);
 	else if (str[i] == 39 || str[i] == 34)
 		element = check_quote(&str[i + 1], str[i]);
-	else if (str[i] == '$')
-		element = check_env_var(&str[i]);
 	else
 		element = word(&str[i]);
 	if (!element)
