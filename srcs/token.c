@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:41:51 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:02:08 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*word(char *str)
+static t_token	*word(char *str)
 {
 	int		i;
 	char	*tmp;
@@ -23,8 +23,7 @@ t_token	*word(char *str)
 	tok = NULL;
 	while (str[i] && str[i] != 32)
 	{
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == 39
-			|| str[i] == 34 || (str[i] >= 9 && str[i] <= 13))
+		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || (str[i] >= 9 && str[i] <= 13)) // || str[i] == 39 || str[i] == 34 ||
 			break ;
 		i++;
 	}
@@ -38,7 +37,7 @@ t_token	*word(char *str)
 	return (tok);
 }
 
-t_token	*check_redirect(char *str)
+static t_token	*check_redirect(char *str)
 {
 	int		i;
 	t_token	*tok;	
@@ -64,7 +63,7 @@ t_token	*check_redirect(char *str)
 	return (tok);
 }
 
-t_token	*check_token(char *str, t_token *tok)
+static t_token	*check_token(char *str, t_token *tok)
 {
 	int		i;
 	t_token	*element;	
@@ -75,8 +74,8 @@ t_token	*check_token(char *str, t_token *tok)
 		element = new_tok(TOKEN_PIPE, "|");
 	else if (str[i] == '<' || str[i] == '>')
 		element = check_redirect(&str[i]);
-	else if (str[i] == 39 || str[i] == 34)
-		element = check_quote(&str[i + 1], str[i]);
+	// else if (str[i] == 39 || str[i] == 34)
+	// 	element = check_quote(&str[i + 1], str[i]);
 	else
 		element = word(&str[i]);
 	if (!element)
@@ -85,7 +84,7 @@ t_token	*check_token(char *str, t_token *tok)
 	return (tok);
 }
 
-void	expand_lst(t_token **tok, char *str)
+static void	expand_lst(t_token **tok, char *str)
 {
 	int		i;
 
@@ -132,6 +131,7 @@ t_token	*ft_token(char *str)
 		}
 	}
 	expand_lst(&tok, &str[i]);
-	tok = expand_var(tok);
+	// tok = expand_var(tok);
+	tok = expand_str(tok);
 	return (tok);
 }

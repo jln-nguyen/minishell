@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:42:49 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:17:29 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,42 @@ char	*change_str(char *new_str, int i)
 	int		j;
 	char	**tmp;
 
+	tmp = NULL;
+	if (new_str[i] == '\0' || new_str[i] == 39)
+		return (new_str);
 	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
 		return (free(new_str), NULL);
 	tmp[3] = 0;
 	j = 0;
-	while (new_str[i + j] != 32 && new_str[i + j] && new_str[i + j] != '$')
+	while (new_str[i + j] != 32 && new_str[i + j] && new_str[i + j] != '$' && new_str[i + j] != 39)
 		j++;
 	tmp[0] = ft_substr(new_str, i, j);
 	if (!tmp[0])
-		return (ft_free_tab2(&tmp), free(new_str), NULL);
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
 	tmp[0] = change_value(tmp[0]);
 	tmp[1] = ft_substr(new_str, 0, i - 1);
 	if (!tmp[1])
-		return (ft_free_tab2(&tmp), free(new_str), NULL);
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
 	tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str));
 	if (!tmp[2])
-		return (ft_free_tab2(&tmp), free(new_str), NULL);
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
 	free(new_str);
 	new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
 	if (!new_str)
-		return (ft_free_tab2(&tmp), NULL);
-	return (ft_free_tab2(&tmp), new_str);
+		return (ft_free_tab_var_env(&tmp), NULL);
+	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
 char	*handle_double_quote(char *str)
 {
 	int		i;
 	char	*new_str;
+	char	**tmp;
 
-	i = 0;
+	tmp = NULL;
 	new_str = NULL;
+	i = 0;
 	while (str[i] && str[i] != 34)
 		i++;
 	new_str = ft_substr(str, 0, i);
@@ -73,47 +78,82 @@ char	*handle_double_quote(char *str)
 			new_str = change_str(new_str, i + 1);
 			if (!new_str)
 				return (NULL);
+			if (new_str[i] == '\0')
+				break ;
 		}
-		else
-			i++;
+		i++;
 	}
 	return (new_str);
 }
 
-t_token	*handle_quote(char *str)
+char	*handle_quote(char *str)
 {
 	int		i;
-	char	*tmp;
-	t_token	*tok;
+	int		j;
+	char	**tmp;
+	char	*new_str;
 
 	i = 0;
-	tmp = NULL;
-	while (str[i] != 39)
-		i++;
-	tmp = ft_substr(str, 0, i);
+	j = 0;
+	new_str = NULL;
+	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
-		return (NULL);
-	tok = new_tok(TOKEN_STR, tmp);
-	free(tmp);
-	return (tok);
+		return (free(new_str), NULL);
+	tmp[3] = 0;
+	while (str[i] && str[i] != 39)
+		i++;
+	i++;
+	while (str[i + j] && str[i + j] != 39)
+		j++;
+	tmp[0] = ft_substr(str, 0, i - 1);
+	if (!tmp[0])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	tmp[1] = ft_substr(str, i, j);
+	if (!tmp[1])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	tmp[2] = ft_substr(str, i + j + 1, ft_strlen(str) - i - j - 1);
+	if (!tmp[2])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	new_str = ft_strbigjoin(tmp[0], tmp[1], tmp[2]);
+	if (!new_str)
+		return (ft_free_tab_var_env(&tmp), NULL);
+	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-t_token	*check_quote(char *str, char c)
-{
-	char	*tmp;
-	t_token	*tok;
+// t_token	*handle_quote(char *str)
+// {
+// 	int		i;
+// 	char	*tmp;
+// 	t_token	*tok;
 
-	tmp = NULL;
-	tok = NULL;
-	if (c == 34)
-	{
-		tmp = handle_double_quote(str);
-		if (!tmp)
-			return (NULL);
-		tok = new_tok(TOKEN_STR, tmp);
-		free(tmp);
-	}
-	else
-		tok = handle_quote(str);
-	return (tok);
-}
+// 	i = 0;
+// 	tmp = NULL;
+// 	while (str[i] != 39)
+// 		i++;
+// 	tmp = ft_substr(str, 0, i);
+// 	if (!tmp)
+// 		return (NULL);
+// 	tok = new_tok(TOKEN_STR, tmp);
+// 	free(tmp);
+// 	return (tok);
+// }
+
+// t_token	*check_quote(char *str, char c)
+// {
+// 	char	*tmp;
+// 	t_token	*tok;
+
+// 	tmp = NULL;
+// 	tok = NULL;
+// 	if (c == 34)
+// 	{
+// 		tmp = handle_double_quote(str);
+// 		if (!tmp)
+// 			return (NULL);
+// 		tok = new_tok(TOKEN_STR, tmp);
+// 		free(tmp);
+// 	}
+// 	else
+// 		tok = handle_quote(str);
+// 	return (tok);
+// }

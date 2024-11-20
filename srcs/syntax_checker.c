@@ -6,49 +6,53 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/13 11:02:42 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:04:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_check_redirect(char *str, char c)
+static int	ft_check_redirect(char *str, char c)
 {
-	int	i;
+	int		i;
+	char	d;
 
 	i = 1;
+	if (c == '<')
+		d = '>';
+	else
+		d = '<';
 	if (str[i] == c)
 		i++;
-	if (str[i] == c)
+	if (str[i] == c || str[i] == d)
 	{
-		ft_putstr_fd("Invalid redirection\n", STDERR_FILENO);
+		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
 		return (0);
 	}
 	return (i);
 }
 
-int	check_op(char *str)
+static int	check_op(char *str, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
+	j = 0;
 	if (str[i] == '&' && str[i + 1] == '&')
 		ft_putstr_fd("Non supported operators\n", STDERR_FILENO);
 	else if (str[i] == '|')
 	{
 		if (str[i + 1] == '|')
 			ft_putstr_fd("Non supported operators\n", STDERR_FILENO);
-		else
-			i++;
-			// ft_check_place_pipe(&str[i]);
+		// if (ft_check_pipe(str, i) == -1)
+		// 	return (0);
+		j++;
 	}
 	else if (str[i] == '>' || str[i] == '<')
-		i += ft_check_redirect(&str[i], str[i]);
-		//check_place_redirect
-	return (i);
+		j += ft_check_redirect(&str[i], str[i]);
+	return (j);
 }
 
-int	check_end_quote(char *str, char c)
+static int	check_end_quote(char *str, char c)
 {
 	int	i;
 
@@ -87,9 +91,9 @@ int	check_syntax(char *str)
 		}
 		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == '&')
 		{
-			if (check_op(&str[i]) == 0)
+			if (check_op(str, i) == 0)
 				return (-1);
-			i += check_op(&str[i]);
+			i += check_op(str, i);
 		}
 		else
 			i++;

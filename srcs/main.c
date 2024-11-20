@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:31:39 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 14:59:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,6 @@
 // 	ft_free_ast(ast);
 // 	// ft_free_env(env);
 // }
-
-int	ft_parsing(char *cmd, t_env *env)
-{
-	t_ast_node	*ast;
-	t_token		*tok;
-
-	if (check_syntax(cmd) != 0)
-		return (free(cmd), -3);
-	tok = ft_token(cmd);
-	if (!tok)
-		return (free(cmd), -4);
-	print_token(tok); //a supp
-	free(cmd);
-	ast = parsing_token(tok, -1);
-	if (!ast)
-		return (ft_free_env(&env), -5);
-	generate_ast_diagram(ast); // a supp
-	ft_free(&tok);
-	ft_free_ast(&ast);
-	return (0);
-}
 
 void	prompt(t_env *env)
 {

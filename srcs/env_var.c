@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/19 18:42:25 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:01:48 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_tab2(char ***tab)
+void	ft_free_tab_var_env(char ***tab)
 {
 	free((*tab)[0]);
 	free((*tab)[1]);
@@ -61,7 +61,7 @@ char	*change_value(char *var)
 	return (var);
 }
 
-void	sup_node_if(t_token **begin_list)
+static void	sup_node_if(t_token **begin_list)
 {
 	t_token	*cur;
 
@@ -81,23 +81,59 @@ void	sup_node_if(t_token **begin_list)
 	}
 }
 
-t_token	*expand_var(t_token *tok)
+// t_token	*expand_var(t_token *tok)
+// {
+// 	t_token	*tmp;
+// 	char	*value;
+
+// 	tmp = tok;
+// 	while (tok != NULL)
+// 	{
+// 		if (tok->type == TOKEN_ENV_VAR)
+// 		{
+// 			value = handle_double_quote(tok->value);
+// 			if (!value)
+// 				return (ft_free(&tmp), NULL);
+// 			free(tok->value);
+// 			tok->value = ft_strdup(value);
+// 			free(value);
+// 			tok->type = TOKEN_STR;
+// 		}
+// 		tok = tok->next;
+// 	}
+// 	tok = tmp;
+// 	sup_node_if(&tok);
+// 	return (tok);
+// }
+
+t_token	*expand_str(t_token *tok)
 {
-	t_token	*tmp;
+	int		i;
 	char	*value;
+	t_token	*tmp;
 
 	tmp = tok;
-	while (tok != NULL)
+	i = 0;
+	while (tok)
 	{
-		if (tok->type == TOKEN_ENV_VAR)
+		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			value = handle_double_quote(tok->value);
-			if (!value)
-				return (ft_free(&tmp), NULL);
-			free(tok->value);
-			tok->value = ft_strdup(value);
-			free(value);
-			tok->type = TOKEN_STR;
+			while (tok->value[i])
+			{
+				// if (tok->value[i] == 34)
+				// 	handle_double_quote();
+				if (tok->value[i] == 39)
+				{
+					value = handle_quote(tok->value);
+					free(tok->value);
+					tok->value = ft_strdup(value);
+					free(value);
+				}
+				// else if (tok->value[i] == '$')
+				// 	expand_var();
+				else
+					i++;
+			}
 		}
 		tok = tok->next;
 	}

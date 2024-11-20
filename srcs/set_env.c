@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/19 14:31:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:44:02 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_free_env(t_env **env)
 	*env = NULL;
 }
 
-void	ft_envadd_back(t_env **head, t_env *new)
+static void	ft_envadd_back(t_env **head, t_env *new)
 {
 	t_env	*tmp;
 
@@ -42,7 +42,7 @@ void	ft_envadd_back(t_env **head, t_env *new)
 	}
 }
 
-t_env	*new_node_env(char *envp)
+static t_env	*new_node_env(char *envp)
 {
 	t_env	*node;
 	int		i;
@@ -66,7 +66,7 @@ t_env	*new_node_env(char *envp)
 	return (node);
 }
 
-void	ft_expand_env(t_env **env, char **envp, int i)
+static void	ft_expand_env(t_env **env, char **envp, int i)
 {
 	t_env	*node;
 
