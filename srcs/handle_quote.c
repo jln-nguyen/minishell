@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 18:17:29 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:11:05 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ char	*change_str(char *new_str, int i)
 	char	**tmp;
 
 	tmp = NULL;
-	if (new_str[i] == '\0' || new_str[i] == 39)
+	if (new_str[i] == '\0' || new_str[i] == 34 || new_str[i] == 39 || new_str[i] == 32 || (new_str[i] >= 9 && new_str[i] <= 13))
 		return (new_str);
 	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
 		return (free(new_str), NULL);
 	tmp[3] = 0;
 	j = 0;
-	while (new_str[i + j] != 32 && new_str[i + j] && new_str[i + j] != '$' && new_str[i + j] != 39)
+	while (new_str[i + j] != 32 && !(new_str[i + j] >= 9 && new_str[i + j] <= 13) && new_str[i + j] && new_str[i + j] != '$' && new_str[i + j] != 39 && new_str[i + j] != 34)
 		j++;
 	tmp[0] = ft_substr(new_str, i, j);
 	if (!tmp[0])
@@ -46,7 +46,7 @@ char	*change_str(char *new_str, int i)
 	tmp[1] = ft_substr(new_str, 0, i - 1);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
-	tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str));
+	tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str) - i - j);
 	if (!tmp[2])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
 	free(new_str);
@@ -56,18 +56,12 @@ char	*change_str(char *new_str, int i)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-char	*handle_double_quote(char *str)
+char	*check_expand_var(char *str, int i, int j)
 {
-	int		i;
 	char	*new_str;
-	char	**tmp;
 
-	tmp = NULL;
 	new_str = NULL;
-	i = 0;
-	while (str[i] && str[i] != 34)
-		i++;
-	new_str = ft_substr(str, 0, i);
+	new_str = ft_substr(str, i, j);
 	if (!new_str)
 		return (NULL);
 	i = 0;
@@ -86,25 +80,46 @@ char	*handle_double_quote(char *str)
 	return (new_str);
 }
 
-char	*handle_quote(char *str)
+char	*handle_double_quote(char *str, int i)
 {
-	int		i;
 	int		j;
 	char	**tmp;
 	char	*new_str;
 
-	i = 0;
 	j = 0;
+	new_str = NULL;
+	while (str[i + j + 1] && str[i + j + 1] != 34)
+		j++;
+	j += 2;
+	tmp = malloc(sizeof(char *) * 4);
+	if (!tmp)
+		return (free(new_str), NULL);
+	tmp[3] = 0;
+	tmp[0] = ft_substr(str, 0, i);
+	if (!tmp[0])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	tmp[1] = check_expand_var(str, i, j);
+	if (!tmp[1])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	tmp[2] = ft_substr(str, i + j, ft_strlen(str) - i - j);
+	if (!tmp[2])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	new_str = ft_strbigjoin(tmp[0], tmp[1], tmp[2]);
+	if (!new_str)
+		return (ft_free_tab_var_env(&tmp), NULL);
+	return (ft_free_tab_var_env(&tmp), free(str), new_str);
+}
+
+char	*handle_quote(char *str, int i, int j)
+{
+	char	**tmp;
+	char	*new_str;
+
 	new_str = NULL;
 	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
 		return (free(new_str), NULL);
 	tmp[3] = 0;
-	while (str[i] && str[i] != 39)
-		i++;
-	i++;
-	while (str[i + j] && str[i + j] != 39)
-		j++;
 	tmp[0] = ft_substr(str, 0, i - 1);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), NULL);
@@ -118,6 +133,23 @@ char	*handle_quote(char *str)
 	if (!new_str)
 		return (ft_free_tab_var_env(&tmp), NULL);
 	return (ft_free_tab_var_env(&tmp), new_str);
+}
+
+char	*remove_quote(char *str, int i, char c)
+{
+	int		j;
+	char	*new_str;
+
+	j = 0;
+	new_str = NULL;
+	i++;
+	while (str[i + j] && str[i + j] != c)
+		j++;
+	new_str = handle_quote(str, i, j);
+	free(str);
+	if (!new_str)
+		return (NULL);
+	return (new_str);
 }
 
 // t_token	*handle_quote(char *str)

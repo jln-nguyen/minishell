@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 18:02:08 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:47:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,21 @@ static t_token	*word(char *str)
 	i = 0;
 	tmp = NULL;
 	tok = NULL;
-	while (str[i] && str[i] != 32)
+	while (str[i])
 	{
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || (str[i] >= 9 && str[i] <= 13)) // || str[i] == 39 || str[i] == 34 ||
+		if (str[i] == 34)
+		{
+			i++;
+			while (str[i] != 34)
+				i++;
+		}
+		if (str[i] == 39)
+		{
+			i++;
+			while (str[i] != 39)
+				i++;
+		}
+		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == 32 || (str[i] >= 9 && str[i] <= 13)) // || str[i] == 39 || str[i] == 34 ||
 			break ;
 		i++;
 	}
@@ -101,8 +113,8 @@ static void	expand_lst(t_token **tok, char *str)
 			if (!tok)
 				return ;
 			i += move_index(*tok, str, i);
-			if (move_index(*tok, str, i) == 0)
-				*tok = ft_del_last(*tok);
+			// if (move_index(*tok, str, i) == 0)
+			// 	*tok = ft_del_last(*tok);
 		}
 	}
 }
@@ -126,8 +138,8 @@ t_token	*ft_token(char *str)
 			if (!tok)
 				return (NULL);
 			i += move_index(tok, str, i);
-			if (move_index(tok, str, i) == 0)
-				tok = ft_del_last(tok);
+			// if (move_index(tok, str, i) == 0)
+			// 	tok = ft_del_last(tok);
 		}
 	}
 	expand_lst(&tok, &str[i]);

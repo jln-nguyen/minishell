@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/20 15:07:01 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/22 13:15:18 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ OBJ		= $(SRC:.c=.o)
 OBJS	= ${addprefix $(OBJ_PATH), $(OBJ)}
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g 
 INCLUDES = -I incs/
 LIB		= libft.a
 
@@ -65,7 +65,7 @@ $(OBJ_PATH):
 $(NAME): $(OBJS)
 		make -C $(LIBFT_PATH)
 		mv $(LIBFT_PATH)$(LIB) .
-		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB)
+		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB) -lreadline
 		echo $(GREEN)$(NAME) compiled!$(NO_STYLE)
 
 clean:	

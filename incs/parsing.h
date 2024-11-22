@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 18:01:45 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/22 14:39:40 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "libft.h"
 # include "get_next_line.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_env
 {
@@ -51,9 +53,10 @@ typedef struct s_ast_node
 }	t_ast_node;
 
 char		*change_value(char *tok);
-char		*handle_double_quote(char *str);
+char		*handle_double_quote(char *str, int i);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
-char		*handle_quote(char *str);
+char		*remove_quote(char *str, int i, char c);
+char		*change_str(char *new_str, int i);
 
 int			check_syntax(char *str);
 int			move_index(t_token *tok, char *str, int i);

@@ -6,35 +6,26 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 14:59:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:16:47 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	free_struc(t_ast_node **ast, t_token **tok)
-// {
-// 	ft_free(tok);
-// 	ft_free_ast(ast);
-// 	// ft_free_env(env);
-// }
 
 void	prompt(t_env *env)
 {
 	char	*tmp;
 
 	tmp = NULL;
-	write(1, "Minishell$ ", 12);
-	// while (get_next_line(0) != NULL)
-	// {
-		tmp = get_next_line(0);
+	while (1)
+	{
+		tmp = readline("Minishell> ");
 		if (!tmp)
 			return ;
+		add_history(tmp);
 		if (ft_parsing(tmp, env) != 0)
 			return ;
-		// free(tmp);
-		// write(1, "Minishell$ ", 12);
-	// }
+	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -47,9 +38,6 @@ int	main(int ac, char **av, char **envp)
 	if (!env)
 		return (-2);
 	prompt(env);
-	// tmp = prompt();
-	// if (!tmp)
-	// 	return (-1);
 	ft_free_env(&env);
 	return (0);
 }
