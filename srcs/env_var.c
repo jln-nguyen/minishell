@@ -6,13 +6,43 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/13 12:21:48 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:27:00 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*change_value(char *tok)
+void	ft_free_tab_var_env(char ***tab)
+{
+	free((*tab)[0]);
+	free((*tab)[1]);
+	free((*tab)[2]);
+	free((*tab)[3]);
+	free(*tab);
+	*tab = NULL;
+}
+
+char	*ft_strbigjoin(const char *s1, const char *s2, const char *s3)
+{
+	char	*str;
+	size_t	len1;
+	size_t	len2;
+	size_t	len3;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	len3 = ft_strlen(s3);
+	str = (char *)malloc(len1 + len2 + len3 + 1);
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, s1, len1);
+	ft_memcpy(str + len1, s2, len2);
+	ft_memcpy(str + len1 + len2, s3, len3);
+	str[len1 + len2 + len3] = '\0';
+	return (str);
+}
+
+char	*change_value(char *var)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -21,63 +51,28 @@ char	*change_value(char *tok)
 	i = 0;
 	tmp = NULL;
 	tmp2 = NULL;
-	while (tok[i])
-	{
-		if (tok[i] == '$')
-			break ;
-		i++;
-	}
-	tmp = getenv(&tok[i + 1]);
-	if (!tmp)
-		return (free(tok), NULL);
-	if (i != 0)
-	{
-		tmp2 = ft_strtrim(tok, &tok[i]); //protect
-		free(tok);
-		tok = ft_strjoin(tmp2, tmp); //protect
-		free(tmp2);
-	}
-	free(tok);
-	tok = ft_strdup(tmp);
-	return (tok);
-}
-
-t_token	*check_env_var(char *str)
-{
-	int		i;
-	t_token	*tok;	
-	char	*tmp;
-
-	i = 0;
-	tok = NULL;
-	tmp = NULL;
-	while (str[i])
-	{
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>'
-			|| str[i] == 39 || str[i] == 34 || str[i] == 32)
-			break ;
-		i++;
-	}
-	if (str[i] == '\0')
-		i -= 1;
-	tmp = ft_substr(str, 0, i);
-	if (!tmp)
+	if (!var)
 		return (NULL);
-	tok = new_tok(TOKEN_ENV_VAR, tmp);
-	free(tmp);
-	return (tok);
+	tmp = getenv(var);
+	if (!tmp)
+		return (free(var), NULL);
+	free(var);
+	var = ft_strdup(tmp);
+	return (var);
 }
 
-void	sup_node_if(t_token **begin_list)
+static void	sup_node_if(t_token **begin_list)
 {
 	t_token	*cur;
 
 	cur = *begin_list;
 	if (begin_list == NULL || *begin_list == NULL)
 		return ;
-	if (cur->value == NULL)
+	if (cur->value == NULL || cur->value[0] == '\0')
 	{
 		*begin_list = cur->next;
+		if (cur->value)
+			free(cur->value);
 		free(cur);
 		sup_node_if(begin_list);
 	}
@@ -88,18 +83,87 @@ void	sup_node_if(t_token **begin_list)
 	}
 }
 
-t_token	*expand_var(t_token *tok)
+int	move_index_quote(char *str, int i, char c)
 {
+	int		j;
+
+	j = 0;
+	while (str[i + j] && str[i + j] != c)
+		j++;
+	// if (str[i + j + 1] == '\0')
+	// 	return (-1);
+	return (j);
+}
+
+char	*expand_var_env(char *new_str, int i)
+{
+	int		j;
+	char	**tmp;
+
+	tmp = NULL;
+	if (new_str[i] == '\0')
+		return (new_str);
+	tmp = malloc(sizeof(char *) * 4);
+	if (!tmp)
+		return (free(new_str), NULL);
+	tmp[3] = 0;
+	j = 0;
+	while (new_str[i + j] && new_str[i + j] != '$' && new_str[i + j] != 39 && new_str[i + j] != 34)
+		j++;
+	tmp[0] = ft_substr(new_str, i, j);
+	if (!tmp[0])
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
+	tmp[0] = change_value(tmp[0]);
+	tmp[1] = ft_substr(new_str, 0, i - 1);
+	if (!tmp[1])
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
+	tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str) - i - j);
+	if (!tmp[2])
+		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
+	free(new_str);
+	new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
+	if (!new_str)
+		return (ft_free_tab_var_env(&tmp), NULL);
+	return (ft_free_tab_var_env(&tmp), new_str);
+}
+
+t_token	*expand_str(t_token *tok)
+{
+	int		i;
+	int		j;
 	t_token	*tmp;
 
 	tmp = tok;
-	while (tok != NULL)
+	while (tok)
 	{
-		if (tok->type == TOKEN_ENV_VAR)
+		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			tok->value = change_value(tok->value);
+			i = 0;
+			while (tok->value[i])
+			{
+				if (tok->value[i] == 39 || tok->value[i] == 34)
+				{
+					j = i;
+					if (tok->value[j] == 34)
+						tok->value = handle_double_quote(tok->value, j);
+					i += move_index_quote(tok->value, i + 1, tok->value[j]);
+					tok->value = remove_quote(tok->value, j, tok->value[j]);
+					if (!tok->value)
+						return (ft_free(&tok), NULL);
+				}
+				else if (tok->value[i] == '$')
+				{
+					if (tok->value[i + 1] == '\0')
+						break ;
+					tok->value = expand_var_env(tok->value, i + 1);
+				}
+				else
+					i++;
+			}
 			tok->type = TOKEN_STR;
 		}
+		if (!tok->value)
+			return (ft_free(&tok), NULL);
 		tok = tok->next;
 	}
 	tok = tmp;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
+#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/15 14:16:28 by bvictoir         ###   ########.fr        #
+#    Updated: 2024/11/22 18:49:35 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,18 @@ SRC		= a_supp.c			\
 		env_var.c			\
 		handle_quote.c		\
 		ast.c				\
-		set_env.c
+		ast_str.c			\
+		ast_op.c			\
+		ft_env.c			\
+		set_env.c			\
+		parsing.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)
 OBJS	= ${addprefix $(OBJ_PATH), $(OBJ)}
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g 
 INCLUDES = -I incs/
 LIB		= libft.a
 
@@ -61,7 +65,7 @@ $(OBJ_PATH):
 $(NAME): $(OBJS)
 		make -C $(LIBFT_PATH)
 		mv $(LIBFT_PATH)$(LIB) .
-		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB)
+		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB) -lreadline
 		echo $(GREEN)$(NAME) compiled!$(NO_STYLE)
 
 clean:	

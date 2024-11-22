@@ -3,6 +3,9 @@
 		"parsing.h": "c",
 		"type_traits": "c",
 		"exec.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"history.h": "c",
+		"stdio.h": "c",
+		"readline.h": "c"
 	}
 }
