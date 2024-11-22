@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 15:10:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:45:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	check_tok(t_token *tok)
 		return (-1);
 	while (tok->next != NULL)
 	{
-		if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR)
+		if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR
+			&& tok->type != TOKEN_PIPE)
 		{
 			if (tok->next->type != TOKEN_STR
 				&& tok->next->type != TOKEN_ENV_VAR)
