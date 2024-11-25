@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/22 14:39:40 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:37:34 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i);
 
 int			check_syntax(char *str);
-int			move_index(t_token *tok, char *str, int i);
+int			move_index(t_token *tok);
 int			move_to_end_quote(char *str, char c);
 int			ft_parsing(char *cmd, t_env *env);
 

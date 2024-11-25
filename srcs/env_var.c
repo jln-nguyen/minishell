@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/22 18:27:00 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:07:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int	move_index_quote(char *str, int i, char c)
 	j = 0;
 	while (str[i + j] && str[i + j] != c)
 		j++;
-	// if (str[i + j + 1] == '\0')
-	// 	return (-1);
 	return (j);
 }
 
@@ -127,10 +125,35 @@ char	*expand_var_env(char *new_str, int i)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
+void	change_value_if(t_token **tok)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while ((*tok)->value[i])
+	{
+		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
+		{
+			j = i;
+			if ((*tok)->value[j] == 34)
+				(*tok)->value = handle_double_quote((*tok)->value, j);
+			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
+			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
+		}
+		else if ((*tok)->value[i] == '$')
+		{
+			if ((*tok)->value[i + 1] == '\0')
+				break ;
+			(*tok)->value = expand_var_env((*tok)->value, i + 1);
+		}
+		else
+			i++;
+	}
+}
+
 t_token	*expand_str(t_token *tok)
 {
-	int		i;
-	int		j;
 	t_token	*tmp;
 
 	tmp = tok;
@@ -138,32 +161,11 @@ t_token	*expand_str(t_token *tok)
 	{
 		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			i = 0;
-			while (tok->value[i])
-			{
-				if (tok->value[i] == 39 || tok->value[i] == 34)
-				{
-					j = i;
-					if (tok->value[j] == 34)
-						tok->value = handle_double_quote(tok->value, j);
-					i += move_index_quote(tok->value, i + 1, tok->value[j]);
-					tok->value = remove_quote(tok->value, j, tok->value[j]);
-					if (!tok->value)
-						return (ft_free(&tok), NULL);
-				}
-				else if (tok->value[i] == '$')
-				{
-					if (tok->value[i + 1] == '\0')
-						break ;
-					tok->value = expand_var_env(tok->value, i + 1);
-				}
-				else
-					i++;
-			}
+			change_value_if(&tok);
+			if (!tok->value)
+				return (ft_free(&tok), NULL);
 			tok->type = TOKEN_STR;
 		}
-		if (!tok->value)
-			return (ft_free(&tok), NULL);
 		tok = tok->next;
 	}
 	tok = tmp;

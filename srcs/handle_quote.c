@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/22 15:11:05 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:05:09 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,40 +152,3 @@ char	*remove_quote(char *str, int i, char c)
 	return (new_str);
 }
 
-// t_token	*handle_quote(char *str)
-// {
-// 	int		i;
-// 	char	*tmp;
-// 	t_token	*tok;
-
-// 	i = 0;
-// 	tmp = NULL;
-// 	while (str[i] != 39)
-// 		i++;
-// 	tmp = ft_substr(str, 0, i);
-// 	if (!tmp)
-// 		return (NULL);
-// 	tok = new_tok(TOKEN_STR, tmp);
-// 	free(tmp);
-// 	return (tok);
-// }
-
-// t_token	*check_quote(char *str, char c)
-// {
-// 	char	*tmp;
-// 	t_token	*tok;
-
-// 	tmp = NULL;
-// 	tok = NULL;
-// 	if (c == 34)
-// 	{
-// 		tmp = handle_double_quote(str);
-// 		if (!tmp)
-// 			return (NULL);
-// 		tok = new_tok(TOKEN_STR, tmp);
-// 		free(tmp);
-// 	}
-// 	else
-// 		tok = handle_quote(str);
-// 	return (tok);
-// }

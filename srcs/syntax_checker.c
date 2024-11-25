@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 15:04:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:30:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static int	check_op(char *str, int i)
 	{
 		if (str[i + 1] == '|')
 			ft_putstr_fd("Non supported operators\n", STDERR_FILENO);
-		// if (ft_check_pipe(str, i) == -1)
-		// 	return (0);
 		j++;
 	}
 	else if (str[i] == '>' || str[i] == '<')

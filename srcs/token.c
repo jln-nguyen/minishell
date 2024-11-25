@@ -6,47 +6,39 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/21 17:47:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:21:56 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*word(char *str)
+static t_token	*word(char *str, int i)
 {
-	int		i;
+	char	c;
 	char	*tmp;
 	t_token	*tok;
 
-	i = 0;
-	tmp = NULL;
-	tok = NULL;
-	while (str[i])
+	while (str[i] && str[i] != '|' && str[i] != '<' && str[i] != '>'
+		&& str[i] != 32 && !(str[i] >= 9 && str[i] <= 13))
 	{
-		if (str[i] == 34)
+		if (str[i] == 34 || str[i] == 39)
 		{
 			i++;
-			while (str[i] != 34)
+			c = str[i];
+			while (str[i] != c)
 				i++;
 		}
-		if (str[i] == 39)
-		{
-			i++;
-			while (str[i] != 39)
-				i++;
-		}
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == 32 || (str[i] >= 9 && str[i] <= 13)) // || str[i] == 39 || str[i] == 34 ||
-			break ;
 		i++;
 	}
 	tmp = ft_substr(str, 0, i);
+	if (!tmp)
+		return (NULL);
 	tok = new_tok(TOKEN_STR, tmp);
 	if (!tok)
-		return (NULL);
-	free(tmp);
+		return (free(tmp), NULL);
 	if (ft_strchr(tok->value, '$') != NULL)
 		tok->type = TOKEN_ENV_VAR;
-	return (tok);
+	return (free(tmp), tok);
 }
 
 static t_token	*check_redirect(char *str)
@@ -86,10 +78,8 @@ static t_token	*check_token(char *str, t_token *tok)
 		element = new_tok(TOKEN_PIPE, "|");
 	else if (str[i] == '<' || str[i] == '>')
 		element = check_redirect(&str[i]);
-	// else if (str[i] == 39 || str[i] == 34)
-	// 	element = check_quote(&str[i + 1], str[i]);
 	else
-		element = word(&str[i]);
+		element = word(&str[i], i);
 	if (!element)
 		return (NULL);
 	ft_tokadd_back(&tok, element);
@@ -112,9 +102,7 @@ static void	expand_lst(t_token **tok, char *str)
 			*tok = check_token(&str[i], *tok);
 			if (!tok)
 				return ;
-			i += move_index(*tok, str, i);
-			// if (move_index(*tok, str, i) == 0)
-			// 	*tok = ft_del_last(*tok);
+			i += move_index(*tok);
 		}
 	}
 }
@@ -137,13 +125,10 @@ t_token	*ft_token(char *str)
 			tok = check_token(&str[i], tok);
 			if (!tok)
 				return (NULL);
-			i += move_index(tok, str, i);
-			// if (move_index(tok, str, i) == 0)
-			// 	tok = ft_del_last(tok);
+			i += move_index(tok);
 		}
 	}
 	expand_lst(&tok, &str[i]);
-	// tok = expand_var(tok);
 	tok = expand_str(tok);
 	return (tok);
 }
