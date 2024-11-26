@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:35 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/12 16:18:55 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:13:24 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	ft_env(t_env *env)
 {
-	// int i;
-
-	// i = 0;
 	while (env)
 	{
 		printf("%s=%s\n", env->key, env->value);

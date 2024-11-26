@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 15:30:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:15:28 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	check_syntax(char *str)
 		return (-1);
 	while (str[i])
 	{
-		if (str[i] == ';' || str[i] == '\\')
+		if (str[i] == ';' || str[i] == '\\' || str[i] == '(' || str[i] == ')')
 			return (ft_putstr_fd("Invalid Character\n", STDERR_FILENO), -2);
 		if (str[i] == '\'' || str[i] == '"')
 		{

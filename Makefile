@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/22 13:15:18 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/26 14:11:08 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC		= a_supp.c			\
 		ast_op.c			\
 		ft_env.c			\
 		set_env.c			\
-		parsing.c
+		parsing.c			\
+		env_var_utils.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)

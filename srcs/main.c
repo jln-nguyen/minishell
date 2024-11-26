@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 15:29:31 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:44:40 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,18 @@ void	prompt(t_env *env)
 	char	*tmp;
 
 	tmp = NULL;
-	while (1)
-	{
-		tmp = readline("Minishell> ");
-		if (!tmp)
-			return ;
-		add_history(tmp);
-		if (ft_parsing(tmp, env) != 0)
-			return ;
-	}
+	// while (1)
+	// {
+	// 	tmp = readline("Minishell> ");
+	// 	if (!tmp)
+	// 		return ;
+	// 	add_history(tmp);
+	// 	if (ft_parsing(tmp, env) != 0)
+	// 		return ;
+	// }
+	tmp = get_next_line(0);
+	if (ft_parsing(tmp, env) != 0)
+		return ;
 }
 
 int	main(int ac, char **av, char **envp)
