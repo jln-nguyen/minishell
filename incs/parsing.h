@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/26 14:14:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:08:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_ast_node	*new_node(t_enum_type type);
 t_ast_node	*check_pipe(t_token *tok, t_enum_type limit);
 
 t_env		*ft_getenv(char **envp);
+t_env		*ft_create_env(void);
 
 void		expand_ast(t_ast_node **ast, t_token *tok,
 				t_enum_type limit, char c);
@@ -86,9 +87,12 @@ void		ft_free_ast(t_ast_node **tok);
 void		ft_free_env(t_env **env);
 void		ft_free_tab_var_env(char ***tab);
 void		ft_tokadd_back(t_token **lst, t_token *new);
+void		add_node(t_ast_node **lst, t_ast_node *new, char c);
+void		ft_envadd_back(t_env **head, t_env *new);
 
 void		print_token(t_token *tok); //a supp
 void		print_ast(t_ast_node *ast);
 void		generate_ast_diagram(t_ast_node *root);
+void		print_env(t_env *env);
 
 #endif 

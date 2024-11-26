@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 16:05:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:21:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,57 @@ t_ast_node	*check_pipe(t_token *tok, t_enum_type limit)
 	return (NULL);
 }
 
+t_ast_node	*fill_arg(t_ast_node *ast, t_ast_node *new)
+{
+	int	i;
+
+	i = 1;
+	while (ast->right->args[i])
+	{
+		new->args[i - 1] = ft_strdup(ast->right->args[i]);
+		if (!new->args[i - 1])
+		{
+			while (i > 0)
+				free(new->args[--i]);
+			free(new->args);
+			new->args = NULL;
+			return (NULL); // exit_fin
+		}
+		i++;
+	}
+	new->args[i - 1] = 0;
+	return (new);
+}
+
+t_ast_node	*check_command(t_ast_node *ast)
+{
+	int			i;
+	t_ast_node	*new;
+
+	i = 1;
+	if (!ast->right->args[i])
+		return (ast);
+	new = new_node(TOKEN_STR);
+	if (!new)
+		return (NULL); //exit fin
+	while (ast->right->args[i])
+		i++;
+	new->args = malloc(sizeof(char *) * (i + 1));
+	if (!new->args)
+		return (NULL);
+	new = fill_arg(ast, new);
+	if (!new)
+		return (NULL);
+	while (i > 0)
+	{
+		free(ast->right->args[i]);
+		i--;
+	}
+	ast->right->args[1] = 0;
+	add_node(&ast, new, 'L');
+	return (ast);
+}
+
 t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 {
 	t_ast_node	*ast;
@@ -64,5 +115,7 @@ t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 		tok = tok->next;
 	tok = tok->next;
 	expand_ast(&ast, &(*tok), TOKEN_PIPE, 'R');
+	if (!ast->left)
+		ast = check_command(ast);
 	return (ast);
 }

@@ -6,17 +6,22 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:35 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/26 14:13:24 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:12:54 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(t_env *env)
+void	ft_env(t_env **env)
 {
-	while (env)
+	t_env	*tmp;
+
+	if (!env)
+		return ;
+	tmp = *env;
+	while (tmp)
 	{
-		printf("%s=%s\n", env->key, env->value);
-		env = env->next;
+		printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
 	}
 }
