@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 15:04:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:26:48 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static int	check_op(char *str, int i)
 	{
 		if (str[i + 1] == '|')
 			ft_putstr_fd("Non supported operators\n", STDERR_FILENO);
-		// if (ft_check_pipe(str, i) == -1)
-		// 	return (0);
 		j++;
 	}
 	else if (str[i] == '>' || str[i] == '<')
@@ -72,6 +70,13 @@ static int	check_end_quote(char *str, char c)
 	return (-1);
 }
 
+static int	check_invalid_char(char c)
+{
+	if (c == ';' || c == '\\' || c == '(' || c == ')' || c == '&')
+		return (ft_putstr_fd("Invalid Character\n", STDERR_FILENO), -1);
+	return (0);
+}
+
 int	check_syntax(char *str)
 {
 	int	i;
@@ -81,15 +86,15 @@ int	check_syntax(char *str)
 		return (-1);
 	while (str[i])
 	{
-		if (str[i] == ';' || str[i] == '\\')
-			return (ft_putstr_fd("Invalid Character\n", STDERR_FILENO), -2);
+		if (check_invalid_char(str[i] == -1))
+			return (-1);
 		if (str[i] == '\'' || str[i] == '"')
 		{
 			if (check_end_quote(&str[i], str[i]) == -1)
 				return (-1);
 			i += check_end_quote(&str[i], str[i]);
 		}
-		if (str[i] == '|' || str[i] == '<' || str[i] == '>' || str[i] == '&')
+		if (str[i] == '|' || str[i] == '<' || str[i] == '>')
 		{
 			if (check_op(str, i) == 0)
 				return (-1);

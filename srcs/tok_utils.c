@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:50:01 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/21 13:18:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/25 16:37:19 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,13 @@ t_token	*ft_del_last(t_token *tok)
 	return (tok);
 }
 
-int	move_index(t_token *tok, char *str, int i)
+int	move_index(t_token *tok)
 {
-	(void)str;
-	(void)i;
 	if (!tok)
 		return (0);
-	// if (str[i] == 39 || str[i] == 34)
-	// 	return (move_to_end_quote(&str[i], str[i]));
-	// else
-	// {
 	while (tok->next != NULL)
 		tok = tok->next;
 	return (ft_strlen(tok->value));
-	// }
 }
 
 void	ft_free(t_token **tok)

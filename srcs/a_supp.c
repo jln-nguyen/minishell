@@ -6,11 +6,23 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/13 11:02:17 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:16:50 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_env(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (env != NULL)
+	{
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+}
 
 void	print_ast(t_ast_node *ast)
 {

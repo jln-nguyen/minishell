@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 13:44:02 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 11:43:59 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_free_env(t_env **env)
 	*env = NULL;
 }
 
-static void	ft_envadd_back(t_env **head, t_env *new)
+void	ft_envadd_back(t_env **head, t_env *new)
 {
 	t_env	*tmp;
 
@@ -58,10 +58,12 @@ static t_env	*new_node_env(char *envp)
 	if (!node->key)
 		return (NULL);
 	ft_strlcpy(node->key, envp, i + 1);
-	node->value = malloc(sizeof(char) * (ft_strlen(envp) - i));
+	if (envp[0] == '_')
+		node->value = ft_strdup("/usr/bin/env");
+	else
+		node->value = ft_strdup(&envp[i + 1]);
 	if (!node->value)
 		return (NULL);
-	node->value = ft_strcpy(node->value, &envp[i + 1]);
 	node->next = NULL;
 	return (node);
 }
@@ -84,8 +86,6 @@ t_env	*ft_getenv(char **envp)
 
 	i = 0;
 	env = NULL;
-	// if (!envp)
-	// 	env = ft_create_env();
 	env = new_node_env(envp[i]);
 	if (!env)
 		return (NULL);
