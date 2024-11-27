@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:02:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/26 18:26:14 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:03:51 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static t_env	*new_env(char *str_key, char *str_val)
+t_env	*new_env(char *str_key, char *str_val)
 {
 	t_env	*new;
 
@@ -29,26 +29,32 @@ static t_env	*new_env(char *str_key, char *str_val)
 	return (new);
 }
 
-static void	expand_env(t_env **env, char *str_key, char *str_val)
+int	expand_env(t_env **env, char *str_key, char *str_val)
 {
 	t_env	*new;
 
 	new = new_env(str_key, str_val);
 	if (!new)
-		return ; // protect
+		return (-1);
 	ft_envadd_back(env, new);
+	return (0);
 }
 
 t_env	*ft_create_env(void)
 {
 	t_env	*env;
-	char	buffer[1024];
+	char	*buffer;
 
-	getcwd(buffer, 1024);
+	buffer = getcwd(NULL, 0);
+	if (!buffer)
+		return (NULL);
 	env = new_env("PWD", buffer);
 	if (!env)
-		return (NULL);
-	expand_env(&env, "SHLVL", "1");
-	expand_env(&env, "_", "/usr/bin/env");
+		return (free(buffer), NULL);
+	if (expand_env(&env, "SHLVL", "1") == -1)
+		return (free(buffer), ft_free_env(&env), NULL);
+	if (expand_env(&env, "_", "/usr/bin/env") == -1)
+		return (free(buffer), ft_free_env(&env), NULL);
+	free(buffer);
 	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/26 14:53:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:17:58 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ static int	check_tok(t_token *tok)
 	return (0);
 }
 
-int	ft_parsing(char *cmd, t_env *env)
+int	ft_parsing(char *cmd)
 {
 	t_ast_node	*ast;
 	t_token		*tok;
 
+	ast = NULL;
+	tok = NULL;
 	if (check_syntax(cmd) != 0)
 		return (free(cmd), -1);
 	tok = ft_token(cmd);
@@ -54,7 +56,7 @@ int	ft_parsing(char *cmd, t_env *env)
 	free(cmd);
 	ast = parsing_token(tok, -1);
 	if (!ast)
-		return (ft_free_env(&env), ft_free(&tok), -4);
+		return (ft_free(&tok), -4);
 	generate_ast_diagram(ast); // a supp
 	ft_free(&tok);
 	ft_free_ast(&ast);

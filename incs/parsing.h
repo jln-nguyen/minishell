@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/26 18:08:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:06:47 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char		*change_str(char *new_str, int i);
 int			check_syntax(char *str);
 int			move_index(t_token *tok);
 int			move_to_end_quote(char *str, char c);
-int			ft_parsing(char *cmd, t_env *env);
+int			ft_parsing(char *cmd);
 int			ft_is_space(char str);
 t_token		*new_tok(t_enum_type type, char *str);
 t_token		*ft_token(char *str);
@@ -78,6 +78,7 @@ t_ast_node	*check_pipe(t_token *tok, t_enum_type limit);
 
 t_env		*ft_getenv(char **envp);
 t_env		*ft_create_env(void);
+t_env		*new_env(char *str_key, char *str_val);
 
 void		expand_ast(t_ast_node **ast, t_token *tok,
 				t_enum_type limit, char c);
@@ -89,6 +90,7 @@ void		ft_free_tab_var_env(char ***tab);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		ft_envadd_back(t_env **head, t_env *new);
+int			expand_env(t_env **env, char *str_key, char *str_val);
 
 void		print_token(t_token *tok); //a supp
 void		print_ast(t_ast_node *ast);

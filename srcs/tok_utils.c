@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:50:01 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 16:37:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:00:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_token	*new_tok(t_enum_type type, char *str)
 	element->type = type;
 	element->value = ft_strdup(str);
 	if (!element->value)
-		return (NULL);
+		return (free(element), NULL);
 	element->next = NULL;
 	return (element);
 }
