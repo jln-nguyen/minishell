@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/26 18:37:08 by junguyen         ###   ########.fr        #
+#    Updated: 2024/11/27 11:37:24 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ SRC		= a_supp.c			\
 		ast.c				\
 		ast_str.c			\
 		ast_op.c			\
-		ft_env.c			\
 		set_env.c			\
 		parsing.c			\
 		env_var_utils.c		\
