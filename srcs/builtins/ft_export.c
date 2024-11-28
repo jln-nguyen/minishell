@@ -6,69 +6,79 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/15 15:13:04 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:13:46 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	order_tab(t_env **tab, t_env **env, int count)
-{
-	int		i;
-	int		j;
-	t_env	*tmp;
-
-	tmp = *env;
-	i = -1;
-	while (tmp)
-	{
-		tab[++i] = tmp;
-		tmp = tmp->next;
-	}
-	i = -1;
-	while (++i < count)
-	{
-		j = i;
-		while (++j < count)
-		{
-			if (ft_strcmp(tab[i]->key, tab[j]->key) > 0)
-			{
-				tmp = tab[i];
-				tab[i] = tab[j];
-				tab[j] = tmp;
-			}
-		}
-	}
-}
-
-void	ft_print_export(t_env **env)
+static int	ft_check_key(char *str)
 {
 	int	i;
-	int	count;
-	t_env	*tmp;
-	t_env	**tab;
 
-	count = 0;
-	tmp = *env;
-	while (tmp)
+	i = 1;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	while (str[i] && str[i] != '=')
 	{
-		count++;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static void	ft_update_env(t_env **env, char *key, char *value, int bool)
+{
+	t_env	*tmp;
+	t_env	*new;
+
+	tmp = *env;
+	while (tmp && bool)
+	{
+		if (!ft_strcmp(tmp->key, key))
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return ;
+		}
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 	}
-	tab = malloc(sizeof(t_env *) * count);
-	if (!tab)
+	new = malloc(sizeof(t_env));
+	if (!new)
 		return ;
-	order_tab(tab, env, count);
-	i = -1;
-	while (++i < count)
-		printf("declare -x %s=\"%s\"\n", tab[i]->key, tab[i]->value);
-	free(tab);
+	new->key = ft_strdup(key);
+	new->value = NULL;
+	new->next = NULL;
+	tmp->next = new;
 }
 
 void	ft_export(t_env **env, t_token *tok)
 {
+	char	*key;
+	
 	if (!tok->next)
 		ft_print_export(env);
+	else
+	{
+		tok = tok->next;
+		while (tok)
+		{
+			if (!ft_check_key(tok->value))
+				printf("export: `%s': not a valid identifier\n", tok->value);
+			else
+			{
+				key = ft_substr(tok->value, 0, ft_strchr(tok->value, '=') - tok->value);
+				if (ft_strchr(tok->value, '='))
+					ft_update_env(env, key, ft_strchr(tok->value, '=') + 1, 1);
+				else
+					ft_update_env(env, key, "", 0);
+			}
+			tok = tok->next;
+		}
+	}
 }
 
 
@@ -88,7 +98,6 @@ void	add_env(t_env **env, char *str)
 	new->next = *env;
 	*env = new;
 }
-
 int main(int ac, char **av, char **env)
 {
 	(void)ac, (void)av;
@@ -99,7 +108,7 @@ int main(int ac, char **av, char **env)
 	tok->value = "export";
 	tok->next = NULL;
 	tok->next = malloc(sizeof(t_token));
-	tok->next->value = NULL;
+	tok->next->value = "test";
 	tok->next->next = NULL;
 	// tok->next->next = malloc(sizeof(t_token));
 	// tok->next->next->value = NULL;
@@ -112,7 +121,8 @@ int main(int ac, char **av, char **env)
 		env++;
 	}
 	ft_export(&env_list, tok);
-	// ft_env(&env_list);
+	ft_env(&env_list);
 	
 	return (0);
 }
+ // a test avec et sans  '='
