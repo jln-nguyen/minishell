@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/27 15:04:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:20:40 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	ft_cd(char *str, t_env	**env)
 
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(str) < 0)
-		printf("%s\n", strerror(errno));
+	{
+		ft_printf(STDERR_FILENO, "Minishell: cd : %s: %s\n", str, strerror(errno));
+		return (free(old_pwd));
+	}
 	pwd = getcwd(NULL, 0);
 	tmp = *env;
 	ft_change_wd(env, pwd, old_pwd);

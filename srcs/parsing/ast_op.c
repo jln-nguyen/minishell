@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/27 18:16:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:52:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_ast_node	*check_command(t_ast_node *ast)
 		return (free(new), NULL);
 	new = fill_arg(ast, new);
 	if (!new)
-		return (ft_free_ast(ast), NULL);
+		return (ft_free_ast(&ast), NULL);
 	while (i > 0)
 	{
 		free(ast->right->args[i]);
