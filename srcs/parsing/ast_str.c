@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:50 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/20 13:42:45 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:13:58 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_fill_args(t_ast_node **head, t_token *tok, t_enum_type limit)
 				free((*head)->args[--i]);
 			free((*head)->args);
 			(*head)->args = NULL;
-			return ;
+			return ; //protect
 		}
 		i++;
 		tok = tok->next;
@@ -61,9 +61,9 @@ t_ast_node	*parse_str(t_token *tok, t_enum_type limit)
 		return (NULL);
 	head->args = malloc(sizeof(char *) * (len + 1));
 	if (!head->args)
-		return (NULL);
+		return (free(head), NULL);
 	ft_fill_args(&head, tok, limit);
 	if (!head->args)
-		return (NULL);
+		return (free(head), NULL);
 	return (head);
 }

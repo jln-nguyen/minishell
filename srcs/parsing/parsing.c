@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/26 14:53:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:03:19 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,29 @@ static int	check_tok(t_token *tok)
 	return (0);
 }
 
-int	ft_parsing(char *cmd, t_env *env)
+t_ast_node	*ft_parsing(char *cmd)
 {
 	t_ast_node	*ast;
 	t_token		*tok;
 
+	ast = NULL;
+	tok = NULL;
 	if (check_syntax(cmd) != 0)
-		return (free(cmd), -1);
+		return (free(cmd), NULL);
 	tok = ft_token(cmd);
 	if (!tok)
-		return (free(cmd), -2);
+		return (NULL);
 	if (check_tok(tok) == -1)
 	{
 		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
-		return (free(cmd), ft_free(&tok), -3);
+		return (free(cmd), ft_free(&tok), NULL);
 	}	
-	print_token(tok); //a supp
+	// print_token(tok); //a supp
 	free(cmd);
 	ast = parsing_token(tok, -1);
 	if (!ast)
-		return (ft_free_env(&env), ft_free(&tok), -4);
+		return (ft_free(&tok), NULL);
 	generate_ast_diagram(ast); // a supp
 	ft_free(&tok);
-	ft_free_ast(&ast);
-	return (0);
+	return (ast);
 }

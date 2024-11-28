@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/27 11:43:59 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:03:13 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,28 @@ static t_env	*new_node_env(char *envp)
 		i++;
 	node->key = malloc(sizeof(char) * (i + 1));
 	if (!node->key)
-		return (NULL);
+		return (free(node), NULL);
 	ft_strlcpy(node->key, envp, i + 1);
 	if (envp[0] == '_')
 		node->value = ft_strdup("/usr/bin/env");
 	else
 		node->value = ft_strdup(&envp[i + 1]);
 	if (!node->value)
-		return (NULL);
+		return (free(node->key), free(node), NULL);
 	node->next = NULL;
 	return (node);
 }
 
-static void	ft_expand_env(t_env **env, char **envp, int i)
+static int	ft_expand_env(t_env **env, char **envp, int i)
 {
 	t_env	*node;
 
 	node = NULL;
 	node = new_node_env(envp[i]);
 	if (!node)
-		return ;
+		return (-1);
 	ft_envadd_back(env, node);
+	return (0);
 }
 
 t_env	*ft_getenv(char **envp)
@@ -92,7 +93,8 @@ t_env	*ft_getenv(char **envp)
 	i++;
 	while (envp[i])
 	{
-		ft_expand_env(&env, envp, i);
+		if (ft_expand_env(&env, envp, i) == -1)
+			return (ft_free_env(&env), NULL);
 		i++;
 	}
 	return (env);
