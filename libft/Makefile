@@ -6,7 +6,7 @@
 #    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:17 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/04 14:41:18 by bvictoir         ###   ########.fr        #
+#    Updated: 2024/11/15 14:59:50 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC			= ft_isalpha.c				\
 				ft_tolower.c			\
 				ft_strchr.c				\
 				ft_strrchr.c			\
+				ft_strcmp.c				\
 				ft_strncmp.c			\
 				ft_memchr.c				\
 				ft_memcmp.c				\
