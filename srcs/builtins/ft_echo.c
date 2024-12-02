@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:04 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/07 10:55:13 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:41:35 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_option(t_token *tok)
+static int	ft_option(char **args)
 {
 	int	i;
 	int	n;
 
 	i = -1;
 	n = 0;
-	if (tok->value[++i] == '-')
+	if (args[0][++i] == '-')
 	{
-		while (tok->value[++i])
+		while (args[0][++i])
 		{
 			n = 1;
-			if (tok->value[i] != 'n')
+			if (args[0][i] != 'n')
 			{
 				n = 0;
 				break ;
@@ -34,22 +34,24 @@ static int	ft_option(t_token *tok)
 	return (n);
 }
 
-void	ft_echo(t_token *tok)
+void	ft_echo(char **args)
 {
 	int	n;
+	int	i;
 
-	if (!tok)
+	i = 0;
+	if (!args)
 		return ((void) printf("\n"));
-	n = ft_option(tok);
+	n = ft_option(args);
 	if (n)
-		tok = tok->next;
-	while (tok)
+		i++;
+	while (args[i])
 	{
-		if (tok->value)
-			printf("%s", tok->value);
-		if (tok->next)
+		if (args[i])
+			printf("%s", args[i]);
+		if (args[i + 1])
 			printf(" ");
-		tok = tok->next;
+		i++;
 	}
 	if (!n)
 		printf("\n");

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:50:01 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/15 10:42:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:00:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,13 @@ t_token	*ft_del_last(t_token *tok)
 	return (tok);
 }
 
-int	move_index(t_token *tok, char *str, int i)
+int	move_index(t_token *tok)
 {
 	if (!tok)
 		return (0);
-	if (str[i] == 39 || str[i] == 34)
-		return (move_to_end_quote(&str[i], str[i]));
-	else
-	{
-		while (tok->next != NULL)
-			tok = tok->next;
-		return (ft_strlen(tok->value));
-	}
+	while (tok->next != NULL)
+		tok = tok->next;
+	return (ft_strlen(tok->value));
 }
 
 void	ft_free(t_token **tok)
@@ -91,7 +86,7 @@ t_token	*new_tok(t_enum_type type, char *str)
 	element->type = type;
 	element->value = ft_strdup(str);
 	if (!element->value)
-		return (NULL);
+		return (free(element), NULL);
 	element->next = NULL;
 	return (element);
 }

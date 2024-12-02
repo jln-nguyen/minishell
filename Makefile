@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
+#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/15 14:16:28 by bvictoir         ###   ########.fr        #
+#    Updated: 2024/11/28 18:51:07 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,23 +18,35 @@ SRC_PATH = srcs/
 OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
-SRC		= a_supp.c			\
-		ast_visu.c			\
-		syntax_checker.c	\
-		tok_utils.c			\
-		token.c				\
-		main.c				\
-		env_var.c			\
-		handle_quote.c		\
-		ast.c				\
-		set_env.c
+SRC		= a_supp.c					\
+		ast_visu.c					\
+		main.c						\
+		parsing/syntax_checker.c	\
+		parsing/tok_utils.c			\
+		parsing/token.c				\
+		parsing/env_var.c			\
+		parsing/handle_quote.c		\
+		parsing/ast.c				\
+		parsing/ast_str.c			\
+		parsing/ast_op.c			\
+		parsing/set_env.c			\
+		parsing/parsing.c			\
+		parsing/env_var_utils.c		\
+		parsing/create_env.c		\
+		builtins/ft_echo.c			\
+		builtins/ft_env.c			\
+		builtins/ft_exit.c			\
+		builtins/ft_export.c		\
+		builtins/ft_pwd.c			\
+		builtins/ft_cd.c			\
+		exec/ft_exec.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)
 OBJS	= ${addprefix $(OBJ_PATH), $(OBJ)}
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g 
 INCLUDES = -I incs/
 LIB		= libft.a
 
@@ -50,18 +62,18 @@ WHITE		:= "\033[0;37m\033[1m"
 NO_STYLE	:= "\033[0m"
 
 
-all:		$(OBJ_PATH) $(NAME)
+all:		$(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
+			mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCLUDES) -c  $< -o $@
 
-$(OBJ_PATH):
-			mkdir -p $(OBJ_PATH)
+# $(OBJ_PATH):
 
 $(NAME): $(OBJS)
 		make -C $(LIBFT_PATH)
 		mv $(LIBFT_PATH)$(LIB) .
-		$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB)
+		$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(INCLUDES) $(LIB) -lreadline
 		echo $(GREEN)$(NAME) compiled!$(NO_STYLE)
 
 clean:	
