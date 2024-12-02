@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/28 18:15:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:19:06 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,29 @@ void	sigint_handler(int signal)
 	}
 }
 
+char	*color_gwd(char *gwd)
+{
+	char	*tmp;
+
+	if (!gwd)
+		return (NULL);
+	tmp = ft_strbigjoin("\033[0;36m\033[1m", gwd, "\033[0m");
+	free(gwd);
+	return (tmp);
+}
+
 void	prompt(t_env *env)
 {
 	char		*tmp;
 	char		*gwd;
 	t_ast_node	*ast;
 
-	ast = NULL;
-	tmp = NULL;
-	gwd = NULL;
 	while (1)
 	{
-		gwd = ft_strjoin(getcwd(NULL, 0), "$ ");
+		tmp = getcwd(NULL, 0);
+		gwd = ft_strjoin(tmp, "\033[0;35m\033[1m$\033[0m ");
+		gwd = color_gwd(gwd);
+		free(tmp);
 		if (!gwd)
 			return ; // a proteger
 		tmp = readline(gwd);
@@ -44,13 +55,15 @@ void	prompt(t_env *env)
 		ast = ft_parsing(tmp);
 		if (ast)
 			ft_exec(ast, &env);
+		ft_free_ast(&ast);
 		free(gwd);
 	}
+	rl_clear_history();
 	// (void)env;
 	// tmp = get_next_line(0);
 	// if (ft_parsing(tmp) != 0)
 	// 	return ; //gnl a supp, pour mieux verif valgrind
-	ft_free_ast(&ast);
+	// ft_free_ast(&ast);
 }
 
 int	main(int ac, char **av, char **envp)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/02 10:33:19 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:01:51 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	order_tab(t_env **tab, t_env **env, int count)
 {

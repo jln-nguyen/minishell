@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/28 18:51:07 by junguyen         ###   ########.fr        #
+#    Updated: 2024/12/02 17:20:56 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,12 @@ SRC		= a_supp.c					\
 		builtins/ft_env.c			\
 		builtins/ft_exit.c			\
 		builtins/ft_export.c		\
+		builtins/ft_print_export.c	\
 		builtins/ft_pwd.c			\
 		builtins/ft_cd.c			\
-		exec/ft_exec.c
+		exec/ft_exec.c				\
+		exec/ft_execve.c			\
+		exec/ft_check_redir.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)
@@ -67,8 +70,6 @@ all:		$(NAME)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 			mkdir -p $(dir $@)
 			$(CC) $(CFLAGS) $(INCLUDES) -c  $< -o $@
-
-# $(OBJ_PATH):
 
 $(NAME): $(OBJS)
 		make -C $(LIBFT_PATH)
