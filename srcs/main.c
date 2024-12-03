@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:19:06 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/03 11:45:30 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	prompt(t_env *env)
 
 	while (1)
 	{
-		tmp = getcwd(NULL, 0);
-		gwd = ft_strjoin(tmp, "\033[0;35m\033[1m$\033[0m ");
-		gwd = color_gwd(gwd);
-		free(tmp);
+		// gwd = getcwd(NULL, 0);
+		gwd = ft_strjoin(getcwd(NULL, 0), "$ ");
+		// gwd = color_gwd(gwd);
+		// free(tmp);
 		if (!gwd)
 			return ; // a proteger
 		tmp = readline(gwd);

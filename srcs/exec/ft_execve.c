@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:41:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:10:20 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*check_cmd(char *cmd, char **envp, char *path)
 	return (NULL);
 }
 
-static char	*find_path(char *cmd, char **env)
+char	*find_path(char *cmd, char **env)
 {
 	int		i;
 	char	*path;

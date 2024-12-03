@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:35:35 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:01:29 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,21 @@ char	**struc_to_char(t_env *env)
 	return (tab);
 }
 
-static int	ft_check_builtins(t_ast_node *ast, t_env **env)
+int	ft_check_builtins(t_ast_node *ast, t_env **env)
 {
-	if (ft_strncmp("cd", ast->args[0], 2) == 0)
+	if (ft_strcmp("cd", ast->args[0]) == 0)
 		return (ft_cd(ast->args[1], env), 0);
-	else if (ft_strncmp("env", ast->args[0], 3) == 0)
+	else if (ft_strcmp("env", ast->args[0]) == 0)
 		return (ft_env(env), 0);
-	else if (ft_strncmp("pwd", ast->args[0], 3) == 0)
+	else if (ft_strcmp("pwd", ast->args[0]) == 0)
 		return (ft_pwd(), 0);
-	else if (ft_strncmp("echo", ast->args[0], 4) == 0)
+	else if (ft_strcmp("echo", ast->args[0]) == 0)
 		return (ft_echo(&ast->args[1]), 0);
-	else if (ft_strncmp("export", ast->args[0], 6) == 0)
+	else if (ft_strcmp("export", ast->args[0]) == 0)
 		return (printf("export\n"), 0); //mettre export
-	else if (ft_strncmp("unset", ast->args[0], 5) == 0)
+	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (printf("unset\n"), 0); //mettre unset
-	else if (ft_strncmp("exit", ast->args[0], 4) == 0)
+	else if (ft_strcmp("exit", ast->args[0]) == 0)
 		return (printf("exit\n"), 0); //mettre exit
 	return (-1);
 }
