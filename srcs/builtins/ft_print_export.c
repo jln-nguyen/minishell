@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/02 10:33:19 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/03 10:15:06 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void	ft_print_export(t_env **env)
 	order_tab(tab, env, count);
 	i = -1;
 	while (++i < count)
-		printf("export %s=\"%s\"\n", tab[i]->key, tab[i]->value);
+	{
+		if (!tab[i]->value)
+			printf("export %s\n", tab[i]->key);
+		else
+			printf("export %s=\"%s\"\n", tab[i]->key, tab[i]->value);
+	}
 	free(tab);
 }

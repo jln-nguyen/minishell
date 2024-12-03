@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
+#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/11/28 18:51:07 by junguyen         ###   ########.fr        #
+#    Updated: 2024/12/03 10:01:15 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC		= a_supp.c					\
 		builtins/ft_env.c			\
 		builtins/ft_exit.c			\
 		builtins/ft_export.c		\
+		builtins/ft_print_export.c		\
 		builtins/ft_pwd.c			\
 		builtins/ft_cd.c			\
 		exec/ft_exec.c
