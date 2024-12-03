@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/28 18:20:40 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:23:10 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_if_oldpwd(t_env **env)
 }
 
 void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
-{	
+{
 	t_env	*tmp;
 
 	tmp = *env;
@@ -44,12 +44,12 @@ void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
 			tmp->value = ft_strdup(old_pwd);
 		}
 		if (!tmp->value)
-			return ; //exit fn free et tout
+			return ; // exit fn free et tout
 		tmp = tmp->next;
 	}
 }
 
-void	ft_cd(char *str, t_env	**env)
+void	ft_cd(char *str, t_env **env)
 {
 	char	*pwd;
 	char	*old_pwd;
@@ -58,7 +58,8 @@ void	ft_cd(char *str, t_env	**env)
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(str) < 0)
 	{
-		ft_printf(STDERR_FILENO, "Minishell: cd : %s: %s\n", str, strerror(errno));
+		ft_printf(STDERR_FILENO, "Minishell: cd : %s: %s\n", str,
+			strerror(errno));
 		return (free(old_pwd));
 	}
 	pwd = getcwd(NULL, 0);

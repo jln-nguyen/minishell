@@ -6,13 +6,13 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:28 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/15 14:21:37 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:20:02 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_remove(t_env **env, t_token *tok)
+static void	ft_remove(t_env **env, char *key)
 {
 	t_env	*tmp;
 	t_env	*prev;
@@ -21,8 +21,8 @@ static void	ft_remove(t_env **env, t_token *tok)
 	prev = NULL;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->key, tok->value, ft_strlen(tok->value))
-			&& !tmp->key[ft_strlen(tok->value)])
+		if (!ft_strncmp(tmp->key, key, ft_strlen(key))
+			&& !tmp->key[ft_strlen(key)])
 		{
 			if (prev)
 				prev->next = tmp->next;
@@ -38,15 +38,16 @@ static void	ft_remove(t_env **env, t_token *tok)
 	}
 }
 
-void	ft_unset(t_env **env, t_token *tok)
+void	ft_unset(t_env **env, t_ast_node *ast)
 {
-	if (!env || !tok->next)
+	int	i;
+
+	i = 0;
+	if (!env || !ast->args[1])
 		return ;
-	tok = tok->next;
-	while (tok)
+	while (ast->args[++i])
 	{
-		ft_remove(env, tok);
-		tok = tok->next;
+		ft_remove(env, ast->args[i]);
 	}
 }
 
@@ -66,22 +67,17 @@ void	ft_unset(t_env **env, t_token *tok)
 // 	new->next = *env;
 // 	*env = new;
 // }
-
 // int main(int ac, char **av, char **env)
 // {
 // 	(void)ac, (void)av;
 // 	t_env *env_list;
-// 	t_token *tok;
+// 	t_ast_node *ast;
 
-// 	tok = malloc(sizeof(t_token));
-// 	tok->value = "unset";
-// 	tok->next = NULL;
-// 	tok->next = malloc(sizeof(t_token));
-// 	tok->next->value = "";
-// 	tok->next->next = NULL;
-// 	tok->next->next = malloc(sizeof(t_token));
-// 	tok->next->next->value = "SHLVL";
-// 	tok->next->next->next = NULL;
+// 	ast = malloc(sizeof(t_ast_node));
+// 	ast->args = malloc(sizeof(char *) * 4);
+// 	ast->args[0] = "unset";
+// 	ast->args[1] = "A";
+// 	ast->args[2] = "test";
 
 // 	env_list = NULL;
 // 	while (*env)
@@ -89,7 +85,9 @@ void	ft_unset(t_env **env, t_token *tok)
 // 		add_env(&env_list, *env);
 // 		env++;
 // 	}
-// 	ft_unset(&env_list, tok);
-// 	ft_env(env_list);
+// 	ft_env(&env_list);
+// 	ft_unset(&env_list, ast);
+// 	ft_env(&env_list);
+
 // 	return (0);
 // }

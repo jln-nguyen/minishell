@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/03 10:43:02 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:24:08 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,30 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 	tmp->next = new;
 }
 
-void	ft_export(t_env **env, t_token *tok)
+void	ft_export(t_env **env, t_ast_node *ast)
 {
 	char	*key;
+	int		i;
 
-	if (!tok->next)
+	i = 0;
+	if (!ast->args[1])
 		ft_print_export(env);
 	else
 	{
-		tok = tok->next;
-		while (tok)
+		while (ast->args[++i])
 		{
-			if (!ft_check_key(tok->value))
-				printf("export: `%s': not a valid identifier\n", tok->value);
+			if (!ft_check_key(ast->args[i]))
+				printf("export: `%s': not a valid identifier\n", ast->args[i]);
 			else
 			{
-				key = ft_substr(tok->value, 0, ft_strchr(tok->value, '=')
-						- tok->value);
-				if (ft_strchr(tok->value, '='))
-					ft_update_env(env, key, ft_strchr(tok->value, '=') + 1, 1);
+				key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
+						- ast->args[i]);
+				if (ft_strchr(ast->args[i], '='))
+					ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1,
+						1);
 				else
 					ft_update_env(env, key, NULL, 0);
 			}
-			tok = tok->next;
 		}
 	}
 }
@@ -104,17 +105,13 @@ void	ft_export(t_env **env, t_token *tok)
 // {
 // 	(void)ac, (void)av;
 // 	t_env *env_list;
-// 	t_token *tok;
+// 	t_ast_node *ast;
 
-// 	tok = malloc(sizeof(t_token));
-// 	tok->value = "export";
-// 	tok->next = NULL;
-// 	tok->next = malloc(sizeof(t_token));
-// 	tok->next->value = "d=";
-// 	tok->next->next = NULL;
-// 	tok->next->next = malloc(sizeof(t_token));
-// 	tok->next->next->value = "e=42";
-// 	tok->next->next->next = NULL;
+// 	ast = malloc(sizeof(t_ast_node));
+// 	ast->args = malloc(sizeof(char *) * 4);
+// 	ast->args[0] = "export";
+// 	ast->args[1] = "VAR=42";
+// 	ast->args[2] = "VAR2=42";
 
 // 	env_list = NULL;
 // 	while (*env)
@@ -122,9 +119,9 @@ void	ft_export(t_env **env, t_token *tok)
 // 		add_env(&env_list, *env);
 // 		env++;
 // 	}
-// 	ft_export(&env_list, tok);
-// 	tok->next = NULL;
-// 	ft_export(&env_list, tok);
+// 	ft_export(&env_list, ast);
+// 	ast->args[1] = NULL;
+// 	ft_export(&env_list, ast);
 // 	// ft_env(&env_list);
 
 // 	return (0);
