@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/28 18:49:07 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/04 10:30:44 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	exec_cmd(t_ast_node *ast, t_env **env)
 	else if (ft_strncmp("pwd", ast->args[0], 3) == 0)
 		ft_pwd();
 	else if (ft_strncmp("echo", ast->args[0], 4) == 0)
-		ft_echo(&ast->args[1]);
+		ft_echo(ast->args);
 	else if (ft_strncmp("export", ast->args[0], 6) == 0)
 		printf("export\n"); //mettre export
 	else if (ft_strncmp("unset", ast->args[0], 5) == 0)
