@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/03 18:20:23 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/04 13:11:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 		tok = tok->next;
 	tok = tok->next;
 	expand_ast(&ast, &(*tok), TOKEN_PIPE, 'R');
-	if (!ast->left)
-		ast = check_command(ast);
+	// if (!ast->left)
+	// 	ast = check_command(ast);
 	return (ast);
 }
