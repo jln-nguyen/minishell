@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:04 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/11/28 17:41:35 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:01:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_echo(char **args)
 	int	i;
 
 	i = 0;
-	if (!args)
+	if (!args || !*args)
 		return ((void) printf("\n"));
 	n = ft_option(args);
 	if (n)

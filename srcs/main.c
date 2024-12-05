@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 17:27:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:51:30 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	prompt(t_env *env)
 	char		*tmp;
 	char		*gwd;
 	t_ast_node	*ast;
-int i = 0;
-	while (i++ < 2)
+
+	while (1)
 	{
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");

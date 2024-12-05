@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 17:48:48 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:50:38 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_check_builtins(t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("echo", ast->args[0]) == 0)
 		return (ft_echo(&ast->args[1]), 0);
 	else if (ft_strcmp("export", ast->args[0]) == 0)
-		return (printf("export\n"), 0); //mettre export
+		return (ft_export(env, ast), 0);
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (printf("unset\n"), 0); //mettre unset
 	else if (ft_strcmp("exit", ast->args[0]) == 0)
