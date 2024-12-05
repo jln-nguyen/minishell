@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 17:21:56 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:09:28 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static t_token	*word(char *str, int i)
 			while (str[i] != c)
 				i++;
 		}
-		i++;
+		else
+			i++;
 	}
 	tmp = ft_substr(str, 0, i);
 	if (!tmp)

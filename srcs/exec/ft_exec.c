@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/28 18:49:07 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:48:48 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_env_size(t_env *env)
 {
-	int	i;
+	int		i;
 	t_env	*tmp;
 
 	i = 0;
@@ -35,11 +35,10 @@ char	**struc_to_char(t_env *env)
 	int		i;
 
 	i = 0;
+	tab = NULL;
 	tab = malloc(sizeof(char *) * (ft_env_size(env) + 1));
-	if (!*tab)
+	if (!tab)
 		return (NULL);
-	tab[i] = 0;
-	i = 0;
 	while (env)
 	{
 		tab[i] = ft_strbigjoin(env->key, "=", env->value);
@@ -51,32 +50,51 @@ char	**struc_to_char(t_env *env)
 		i++;
 		env = env->next;
 	}
+	tab[i] = 0;
 	return (tab);
 }
 
-void	exec_cmd(t_ast_node *ast, t_env **env)
+int	ft_check_builtins(t_ast_node *ast, t_env **env)
 {
-	if (ft_strncmp("cd", ast->args[0], 2) == 0)
-		ft_cd(ast->args[1], env);
-	else if (ft_strncmp("env", ast->args[0], 3) == 0)
-		ft_env(env);
-	else if (ft_strncmp("pwd", ast->args[0], 3) == 0)
-		ft_pwd();
-	else if (ft_strncmp("echo", ast->args[0], 4) == 0)
-		ft_echo(&ast->args[1]);
-	else if (ft_strncmp("export", ast->args[0], 6) == 0)
-		printf("export\n"); //mettre export
-	else if (ft_strncmp("unset", ast->args[0], 5) == 0)
-		printf("unset\n"); //mettre unset
-	else if (ft_strncmp("exit", ast->args[0], 4) == 0)
-		printf("exit\n"); //mettre exit
-	else
-		printf("exec\n"); //faire exec
+	if (ft_strcmp("cd", ast->args[0]) == 0)
+		return (ft_cd(ast->args[1], env), 0);
+	else if (ft_strcmp("env", ast->args[0]) == 0)
+		return (ft_env(env), 0);
+	else if (ft_strcmp("pwd", ast->args[0]) == 0)
+		return (ft_pwd(), 0);
+	else if (ft_strcmp("echo", ast->args[0]) == 0)
+		return (ft_echo(&ast->args[1]), 0);
+	else if (ft_strcmp("export", ast->args[0]) == 0)
+		return (printf("export\n"), 0); //mettre export
+	else if (ft_strcmp("unset", ast->args[0]) == 0)
+		return (printf("unset\n"), 0); //mettre unset
+	else if (ft_strcmp("exit", ast->args[0]) == 0)
+		return (printf("exit\n"), 0); //mettre exit
+	return (-1);
 }
 
-void	ft_exec(t_ast_node *ast, t_env **env)
+void	exec_cmd(t_ast_node **ast, t_env **env)
 {
-	if (ast->type == TOKEN_PIPE)
+	char	**tab;
+
+	tab = NULL;
+	if (!*ast || !ast)
+		return ;
+	if ((*ast)->type != TOKEN_STR)
+		ft_redir(ast, env);
+	else if (ft_check_builtins(*ast, env) == -1)
+	{
+		tab = struc_to_char(*env);
+		if (!tab || !*tab)
+			return ; //protect
+		ft_execve(tab, (*ast)->args);
+		ft_free_tab(&tab);
+	}
+}
+
+void	ft_exec(t_ast_node **ast, t_env **env)
+{
+	if ((*ast)->type == TOKEN_PIPE)
 		printf("pipe\n");
 		// exec_pipe(ast->left, ast->right);
 	else
