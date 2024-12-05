@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/12/04 18:16:53 by junguyen         ###   ########.fr        #
+#    Updated: 2024/12/05 15:22:53 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,9 @@ SRC		= a_supp.c					\
 		builtins/ft_cd.c			\
 		exec/ft_exec.c				\
 		exec/ft_execve.c			\
-		exec/ft_check_redir.c
+		exec/ft_check_redir.c		\
+		exec/ft_redir_fd.c			\
+		exec/save_cmd.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)

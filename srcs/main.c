@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/03 11:45:30 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:27:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	prompt(t_env *env)
 	char		*tmp;
 	char		*gwd;
 	t_ast_node	*ast;
-
-	while (1)
+int i = 0;
+	while (i++ < 2)
 	{
-		// gwd = getcwd(NULL, 0);
-		gwd = ft_strjoin(getcwd(NULL, 0), "$ ");
+		tmp = getcwd(NULL, 0);
+		gwd = ft_strjoin(tmp, "$ ");
 		// gwd = color_gwd(gwd);
-		// free(tmp);
+		free(tmp);
 		if (!gwd)
 			return ; // a proteger
 		tmp = readline(gwd);
@@ -54,7 +54,7 @@ void	prompt(t_env *env)
 		add_history(tmp);
 		ast = ft_parsing(tmp);
 		if (ast)
-			ft_exec(ast, &env);
+			ft_exec(&ast, &env);
 		ft_free_ast(&ast);
 		free(gwd);
 	}
