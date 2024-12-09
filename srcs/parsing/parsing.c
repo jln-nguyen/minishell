@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 18:17:10 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:49:46 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	check_tok(t_token *tok)
 	return (0);
 }
 
-t_ast_node	*ft_parsing(char *cmd)
+t_ast_node	*ft_parsing(char *cmd, t_env *env)
 {
 	t_ast_node	*ast;
 	t_token		*tok;
@@ -44,7 +44,7 @@ t_ast_node	*ft_parsing(char *cmd)
 	tok = NULL;
 	if (check_syntax(cmd) != 0)
 		return (free(cmd), NULL);
-	tok = ft_token(cmd);
+	tok = ft_token(cmd, env);
 	if (!tok)
 		return (NULL);
 	if (check_tok(tok) == -1)

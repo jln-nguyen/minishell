@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/05 17:58:35 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:52:53 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	ft_export(t_env **env, t_ast_node *ast)
 					ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1,
 						1);
 				else
-					ft_update_env(env, key, NULL, 0);
+					ft_update_env(env, key, NULL, 1); //pourquoi le booleen ?
+				free(key);
 			}
 		}
 	}

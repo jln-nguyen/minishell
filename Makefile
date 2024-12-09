@@ -6,7 +6,7 @@
 #    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/12/05 17:58:15 by junguyen         ###   ########.fr        #
+#    Updated: 2024/12/09 13:37:25 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC		= a_supp.c					\
 		parsing/parsing.c			\
 		parsing/env_var_utils.c		\
 		parsing/create_env.c		\
+		parsing/strtrim_var.c		\
 		builtins/ft_echo.c			\
 		builtins/ft_env.c			\
 		builtins/ft_exit.c			\

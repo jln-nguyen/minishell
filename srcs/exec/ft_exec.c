@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 18:50:38 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:18:54 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		return ;
 	if ((*ast)->type != TOKEN_STR)
 		ft_redir(ast, env);
+	else if (!*(*ast)->args || !(*ast)->args[0])
+		return ;
 	else if (ft_check_builtins(*ast, env) == -1)
 	{
 		tab = struc_to_char(*env);
