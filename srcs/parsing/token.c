@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/25 17:21:56 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:17:02 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static t_token	*word(char *str, int i)
 	{
 		if (str[i] == 34 || str[i] == 39)
 		{
-			i++;
 			c = str[i];
+			i++;
 			while (str[i] != c)
 				i++;
 		}
