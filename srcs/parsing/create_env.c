@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:02:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/27 18:03:51 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:42:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,13 @@ t_env	*ft_create_env(void)
 	buffer = getcwd(NULL, 0);
 	if (!buffer)
 		return (NULL);
-	env = new_env("PWD", buffer);
+	env = new_env("OLDPWD", "");
 	if (!env)
 		return (free(buffer), NULL);
+	free(env->value);
+	env->value = NULL;
+	if (expand_env(&env, "PWD", buffer) == -1)
+		return (free(buffer), ft_free_env(&env), NULL);
 	if (expand_env(&env, "SHLVL", "1") == -1)
 		return (free(buffer), ft_free_env(&env), NULL);
 	if (expand_env(&env, "_", "/usr/bin/env") == -1)
