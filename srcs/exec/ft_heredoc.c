@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/09 15:13:03 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:01:47 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	child_heredoc(t_ast_node *ast, int *fd)
 		free(line);
 	}
 	close(fd[1]);
-
 }
 
 static void	parent_heredoc(int *fd)
@@ -47,14 +46,12 @@ static void	parent_heredoc(int *fd)
 			ft_putstr_fd("Error\n", 2);
 			exit(1);
 		}
-		else
-			dup2(fd[0], 0);
 	}
 	close(fd[0]);
 }
 
 
-void	ft_heredoc(t_ast_node *ast)
+int	ft_heredoc(t_ast_node *ast)
 {
 	int	pid;
 	int	fd[2];
@@ -65,4 +62,5 @@ void	ft_heredoc(t_ast_node *ast)
 		child_heredoc(ast, fd);
 	else
 		parent_heredoc(fd);
+	return (fd[0]);
 }
