@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/05 17:58:35 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:33:46 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 	t_env	*new;
 
 	tmp = *env;
-	while (tmp && bool)
+	while (tmp)
 	{
-		if (!ft_strcmp(tmp->key, key))
+		if (!ft_strcmp(tmp->key, key) && bool)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(value);
 			return ;
 		}
-		if (!tmp->next)
+		if (!ft_strcmp (tmp->next->key, "_"))
 			break ;
 		tmp = tmp->next;
 	}
@@ -53,36 +53,41 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 	new->value = NULL;
 	if (value)
 		new->value = ft_strdup(value);
-	new->next = NULL;
+	new->next = tmp->next;
 	tmp->next = new;
+}
+
+static void	ft_exporting(t_env **env, t_ast_node *ast)
+{
+	int		i;
+	char	*key;
+
+	i = 0;
+	while (ast->args[++i])
+	{
+		if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(ft_substr(ast->args[i],
+					0, 2), "_="))
+			continue ;
+		if (!ft_check_key(ast->args[i]))
+			printf("export: `%s': not a valid identifier\n", ast->args[i]);
+		else
+		{
+			key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
+					- ast->args[i]);
+			if (ft_strchr(ast->args[i], '='))
+				ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1, 1);
+			else
+				ft_update_env(env, key, NULL, 0);
+		}
+	}
 }
 
 void	ft_export(t_env **env, t_ast_node *ast)
 {
-	char	*key;
-	int		i;
-
-	i = 0;
 	if (!ast->args[1])
 		ft_print_export(env);
 	else
-	{
-		while (ast->args[++i])
-		{
-			if (!ft_check_key(ast->args[i]))
-				printf("export: `%s': not a valid identifier\n", ast->args[i]);
-			else
-			{
-				key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
-						- ast->args[i]);
-				if (ft_strchr(ast->args[i], '='))
-					ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1,
-						1);
-				else
-					ft_update_env(env, key, NULL, 0);
-			}
-		}
-	}
+		ft_exporting(env, ast);
 }
 
 // void	add_env(t_env **env, char *str)

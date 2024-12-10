@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/05 17:58:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:04:26 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ static void	order_tab(t_env **tab, t_env **env, int count)
 	}
 }
 
+static void	ft_is_print(t_env *tab)
+{
+	if (strcmp(tab->key, "_") == 0)
+		return ;
+	if (!tab->value)
+		printf("export %s\n", tab->key);
+	else
+		printf("export %s=\"%s\"\n", tab->key, tab->value);
+}
+
 void	ft_print_export(t_env **env)
 {
 	int		i;
@@ -57,15 +67,10 @@ void	ft_print_export(t_env **env)
 	}
 	tab = malloc(sizeof(t_env *) * count);
 	if (!tab)
-		return ;
+		return ; // protect
 	order_tab(tab, env, count);
 	i = -1;
 	while (++i < count)
-	{
-		if (!tab[i]->value)
-			printf("export %s\n", tab[i]->key);
-		else
-			printf("export %s=\"%s\"\n", tab[i]->key, tab[i]->value);
-	}
+		ft_is_print(tab[i]);
 	free(tab);
 }
