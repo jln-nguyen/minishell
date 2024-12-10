@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 18:51:30 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:00:48 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*color_gwd(char *gwd)
 	return (tmp);
 }
 
-void	prompt(t_env *env)
+void	prompt(t_env **env)
 {
 	char		*tmp;
 	char		*gwd;
@@ -52,9 +52,9 @@ void	prompt(t_env *env)
 		if (!tmp)
 			return (free(gwd)); // a proteger
 		add_history(tmp);
-		ast = ft_parsing(tmp);
+		ast = ft_parsing(tmp, *env);
 		if (ast)
-			ft_exec(&ast, &env);
+			ft_exec(&ast, env);
 		ft_free_ast(&ast);
 		free(gwd);
 	}
@@ -79,7 +79,7 @@ int	main(int ac, char **av, char **envp)
 		env = ft_getenv(envp);
 	if (!env)
 		return (-1);
-	prompt(env);
+	prompt(&env);
 	ft_free_env(&env);
 	return (0);
 }

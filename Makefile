@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
+#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/12/09 13:22:01 by bvictoir         ###   ########.fr        #
+#    Updated: 2024/12/10 13:33:51 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC		= a_supp.c					\
 		parsing/parsing.c			\
 		parsing/env_var_utils.c		\
 		parsing/create_env.c		\
+		parsing/strtrim_var.c		\
 		builtins/ft_echo.c			\
 		builtins/ft_env.c			\
 		builtins/ft_exit.c			\

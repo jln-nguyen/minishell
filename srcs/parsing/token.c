@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 18:17:02 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:50:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	expand_lst(t_token **tok, char *str)
 	}
 }
 
-t_token	*ft_token(char *str)
+t_token	*ft_token(char *str, t_env *env)
 {
 	int		i;
 	t_token	*tok;
@@ -129,6 +129,6 @@ t_token	*ft_token(char *str)
 		}
 	}
 	expand_lst(&tok, &str[i]);
-	tok = expand_str(tok);
+	tok = expand_str(tok, env);
 	return (tok);
 }

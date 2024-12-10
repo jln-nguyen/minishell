@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/10 10:33:46 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:36:50 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	ft_exporting(t_env **env, t_ast_node *ast)
 				ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1, 1);
 			else
 				ft_update_env(env, key, NULL, 0);
+			free(key);
 		}
 	}
 }

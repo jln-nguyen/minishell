@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 11:36:04 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:36:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		return ;
 	if ((*ast)->type != TOKEN_STR)
 		ft_redir(ast, env);
+	else if (!*(*ast)->args || !(*ast)->args[0])
+		return ;
 	else if (ft_check_builtins(*ast, env) == -1)
 	{
 		tab = struc_to_char(*env);
