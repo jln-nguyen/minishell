@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/10 10:04:26 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/10 10:44:11 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	order_tab(t_env **tab, t_env **env, int count)
 
 static void	ft_is_print(t_env *tab)
 {
-	if (strcmp(tab->key, "_") == 0)
+	if (ft_strcmp(tab->key, "_") == 0)
 		return ;
 	if (!tab->value)
 		printf("export %s\n", tab->key);
