@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/10 19:22:03 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:27:38 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_redir(t_ast_node **ast, t_env **env)
 	old_fd_in = 0;
 	old_fd_out = 1;
 	search_cmd(ast);
-	file_in = ft_redir_in(*ast);
+	file_in = ft_redir_in(*ast, env);
 	if (file_in > 0)
 	{
 		old_fd_in = dup(STDIN_FILENO);

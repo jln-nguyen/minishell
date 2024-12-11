@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/10 14:59:29 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:29:21 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	mult_redir_in(int file, t_ast_node **tmp)
+static int	mult_redir_in(int file, t_ast_node **tmp, t_env **env)
 {
 	while ((*tmp)->right->right)
 	{
@@ -23,7 +23,7 @@ static int	mult_redir_in(int file, t_ast_node **tmp)
 			file = open((*tmp)->right->left->args[0], O_RDONLY);
 		}
 		else if ((*tmp)->type == TOKEN_REDIR_HEREDOC)
-			ft_heredoc((*tmp)->right);
+			ft_heredoc((*tmp)->right, env);
 		if (file < 0)
 			return (ft_printf(2, "Minishell: %s\n", strerror(errno)), -1);
 		*tmp = (*tmp)->right;
@@ -31,7 +31,7 @@ static int	mult_redir_in(int file, t_ast_node **tmp)
 	return (file);
 }
 
-int	ft_redir_in(t_ast_node *ast)
+int	ft_redir_in(t_ast_node *ast, t_env **env)
 {
 	int			file;
 	t_ast_node	*tmp;
@@ -39,7 +39,7 @@ int	ft_redir_in(t_ast_node *ast)
 	file = 0;
 	tmp = ast;
 	if (ast->right->type != TOKEN_STR)
-		file = mult_redir_in(file, &tmp);
+		file = mult_redir_in(file, &tmp, env);
 	if (tmp->type == TOKEN_REDIR_IN)
 	{
 		if (file > 0)
@@ -47,7 +47,7 @@ int	ft_redir_in(t_ast_node *ast)
 		file = open(tmp->right->args[0], O_RDONLY);
 	}
 	else if (tmp->type == TOKEN_REDIR_HEREDOC)
-		file = ft_heredoc(tmp->right);
+		file = ft_heredoc(tmp->right, env);
 	if (file < 0)
 		return (ft_printf(STDERR_FILENO, "Minishell: %s : No such file or directory\n", tmp->right->args[0]), -1); //protect error
 	return (file);
