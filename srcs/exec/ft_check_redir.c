@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_redir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 17:49:50 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:05:44 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_redir(t_ast_node **ast, t_env **env)
 	old_fd_in = 0;
 	old_fd_out = 1;
 	search_cmd(ast);
-	file_in = ft_redir_in(*ast);
+	file_in = ft_redir_in(*ast, env);
 	if (file_in > 0)
 	{
 		old_fd_in = dup(STDIN_FILENO);
