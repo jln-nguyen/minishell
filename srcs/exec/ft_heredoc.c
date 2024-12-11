@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/11 11:26:09 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:15:51 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,35 +82,3 @@ int	ft_heredoc(t_ast_node *ast, t_env **env)
 	}
 	return (-1);
 }
-
-// int	ft_heredoc(t_ast_node *ast)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open("heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-// 	if (fd == -1)
-// 	{
-// 		ft_putstr_fd("Error: ", 2);
-// 		ft_putstr_fd(strerror(errno), 2);
-// 		ft_putstr_fd("\n", 2);
-// 		return (-1);
-// 	}
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 			break ;
-// 		if (!ft_strcmp(line, ast->args[0]))
-// 		{
-// 			free(line);
-// 			break ;
-// 		}
-// 		ft_putstr_fd(line, fd);
-// 		ft_putstr_fd("\n", fd);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	fd = open("heredoc", O_RDONLY);
-// 	return (fd);
-// }
