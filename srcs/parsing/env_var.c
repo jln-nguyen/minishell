@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:24:18 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:39:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static char	*expand_var_env(char *new_str, int i, t_env *env)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-static void	change_value_if(t_token **tok, t_env *env)
+static void	change_value_if(t_token **tok, t_env *env, int bool)
 {
 	int	i;
 	int	j;
@@ -89,12 +89,12 @@ static void	change_value_if(t_token **tok, t_env *env)
 		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
 		{
 			j = i;
-			if ((*tok)->value[j] == 34)
+			if ((*tok)->value[j] == 34 && bool == 0)
 				(*tok)->value = handle_double_quote((*tok)->value, j, env);
 			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
 			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
 		}
-		else if ((*tok)->value[i] == '$')
+		else if ((*tok)->value[i] == '$' && bool == 0)
 		{
 			if ((*tok)->value[i + 1] == '\0')
 				break ;
@@ -108,13 +108,18 @@ static void	change_value_if(t_token **tok, t_env *env)
 t_token	*expand_str(t_token *tok, t_env *env)
 {
 	t_token	*tmp;
+	int		bool;
 
 	tmp = tok;
+	bool = 0;
 	while (tok)
 	{
+		if (tok->type == TOKEN_REDIR_HEREDOC && (tok->next->type == TOKEN_STR
+				|| tok->next->type == TOKEN_ENV_VAR))
+			bool = 1;
 		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			change_value_if(&tok, env);
+			change_value_if(&tok, env, bool);
 			if (!tok->value)
 				return (ft_free(&tok), NULL);
 			tok->type = TOKEN_STR;

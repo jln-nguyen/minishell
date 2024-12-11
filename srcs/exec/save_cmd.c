@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:17:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/05 17:53:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:26:15 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ static char	**save_cmd(char **cmd, char **arg)
 	new_cmd[i + j] = 0;
 	ft_fill_cmd(cmd, new_cmd);
 	ft_fill_cmd(arg, &new_cmd[i]);
-	return (ft_free_tab(&cmd), new_cmd);
+	if (cmd[0] == 0)
+		free(cmd);
+	else
+		ft_free_tab(&cmd);
+	return (new_cmd);
 }
 
 void	search_cmd(t_ast_node **ast)

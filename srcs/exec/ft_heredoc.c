@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/11 13:27:03 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:31:58 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child_heredoc(int write_fd, const char *eof, t_env **env)
+void	ft_read(char *end, t_env **env, int fd)
 {
 	char	*line;
 	int		i;
@@ -22,7 +22,7 @@ static void	child_heredoc(int write_fd, const char *eof, t_env **env)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (!ft_strcmp(line, eof))
+		if (!ft_strcmp(line, end))
 		{
 			free(line);
 			break ;
@@ -31,54 +31,26 @@ static void	child_heredoc(int write_fd, const char *eof, t_env **env)
 		while (line[++i])
 			if (line[i] == '$')
 				line = change_str(line, i + 1, *env);
-		ft_putstr_fd(line, write_fd);
-		ft_putstr_fd("\n", write_fd);
+		if (!line)
+			return ; // protect
+		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	close(write_fd);
-	exit(0);
-}
-
-static int	parent_heredoc(int read_fd)
-{
-	int		fd;
-	char	buff[4096];
-	ssize_t	bytes_read;
-
-	fd = open("/tmp/heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd == -1)
-		exit(1); // protect
-	while ((bytes_read = read(read_fd, buff, sizeof(buff))) > 0)
-		write(fd, buff, bytes_read);
-	close(read_fd);
-	close(fd);
-	fd = open("/tmp/heredoc", O_RDONLY);
-	if (fd == -1)
-		exit(1); // protect
-	return (fd);
 }
 
 int	ft_heredoc(t_ast_node *ast, t_env **env)
 {
-	int		fd[2];
-	pid_t	pid;
+	int		fd;
 
-	if (pipe(fd) == -1)
-		exit(1); // protect
-	pid = fork();
-	if (pid == -1)
-		exit(1); // protect
-	if (pid == 0)
-	{
-		close(fd[0]);
-		child_heredoc(fd[1], ast->args[0], env);
-	}
-	else
-	{
-		close(fd[1]);
-		waitpid(pid, NULL, 0);
-		unlink("/tmp/heredoc");
-		return (parent_heredoc(fd[0]));
-	}
-	return (-1);
+	fd = open("/tmp/.heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd < 0)
+		return (-1);
+	ft_read(ast->args[0], env, fd);
+	close(fd);
+	fd = open("/tmp/.heredoc", O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	unlink("/tmp/heredoc");
+	return (fd);
 }

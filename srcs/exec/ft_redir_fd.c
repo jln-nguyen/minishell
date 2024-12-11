@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/11 13:29:21 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:08:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ static int	mult_redir_in(int file, t_ast_node **tmp, t_env **env)
 			file = open((*tmp)->right->left->args[0], O_RDONLY);
 		}
 		else if ((*tmp)->type == TOKEN_REDIR_HEREDOC)
-			ft_heredoc((*tmp)->right, env);
+		{
+			if (file > 0)
+				close(file);
+			file = ft_heredoc((*tmp)->right->left, env);
+		}
 		if (file < 0)
 			return (ft_printf(2, "Minishell: %s\n", strerror(errno)), -1);
 		*tmp = (*tmp)->right;
@@ -47,7 +51,11 @@ int	ft_redir_in(t_ast_node *ast, t_env **env)
 		file = open(tmp->right->args[0], O_RDONLY);
 	}
 	else if (tmp->type == TOKEN_REDIR_HEREDOC)
+	{
+		if (file > 0)
+			close(file);
 		file = ft_heredoc(tmp->right, env);
+	}
 	if (file < 0)
 		return (ft_printf(STDERR_FILENO, "Minishell: %s : No such file or directory\n", tmp->right->args[0]), -1); //protect error
 	return (file);

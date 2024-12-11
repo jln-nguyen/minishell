@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/03 14:23:10 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/11 19:12:11 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_cd(char *str, t_env **env)
 	char	*old_pwd;
 	t_env	*tmp;
 
+	if (!str)
+		return ;
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(str) < 0)
 	{
