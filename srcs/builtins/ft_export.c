@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/12 15:04:15 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:27:13 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,17 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 	tmp->next = new;
 }
 
+static char	*ft_get_key(t_ast_node *ast, t_env **env, char *key, int i)
+{
+	key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
+			- ast->args[i]);
+	if (ft_strchr(ast->args[i], '='))
+		ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1, 1);
+	else
+		ft_update_env(env, key, NULL, 0);
+	return (key);
+}
+
 static void	ft_exporting(t_env **env, t_ast_node *ast)
 {
 	int		i;
@@ -76,12 +87,7 @@ static void	ft_exporting(t_env **env, t_ast_node *ast)
 		else
 		{
 			free(key);
-			key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
-					- ast->args[i]);
-			if (ft_strchr(ast->args[i], '='))
-				ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1, 1);
-			else
-				ft_update_env(env, key, NULL, 0);
+			key = ft_get_key(ast, env, key, i);
 			free(key);
 		}
 	}
@@ -94,45 +100,3 @@ void	ft_export(t_env **env, t_ast_node *ast)
 	else
 		ft_exporting(env, ast);
 }
-
-// void	add_env(t_env **env, char *str)
-// {
-// 	t_env	*new;
-// 	char	*equal;
-
-// 	equal = ft_strchr(str, '=');
-// 	if (!equal)
-// 		return ;
-// 	new = malloc(sizeof(t_env));
-// 	if (!new)
-// 		return ;
-// 	new->key = ft_substr(str, 0, equal - str);
-// 	new->value = ft_strdup(equal + 1);
-// 	new->next = *env;
-// 	*env = new;
-// }
-// int main(int ac, char **av, char **env)
-// {
-// 	(void)ac, (void)av;
-// 	t_env *env_list;
-// 	t_ast_node *ast;
-
-// 	ast = malloc(sizeof(t_ast_node));
-// 	ast->args = malloc(sizeof(char *) * 4);
-// 	ast->args[0] = "export";
-// 	ast->args[1] = "VAR=42";
-// 	ast->args[2] = "VAR2=42";
-
-// 	env_list = NULL;
-// 	while (*env)
-// 	{
-// 		add_env(&env_list, *env);
-// 		env++;
-// 	}
-// 	ft_export(&env_list, ast);
-// 	ast->args[1] = NULL;
-// 	ft_export(&env_list, ast);
-// 	// ft_env(&env_list);
-
-// 	return (0);
-// }
