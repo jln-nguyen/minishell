@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   a_supp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:53:16 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/28 13:46:04 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:17:19 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	print_env(t_env *env)
 {
-	int	i;
-
-	i = 0;
 	printf("--------ENV-------\n");
 	while (env != NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/11 19:12:11 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:10:17 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	ft_cd(char *str, t_env **env)
 {
 	char	*pwd;
 	char	*old_pwd;
-	t_env	*tmp;
 
 	if (!str)
 		return ;
@@ -65,7 +64,6 @@ void	ft_cd(char *str, t_env **env)
 		return (free(old_pwd));
 	}
 	pwd = getcwd(NULL, 0);
-	tmp = *env;
 	ft_change_wd(env, pwd, old_pwd);
 	if (check_if_oldpwd(env) == 0)
 		expand_env(env, "OLDPWD", old_pwd);
