@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/10 13:36:50 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:04:15 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 			tmp->value = ft_strdup(value);
 			return ;
 		}
-		if (!ft_strcmp (tmp->next->key, "_"))
+		if (!ft_strcmp(tmp->next->key, "_"))
 			break ;
 		tmp = tmp->next;
 	}
@@ -65,13 +65,17 @@ static void	ft_exporting(t_env **env, t_ast_node *ast)
 	i = 0;
 	while (ast->args[++i])
 	{
-		if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(ft_substr(ast->args[i],
-					0, 2), "_="))
+		key = ft_substr(ast->args[i], 0, 2);
+		if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(key, "_="))
+		{
+			free(key);
 			continue ;
+		}
 		if (!ft_check_key(ast->args[i]))
 			printf("export: `%s': not a valid identifier\n", ast->args[i]);
 		else
 		{
+			free(key);
 			key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
 					- ast->args[i]);
 			if (ft_strchr(ast->args[i], '='))
