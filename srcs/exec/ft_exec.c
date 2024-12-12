@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/10 13:36:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/12 10:50:33 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 void	ft_exec(t_ast_node **ast, t_env **env)
 {
 	if ((*ast)->type == TOKEN_PIPE)
-		printf("pipe\n");
-		// exec_pipe(ast->left, ast->right);
+		exec_pipe(ast, env);
 	else
 		exec_cmd(ast, env);
 }

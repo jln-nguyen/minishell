@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
+#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/12/10 13:33:51 by junguyen         ###   ########.fr        #
+#    Updated: 2024/12/12 10:48:46 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRC		= a_supp.c					\
 		exec/ft_check_redir.c		\
 		exec/ft_redir_fd.c			\
 		exec/save_cmd.c				\
-		exec/ft_heredoc.c
+		exec/ft_heredoc.c			\
+		exec/ft_pipe.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 
 OBJ		= $(SRC:.c=.o)
