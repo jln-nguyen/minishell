@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/12 13:55:22 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:29:09 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,57 @@ void	ft_read(char *end, t_env **env, int fd)
 	}
 }
 
-int	ft_heredoc(t_ast_node *ast, t_env **env)
+int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 {
 	int		fd;
+	char	*file;
+	char	*nb_file;
 
-	fd = open("/tmp/.heredoc0", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	nb_file = ft_itoa(i);
+	file = ft_strjoin(".heredoc", nb_file);
+	free(nb_file);
+	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
 	ft_read(ast->args[0], env, fd);
 	close(fd);
-	fd = open("/tmp/.heredoc0", O_RDONLY);
+	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (-1);
-	unlink("/tmp/.heredoc0");
+	unlink(file);
+	free(file);
+	return (fd);
+}
+
+int	check_heredoc(t_ast_node **ast, t_env **env)
+{
+	t_ast_node	*tmp;
+	int			i;
+	int			fd;
+
+	fd = 0;
+	i = 0;
+	tmp = *ast;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_PIPE)
+		{
+			fd = check_heredoc(&(tmp)->left, env);
+			tmp = tmp->right;
+		}
+		if (tmp->type == TOKEN_REDIR_HEREDOC)
+		{
+			if (fd > 0)
+				close(fd);
+			if (tmp->right->type == TOKEN_STR)
+				fd = ft_heredoc(tmp->right, env, i);
+			else
+				fd = ft_heredoc(tmp->right->left, env, i);
+			i++;
+		}
+		if (fd < 0)
+			return (ft_putstr_fd("error\n", STDERR_FILENO), -1);
+		tmp = tmp->right;
+	}
 	return (fd);
 }
