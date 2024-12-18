@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:00:48 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:07:45 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	prompt(t_env **env)
 		if (!tmp)
 			return (free(gwd)); // a proteger
 		add_history(tmp);
+		free(gwd);
 		ast = ft_parsing(tmp, *env);
 		if (ast)
-			ft_exec(&ast, env);
-		ft_free_ast(&ast);
-		free(gwd);
+		{
+			ft_check_heredoc(&ast, env);
+			ft_free_ast(&ast);
+		}
 	}
 	rl_clear_history();
 	// (void)env;

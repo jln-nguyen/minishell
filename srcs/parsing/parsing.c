@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 11:49:46 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:11:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static int	check_tok(t_token *tok)
+int	check_tok(t_token *tok)
 {
 	if (tok->type == TOKEN_PIPE)
 		return (-1);
@@ -46,12 +46,12 @@ t_ast_node	*ft_parsing(char *cmd, t_env *env)
 		return (free(cmd), NULL);
 	tok = ft_token(cmd, env);
 	if (!tok)
-		return (NULL);
-	if (check_tok(tok) == -1)
-	{
-		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
-		return (free(cmd), ft_free(&tok), NULL);
-	}	
+		return (free(cmd), NULL);
+	// if (check_tok(tok) == -1)
+	// {
+	// 	ft_putstr_fd("Syntax error\n", STDERR_FILENO);
+	// 	return (free(cmd), ft_free(&tok), NULL);
+	// }	
 	// print_token(tok); //a supp
 	free(cmd);
 	ast = parsing_token(tok, -1);

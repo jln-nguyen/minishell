@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 11:50:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:10:41 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ t_token	*ft_token(char *str, t_env *env)
 		}
 	}
 	expand_lst(&tok, &str[i]);
+	if (check_tok(tok) == -1)
+	{
+		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
+		return (ft_free(&tok), NULL);
+	}	
 	tok = expand_str(tok, env);
 	return (tok);
 }
