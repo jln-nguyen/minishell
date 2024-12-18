@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/13 14:07:45 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:19:53 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,24 @@ void	sigint_handler(int signal)
 	}
 }
 
-char	*color_gwd(char *gwd)
+char	*color_gwd(char *gwd, t_env *env)
 {
 	char	*tmp;
+	char	*home;
 
 	if (!gwd)
 		return (NULL);
-	tmp = ft_strbigjoin("\033[0;36m\033[1m", gwd, "\033[0m");
+	tmp = ft_strdup("HOME");
+	home = change_value(tmp, env);
+	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
+	{
+		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
+		free(home);
+		free(gwd);
+		gwd = ft_strjoin("~", tmp);
+		free(tmp);
+	}
+	tmp = ft_strbigjoin("\001\033[0;36m\033[1m\002", gwd, "\001\033[0m\002");
 	free(gwd);
 	return (tmp);
 }
@@ -44,7 +55,7 @@ void	prompt(t_env **env)
 	{
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");
-		// gwd = color_gwd(gwd);
+		gwd = color_gwd(gwd, *env);
 		free(tmp);
 		if (!gwd)
 			return ; // a proteger

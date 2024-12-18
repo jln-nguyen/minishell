@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/13 13:29:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:53:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	return (fd);
 }
 
-int	check_heredoc(t_ast_node **ast, t_env **env)
+void	check_heredoc(t_ast_node **ast, t_env **env)
 {
 	t_ast_node	*tmp;
 	int			i;
@@ -74,22 +74,20 @@ int	check_heredoc(t_ast_node **ast, t_env **env)
 	{
 		if (tmp->type == TOKEN_PIPE)
 		{
-			fd = check_heredoc(&(tmp)->left, env);
-			tmp = tmp->right;
+			check_heredoc(&(tmp)->left, env);
+			if (tmp->fd_heredoc < 0)
+				return (ft_putstr_fd("errorbbb\n", STDERR_FILENO), (void)-1);
 		}
-		if (tmp->type == TOKEN_REDIR_HEREDOC)
+		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{
-			if (fd > 0)
-				close(fd);
 			if (tmp->right->type == TOKEN_STR)
-				fd = ft_heredoc(tmp->right, env, i);
+				tmp->fd_heredoc = ft_heredoc(tmp->right, env, i);
 			else
-				fd = ft_heredoc(tmp->right->left, env, i);
+				tmp->fd_heredoc = ft_heredoc(tmp->right->left, env, i);
 			i++;
+			if (tmp->fd_heredoc < 0)
+				return (ft_putstr_fd("erroraaa\n", STDERR_FILENO), (void)-1);
 		}
-		if (fd < 0)
-			return (ft_putstr_fd("error\n", STDERR_FILENO), -1);
 		tmp = tmp->right;
 	}
-	return (fd);
 }

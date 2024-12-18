@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:20:14 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:15:45 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ char	*ft_strbigjoin(const char *s1, const char *s2, const char *s3)
 char	*change_value(char *var, t_env *env)
 {
 	char	*tmp;
-	int		i;
+	// int		i;
 
-	i = 0;
+	// i = 0;
 	tmp = NULL;
 	if (!var)
 		return (NULL);
