@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:26:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:59:11 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ char	*handle_double_quote(char *str, int i, t_env *env)
 	j += 2;
 	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
-		return (free(new_str), NULL);
+		return (NULL);
 	tmp[3] = 0;
 	tmp[1] = ft_substr(str, 0, i);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), NULL);
 	tmp[0] = check_expand_var(str, i, j, env);
-	if (!tmp[0])
+	if (!tmp[0]) 
 		return (ft_free_tab_var_env(&tmp), NULL);
 	new_str = ft_pre_bigjoin(str, tmp, i, j);
 	if (!new_str)
@@ -132,6 +132,8 @@ char	*remove_quote(char *str, int i, char c)
 	i++;
 	while (str[i + j] && str[i + j] != c)
 		j++;
+	if (j == 0)
+		return (str);
 	new_str = handle_quote(str, i, j);
 	free(str);
 	if (!new_str)

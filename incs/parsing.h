@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:11:39 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/13 14:11:23 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:02:16 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_token
 typedef struct s_ast_node
 {
 	t_enum_type			type;
+	int					fd_heredoc;
 	char				**args;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
@@ -58,6 +59,7 @@ char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 char		*ft_pre_bigjoin_trim(char *new_str, char **tmp, int i, int j);
 char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i, t_env *env);
+char		*handle_quote(char *str, int i, int j);
 
 int			check_syntax(char *str);
 int			move_index(t_token *tok);

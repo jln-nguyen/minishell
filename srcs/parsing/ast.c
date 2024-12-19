@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/28 13:46:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:22:21 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	ft_free_ast(t_ast_node **ast)
 			free((*ast)->args[i]);
 		free((*ast)->args);
 	}
+	if ((*ast)->fd_heredoc > 0)
+		close((*ast)->fd_heredoc);
 	free(*ast);
 	*ast = NULL;
 }
@@ -44,6 +46,7 @@ t_ast_node	*new_node(t_enum_type type)
 	ast->args = NULL;
 	ast->left = NULL;
 	ast->right = NULL;
+	ast->fd_heredoc = 0;
 	return (ast);
 }
 

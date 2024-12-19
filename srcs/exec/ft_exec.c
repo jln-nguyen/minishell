@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/13 17:49:35 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:22:39 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,41 +94,43 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 	}
 }
 
-void	ft_exec(t_ast_node **ast, t_env **env, int *fd)
+void	ft_exec(t_ast_node **ast, t_env **env)
 {
 	if ((*ast)->type == TOKEN_PIPE)
-		exec_pipe(ast, env, fd);
+		exec_pipe(ast, env);
 	else
 		exec_cmd(ast, env);
 }
 
 void	ft_check_heredoc(t_ast_node **ast, t_env **env)
 {
-	int	fd[5];
+	// int	fd[5];
 
-	fd[OLDFD_IN] = -1;
-	fd[FD_HEREDOC] = -1;
-	fd[OLDFD_OUT] = -1;
-	fd[FD_OUT] = -1;
-	fd[FD_IN] = -1;
-	fd[FD_HEREDOC] = check_heredoc(ast, env);
-	if (fd[FD_HEREDOC] > 0)
-	{
-		fd[OLDFD_IN] = dup(STDIN_FILENO);
-		if (fd[OLDFD_IN] == -1)
-			return ;
-		if (dup2(fd[FD_HEREDOC], STDIN_FILENO) == -1)
-			return ; //return protect
-		close(fd[FD_HEREDOC]);
-	}
-	else
-		fd[FD_HEREDOC] = STDIN_FILENO;
-	ft_exec(ast, env, fd);
-	if (fd[OLDFD_IN] != -1)
-	{
-		if (dup2(fd[OLDFD_IN], STDIN_FILENO) == -1)
-			return ((void)close(fd[OLDFD_IN])); //return protect
-		close(fd[OLDFD_IN]);
-	}
+	// fd[OLDFD_IN] = -1;
+	// fd[FD_HEREDOC] = -1;
+	// fd[OLDFD_OUT] = -1;
+	// fd[FD_OUT] = -1;
+	// fd[FD_IN] = -1;
+	// fd[FD_HEREDOC] = 
+	check_heredoc(ast, env);
+	// if (fd[FD_HEREDOC] > 0)
+	// {
+	// 	fd[OLDFD_IN] = dup(STDIN_FILENO);
+	// 	if (fd[OLDFD_IN] == -1)
+	// 		return ;
+	// 	if (dup2(fd[FD_HEREDOC], STDIN_FILENO) == -1)
+	// 		return ; //return protect
+	// 	close(fd[FD_HEREDOC]);
+	// }
+	// else
+	// 	fd[FD_HEREDOC] = STDIN_FILENO;
+	ft_exec(ast, env);
+	// ft_close_fd_heredoc(ast);
+	// if (fd[OLDFD_IN] != -1)
+	// {
+	// 	if (dup2(fd[OLDFD_IN], STDIN_FILENO) == -1)
+	// 		return ((void)close(fd[OLDFD_IN])); //return protect
+	// 	close(fd[OLDFD_IN]);
+	// }
 }
 
