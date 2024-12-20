@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:37:22 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:45:36 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ void	sigint_handler(int signal)
 	g_exit_status = 130;
 	rl_replace_line("", 0);
 	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	sigquit_handler(int signal)
+{
+	(void)signal;
+	g_exit_status = 131;
+	printf("Quit (core dumped)\n");
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -84,6 +93,8 @@ void	prompt(t_env **env)
 			ft_check_heredoc(&ast, env);
 			ft_free_ast(&ast);
 		}
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, sigquit_handler);
 	}
 }
 
@@ -93,8 +104,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	if (!envp || !*envp)
 		env = ft_create_env();
 	else

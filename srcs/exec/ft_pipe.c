@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 16:09:31 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:39:25 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static int	handle_left_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
-	signal(SIGINT, &sigint_process);
-	signal(SIGQUIT, &sigint_process);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(pipefd[0]);
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 		{
@@ -58,10 +58,10 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
-	signal(SIGINT, &sigint_process);
-	signal(SIGQUIT, &sigint_process);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		close(pipefd[1]);
 		if (dup2(pipefd[0], STDIN_FILENO) == -1)
 		{

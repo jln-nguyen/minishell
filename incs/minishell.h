@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:55:56 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:36:29 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void		print_token(t_token *tok); //a supp
 void		print_ast(t_ast_node *ast);
 void		sigint_handler(int signal);
 void		sigint_process(int signal);
+void		sigquit_handler(int signal);
 void		check_whitespace(char **tmp);
 void		ft_print_export(t_env **env);
 void		search_cmd(t_ast_node **ast);
