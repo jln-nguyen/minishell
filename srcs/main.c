@@ -6,21 +6,34 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 19:19:53 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:37:22 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	g_exit_status;
+
+void	sigint_process(int signal)
+{
+	if (signal == SIGQUIT)
+	{
+		g_exit_status = 131;
+		printf("Quit (core dumped)");
+	}
+	else
+		g_exit_status = 130;
+	printf("\n");
+}
+
 void	sigint_handler(int signal)
 {
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	(void)signal;
+	g_exit_status = 130;
+	rl_replace_line("", 0);
+	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 char	*color_gwd(char *gwd, t_env *env)
@@ -51,6 +64,7 @@ void	prompt(t_env **env)
 	char		*gwd;
 	t_ast_node	*ast;
 
+	ast = NULL;
 	while (1)
 	{
 		tmp = getcwd(NULL, 0);
@@ -58,10 +72,10 @@ void	prompt(t_env **env)
 		gwd = color_gwd(gwd, *env);
 		free(tmp);
 		if (!gwd)
-			return ; // a proteger
+			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
 		tmp = readline(gwd);
 		if (!tmp)
-			return (free(gwd)); // a proteger
+			return (printf("exit\n"), free(gwd));
 		add_history(tmp);
 		free(gwd);
 		ast = ft_parsing(tmp, *env);
@@ -71,12 +85,6 @@ void	prompt(t_env **env)
 			ft_free_ast(&ast);
 		}
 	}
-	rl_clear_history();
-	// (void)env;
-	// tmp = get_next_line(0);
-	// if (ft_parsing(tmp) != 0)
-	// 	return ; //gnl a supp, pour mieux verif valgrind
-	// ft_free_ast(&ast);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -86,6 +94,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	signal(SIGINT, &sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (!envp || !*envp)
 		env = ft_create_env();
 	else

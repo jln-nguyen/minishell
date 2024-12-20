@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 13:46:46 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:36:34 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 void	ft_read(char *end, t_env **env, int fd)
 {
-	char	*line;
-	int		i;
+	char		*line;
+	int			i;
+	static int	j; //pas bien incrementer
 
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			j++;
+			ft_printf(STDERR_FILENO, "Minishell: warning: here-document at line %d delimited by end-of-file (wanted `eof')\n", j);
 			break ;
+		}
 		if (!ft_strcmp(line, end))
 		{
 			free(line);
@@ -36,6 +41,7 @@ void	ft_read(char *end, t_env **env, int fd)
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("\n", fd);
 		free(line);
+		// j++;
 	}
 }
 

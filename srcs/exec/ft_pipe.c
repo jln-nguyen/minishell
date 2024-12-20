@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:01:14 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:42:52 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	handle_left_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
+	signal(SIGINT, &sigint_process);
+	signal(SIGQUIT, &sigint_process);
 	if (pid == 0)
 	{
 		close(pipefd[0]);
@@ -51,9 +53,13 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 {
 	pid_t	pid;
 
+	if ((*ast)->right->type == TOKEN_PIPE)
+		ft_exec(&(*ast)->right, env);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
+	signal(SIGINT, &sigint_process);
+	signal(SIGQUIT, &sigint_process);
 	if (pid == 0)
 	{
 		close(pipefd[1]);

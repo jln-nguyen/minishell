@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 16:22:39 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:14:54 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_check_builtins(t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (ft_unset(env, ast), 0);
 	else if (ft_strcmp("exit", ast->args[0]) == 0)
-		return (printf("exit\n"), 0); //mettre exit
+		return (ft_exit(ast->args, &ast, env), 0);
 	return (-1);
 }
 
@@ -89,7 +89,7 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		tab = struc_to_char(*env);
 		if (!tab || !*tab)
 			return ; //protect
-		ft_execve(tab, (*ast)->args);
+		ft_execve(tab, ast, env);
 		ft_free_tab(&tab);
 	}
 }
@@ -104,33 +104,7 @@ void	ft_exec(t_ast_node **ast, t_env **env)
 
 void	ft_check_heredoc(t_ast_node **ast, t_env **env)
 {
-	// int	fd[5];
-
-	// fd[OLDFD_IN] = -1;
-	// fd[FD_HEREDOC] = -1;
-	// fd[OLDFD_OUT] = -1;
-	// fd[FD_OUT] = -1;
-	// fd[FD_IN] = -1;
-	// fd[FD_HEREDOC] = 
 	check_heredoc(ast, env);
-	// if (fd[FD_HEREDOC] > 0)
-	// {
-	// 	fd[OLDFD_IN] = dup(STDIN_FILENO);
-	// 	if (fd[OLDFD_IN] == -1)
-	// 		return ;
-	// 	if (dup2(fd[FD_HEREDOC], STDIN_FILENO) == -1)
-	// 		return ; //return protect
-	// 	close(fd[FD_HEREDOC]);
-	// }
-	// else
-	// 	fd[FD_HEREDOC] = STDIN_FILENO;
 	ft_exec(ast, env);
-	// ft_close_fd_heredoc(ast);
-	// if (fd[OLDFD_IN] != -1)
-	// {
-	// 	if (dup2(fd[OLDFD_IN], STDIN_FILENO) == -1)
-	// 		return ((void)close(fd[OLDFD_IN])); //return protect
-	// 	close(fd[OLDFD_IN]);
-	// }
 }
 

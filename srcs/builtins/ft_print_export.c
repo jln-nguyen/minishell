@@ -6,11 +6,11 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/10 10:44:11 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:52:33 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 static void	order_tab(t_env **tab, t_env **env, int count)
 {

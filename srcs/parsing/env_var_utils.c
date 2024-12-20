@@ -6,11 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 11:14:53 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:10:14 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	ft_is_space(char str)
 {
@@ -67,7 +67,7 @@ char	*change_value(char *var, t_env *env)
 	if (!var)
 		return (NULL);
 	if (var[0] == '?')
-		return (free(var), tmp = ft_strdup("123456789"));
+		return (free(var), tmp = ft_itoa(g_exit_status));
 	while (env)
 	{
 		if (ft_strcmp(var, env->key) == 0)

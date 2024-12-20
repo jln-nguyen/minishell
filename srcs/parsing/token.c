@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/13 14:10:41 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:49:13 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ t_token	*ft_token(char *str, t_env *env)
 			i += move_index(tok);
 		}
 	}
+	if (!tok)
+		return (NULL);
 	expand_lst(&tok, &str[i]);
 	if (check_tok(tok) == -1)
 	{

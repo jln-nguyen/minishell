@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:02:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/10 13:42:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:53:05 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_env	*new_env(char *str_key, char *str_val)
 {

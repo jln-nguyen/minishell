@@ -6,11 +6,11 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/12 20:27:13 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:52:28 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 static int	ft_check_key(char *str)
 {
