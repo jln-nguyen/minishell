@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:53:50 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:55:56 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-extern int g_exit_status;
+extern int	g_exit_status;
 
 void		ft_pwd(void);
 void		ft_env(t_env **env);
@@ -92,7 +92,8 @@ void		ft_check_heredoc(t_ast_node **ast, t_env **env);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		ft_exit(char **args, t_ast_node **ast, t_env **env);
 void		ft_execve(char **env, t_ast_node **ast, t_env **envp);
-void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c);
+void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
+				char c);
 
 int			expand_env(t_env **env, char *str_key, char *str_val);
 int			ft_check_builtins(t_ast_node *ast, t_env **env);
