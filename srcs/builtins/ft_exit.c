@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 14:31:55 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:13:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ long	ft_atol(const char *str)
 	return (num);
 }
 
-int	ft_isvalid(char *n)
+long	ft_isvalid(char *n)
 {
 	long	i;
 	int		signe;
@@ -58,9 +58,9 @@ int	ft_isvalid(char *n)
 			return (-1);
 		i++;
 	}
-	if (i >= 19 || (i >= 20 && signe == -1))
+	if ((i >= 19 && signe == 0) || (i >= 20 && signe == -1))
 	{
-		if (i > 19 || (i > 20 && signe == -1))
+		if ((i > 20 && signe == -1) || (i > 19 && signe == 0))
 			return (-1);
 		else
 		{
@@ -73,24 +73,25 @@ int	ft_isvalid(char *n)
 				return (free(tmp[0]), -1);
 			if (i == 9223372036 || i == -9223372036)
 			{
-				if (i == 19)
+				if (signe == 0)
 					tmp[1] = ft_substr(n, 10, ft_strlen(n));
 				else
 					tmp[1] = ft_substr(n, 11, ft_strlen(n));
 				i = ft_atol(tmp[1]);
-				if (i > 854775807 || (i > 854775808 && signe == -1))
+				if ((i > 854775807 && signe == 0) || (i > 854775808 && signe == -1))
 					return (free(tmp[0]), free(tmp[1]), -1);
 			}
 			free(tmp[0]);
 			free(tmp[1]);
 		}
 	}
-	return (i);
+	return (ft_atol(n));
 }
 
 void	ft_exit(char **args, t_ast_node **ast, t_env **env)
 {
 	int	i;
+	long	nb;
 
 	i = 0;
 	(void)ast;
@@ -101,7 +102,8 @@ void	ft_exit(char **args, t_ast_node **ast, t_env **env)
 		ft_free_env(env);
 		exit(EXIT_SUCCESS);
 	}
-	if (ft_isvalid(args[1]) == -1)
+	nb = ft_isvalid(args[1]);
+	if (nb == -1)
 	{
 		ft_printf(STDERR_FILENO, "Minishell: exit: %s: numeric argument required\n", args[1]);
 		ft_free_ast(ast);
@@ -109,5 +111,9 @@ void	ft_exit(char **args, t_ast_node **ast, t_env **env)
 		exit(EXIT_SUCCESS);
 	}
 	if (args[1] && args[2])
-		ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n");
+		return ((void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
+	if (nb >= 0 && nb <= 255)
+		g_exit_status = nb;
+	else
+		g_exit_status = nb % 256;
 }
