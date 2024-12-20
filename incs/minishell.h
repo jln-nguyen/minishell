@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/18 16:04:00 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:42:08 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,25 @@
 # include <signal.h>
 # include <sys/wait.h>
 
-# define OLDFD_IN 0
-# define FD_HEREDOC 1
-# define OLDFD_OUT 2
-# define FD_OUT 3
-# define FD_IN 4
+// # define OLDFD_IN 0
+// # define FD_HEREDOC 1
+// # define OLDFD_OUT 2
+// # define FD_OUT 3
+// # define FD_IN 4
+
+extern int g_exit_status;
 
 void	ft_cd(char *str, t_env **env);
 void	ft_exec(t_ast_node **ast, t_env **env);
 void	ft_echo(char **args);
-void	ft_execve(char **env, char **cmd);
+void	ft_execve(char **env, t_ast_node **ast, t_env **envp);
 void	exec_cmd(t_ast_node **ast, t_env **env);
 void	ft_redir(t_ast_node **ast, t_env **env);
 void	exec_pipe(t_ast_node **ast, t_env **env);
 void	ft_check_heredoc(t_ast_node **ast, t_env **env);
-void	ft_close_fd_heredoc(t_ast_node **ast);
+void	sigint_process(int signal);
+void	sigint_handler(int signal);
+void	ft_exit(char **args, t_ast_node **ast, t_env **env);
 
 int		ft_check_builtins(t_ast_node *ast, t_env **env);
 int		ft_redir_out(t_ast_node *ast);
