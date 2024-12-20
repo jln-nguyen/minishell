@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:42:52 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:09:31 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 {
 	pid_t	pid;
 
-	if ((*ast)->right->type == TOKEN_PIPE)
-		ft_exec(&(*ast)->right, env);
+	// if ((*ast)->right->type == TOKEN_PIPE)
+	// 	ft_exec(&(*ast)->right, env);
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
@@ -108,5 +108,4 @@ void	exec_pipe(t_ast_node **ast, t_env **env)
 	if (right_pid > 0)
 		waitpid(right_pid, NULL, 0);
 	ft_free_ast(ast);
-	ft_free_env(env);
 }
