@@ -6,11 +6,11 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:17:43 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/09 11:08:22 by bvictoir         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:52:37 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 void	ft_pwd(void)
 {

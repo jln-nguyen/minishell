@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_op.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/04 13:11:12 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:52:57 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_ast_node	*parse_pipe(t_token pipe, t_token *tok)
 {

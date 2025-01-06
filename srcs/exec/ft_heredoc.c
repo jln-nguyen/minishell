@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/19 15:35:55 by junguyen         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:36:34 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 {
 	t_ast_node	*tmp;
 	int			i;
-	int			fd;
 
-	fd = 0;
 	i = 0;
 	tmp = *ast;
 	while (tmp)
