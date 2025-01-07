@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:14:54 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:46:38 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_check_builtins(t_ast_node *ast, t_env **env)
 	if (ft_strcmp("cd", ast->args[0]) == 0)
 		return (ft_cd(ast->args[1], env), 0);
 	else if (ft_strcmp("env", ast->args[0]) == 0)
-		return (ft_env(env), 0);
+		return (ft_env(ast, env), 0);
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
 		return (ft_pwd(), 0);
 	else if (ft_strcmp("echo", ast->args[0]) == 0)

@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:52:28 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:53:34 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,5 @@ void	ft_export(t_env **env, t_ast_node *ast)
 	else
 		ft_exporting(env, ast);
 }
+
+//exit success et error a gerer
