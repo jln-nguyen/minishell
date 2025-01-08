@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/07 14:45:44 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:00:33 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void		ft_exec(t_ast_node **ast, t_env **env);
 void		ft_unset(t_env **env, t_ast_node *tok);
 void		generate_ast_diagram(t_ast_node *root);
 void		exec_cmd(t_ast_node **ast, t_env **env);
-void		ft_export(t_env **env, t_ast_node *tok);
 void		ft_redir(t_ast_node **ast, t_env **env);
 void		exec_pipe(t_ast_node **ast, t_env **env);
 void		ft_envadd_back(t_env **head, t_env *new);
@@ -97,6 +96,7 @@ void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 int			expand_env(t_env **env, char *str_key, char *str_val);
 int			ft_check_builtins(t_ast_node *ast, t_env **env);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
+int			ft_export(t_env **env, t_ast_node *tok);
 int			ft_env(t_ast_node *ast, t_env **env);
 int			ft_redir_out(t_ast_node *ast);
 int			move_index(t_token *tok);
