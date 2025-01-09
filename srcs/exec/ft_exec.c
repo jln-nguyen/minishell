@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:14:54 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/08 14:02:53 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,11 @@ void	ft_exec(t_ast_node **ast, t_env **env)
 void	ft_check_heredoc(t_ast_node **ast, t_env **env)
 {
 	check_heredoc(ast, env);
+	if (g_exit_status == -1)
+	{
+		g_exit_status = 130;
+		return ;
+	}
 	ft_exec(ast, env);
 }
 

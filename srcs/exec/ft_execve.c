@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:54:23 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/07 14:43:28 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,12 @@ void	ft_process(char **env, t_ast_node **ast, t_env **envp)
 		exit(127);
 	}
 	execve(path, (*ast)->args, env);
+	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n", (*ast)->args[0]);
 	free(path);
 	ft_free_tab(&env);
 	ft_free_ast(ast);
 	ft_free_env(envp);
-	exit(EXIT_FAILURE);
+	exit(126);
 }
 
 void	ft_execve(char **env, t_ast_node **ast, t_env **envp)
