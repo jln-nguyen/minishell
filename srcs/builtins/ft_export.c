@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:52:28 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/08 13:59:39 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,35 +68,50 @@ static char	*ft_get_key(t_ast_node *ast, t_env **env, char *key, int i)
 	return (key);
 }
 
-static void	ft_exporting(t_env **env, t_ast_node *ast)
+static int	ft_process_arg(t_env **env, t_ast_node *ast, int i)
 {
-	int		i;
 	char	*key;
 
-	i = 0;
-	while (ast->args[++i])
+	key = ft_substr(ast->args[i], 0, 2);
+	if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(key, "_="))
 	{
-		key = ft_substr(ast->args[i], 0, 2);
-		if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(key, "_="))
-		{
-			free(key);
-			continue ;
-		}
-		if (!ft_check_key(ast->args[i]))
-			printf("export: `%s': not a valid identifier\n", ast->args[i]);
-		else
-		{
-			free(key);
-			key = ft_get_key(ast, env, key, i);
-			free(key);
-		}
+		free(key);
+		return (EXIT_SUCCESS);
 	}
+	if (!ft_check_key(ast->args[i]))
+	{
+		printf("export: `%s': not a valid identifier\n", ast->args[i]);
+		free(key);
+		return (EXIT_FAILURE);
+	}
+	free(key);
+	key = ft_get_key(ast, env, key, i);
+	free(key);
+	return (EXIT_SUCCESS);
 }
 
-void	ft_export(t_env **env, t_ast_node *ast)
+static int	ft_exporting(t_env **env, t_ast_node *ast)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	status = EXIT_SUCCESS;
+	while (ast->args[++i])
+	{
+		if (ft_process_arg(env, ast, i) == EXIT_FAILURE)
+			status = EXIT_FAILURE;
+	}
+	return (status);
+}
+
+int	ft_export(t_env **env, t_ast_node *ast)
 {
 	if (!ast->args[1])
+	{
 		ft_print_export(env);
+		return (EXIT_SUCCESS);
+	}
 	else
-		ft_exporting(env, ast);
+		return (ft_exporting(env, ast));
 }

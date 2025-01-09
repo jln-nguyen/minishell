@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/08 14:02:53 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/09 12:23:01 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ char	**struc_to_char(t_env *env)
 int	ft_check_builtins(t_ast_node *ast, t_env **env)
 {
 	if (ft_strcmp("cd", ast->args[0]) == 0)
-		return (ft_cd(ast->args[1], env), 0);
+		return (ft_cd(ast->args[1], env));
 	else if (ft_strcmp("env", ast->args[0]) == 0)
-		return (ft_env(env), 0);
+		return (ft_env(ast, env));
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
 		return (ft_pwd(), 0);
 	else if (ft_strcmp("echo", ast->args[0]) == 0)
 		return (ft_echo(ast->args), 0);
 	else if (ft_strcmp("export", ast->args[0]) == 0)
-		return (ft_export(env, ast), 0);
+		return (ft_export(env, ast));
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (ft_unset(env, ast), 0);
 	else if (ft_strcmp("exit", ast->args[0]) == 0)
@@ -75,6 +75,7 @@ int	ft_check_builtins(t_ast_node *ast, t_env **env)
 
 void	exec_cmd(t_ast_node **ast, t_env **env)
 {
+	int		status;
 	char	**tab;
 
 	tab = NULL;
@@ -84,13 +85,20 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		ft_redir(ast, env);
 	else if (!*(*ast)->args || !(*ast)->args[0])
 		return ;
-	else if (ft_check_builtins(*ast, env) == -1)
+	
+	else 
 	{
+		status = ft_check_builtins(*ast, env);
+		if ( status == -1)
+		{
 		tab = struc_to_char(*env);
 		if (!tab || !*tab)
 			return ; //protect
 		ft_execve(tab, ast, env);
 		ft_free_tab(&tab);
+		}
+		else 
+			g_exit_status = status;
 	}
 }
 
