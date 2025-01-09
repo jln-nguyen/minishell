@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/08 14:00:33 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/09 10:25:13 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void		sigquit_handler(int signal);
 void		check_whitespace(char **tmp);
 void		ft_print_export(t_env **env);
 void		search_cmd(t_ast_node **ast);
-void		ft_cd(char *str, t_env **env);
 void		ft_free_ast(t_ast_node **tok);
 void		ft_free_tab_var_env(char ***tab);
 void		ft_exec(t_ast_node **ast, t_env **env);
@@ -99,6 +98,7 @@ int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_export(t_env **env, t_ast_node *tok);
 int			ft_env(t_ast_node *ast, t_env **env);
 int			ft_redir_out(t_ast_node *ast);
+int			ft_cd(char *str, t_env **env);
 int			move_index(t_token *tok);
 int			check_tok(t_token *tok);
 int			check_syntax(char *str);

@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/12 20:10:17 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/09 10:25:27 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,26 @@ void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
 	}
 }
 
-void	ft_cd(char *str, t_env **env)
+int	ft_cd(char *str, t_env **env)
 {
 	char	*pwd;
 	char	*old_pwd;
 
 	if (!str)
-		return ;
+		return (EXIT_FAILURE); // exit tout free
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(str) < 0)
 	{
 		ft_printf(STDERR_FILENO, "Minishell: cd : %s: %s\n", str,
 			strerror(errno));
-		return (free(old_pwd));
+		free(old_pwd);
+		return (EXIT_FAILURE);
 	}
 	pwd = getcwd(NULL, 0);
 	ft_change_wd(env, pwd, old_pwd);
 	if (check_if_oldpwd(env) == 0)
 		expand_env(env, "OLDPWD", old_pwd);
-	return (free(old_pwd), free(pwd));
+	free(old_pwd);
+	free(pwd);
+	return (EXIT_SUCCESS);
 }
