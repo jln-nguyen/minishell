@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/08 12:23:37 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:02:03 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	prompt(t_env **env)
 	ast = NULL;
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");
 		gwd = color_gwd(gwd, *env);
@@ -93,8 +95,6 @@ void	prompt(t_env **env)
 			ft_check_heredoc(&ast, env);
 			ft_free_ast(&ast);
 		}
-		signal(SIGINT, sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
 	}
 }
 
@@ -104,8 +104,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, sigint_handler);
+	// signal(SIGQUIT, SIG_IGN);
 	if (!envp || !*envp)
 		env = ft_create_env();
 	else

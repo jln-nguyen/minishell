@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 18:59:11 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:13:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ char	*handle_double_quote(char *str, int i, t_env *env)
 	new_str = NULL;
 	while (str[i + j + 1] && str[i + j + 1] != 34)
 		j++;
+	if (j == 0)
+		return (str);
 	j += 2;
 	tmp = malloc(sizeof(char *) * 4);
 	if (!tmp)
@@ -132,8 +134,8 @@ char	*remove_quote(char *str, int i, char c)
 	i++;
 	while (str[i + j] && str[i + j] != c)
 		j++;
-	if (j == 0)
-		return (str);
+	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
+		return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
 	new_str = handle_quote(str, i, j);
 	free(str);
 	if (!new_str)

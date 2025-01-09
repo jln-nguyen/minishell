@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 19:02:55 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:15:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	sup_node_if(t_token **begin_list)
 	cur = *begin_list;
 	if (begin_list == NULL || *begin_list == NULL)
 		return ;
-	if (cur->value[0] == 34 || cur->value[0] == 39)
-		cur->value = handle_quote(cur->value, 1, 0);
-	else if (cur->value == NULL || cur->value[0] == '\0')
+	// if (cur->value[0] == 34 || cur->value[0] == 39)
+	// 	cur->value = handle_quote(cur->value, 1, 0);
+	if (cur->value == NULL || cur->value[0] == '\0')
 	{
 		*begin_list = cur->next;
 		if (cur->value)
@@ -96,7 +96,11 @@ static void	change_value_if(t_token **tok, t_env *env, int bool)
 			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
 			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
 			if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
+			{
 				i++;
+				if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
+					i++;
+			}
 		}
 		else if ((*tok)->value[i] == '$' && bool == 0)
 		{
