@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/09 13:50:26 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:52:25 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static int	handle_left_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 		return (perror("fork"), -1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
+		// signal(SIGQUIT, SIG_DFL);
 		close(pipefd[0]);
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 		{
@@ -54,8 +54,8 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 		return (perror("fork"), -1);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
+		// signal(SIGQUIT, SIG_DFL);
 		close(pipefd[1]);
 		if (dup2(pipefd[0], STDIN_FILENO) == -1)
 		{
@@ -88,7 +88,11 @@ void	exec_pipe(t_ast_node **ast, t_env **env)
 	close(pipefd[1]);
 	if (left_pid > 0)
 		waitpid(left_pid, NULL, 0);
+	if (WIFEXITED(left_pid))
+		g_exit_status = WEXITSTATUS(left_pid);
 	if (right_pid > 0)
 		waitpid(right_pid, NULL, 0);
+	if (WIFEXITED(right_pid))
+		g_exit_status = WEXITSTATUS(right_pid);
 	ft_free_ast(ast);
 }

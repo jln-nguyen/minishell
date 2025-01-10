@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/09 10:25:40 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:54:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int	ft_check_builtins(t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
 		return (ft_pwd(), 0);
 	else if (ft_strcmp("echo", ast->args[0]) == 0)
-		return (ft_echo(ast->args), 0);
+		return (ft_echo(ast->args));
 	else if (ft_strcmp("export", ast->args[0]) == 0)
 		return (ft_export(env, ast));
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (ft_unset(env, ast), 0);
 	else if (ft_strcmp("exit", ast->args[0]) == 0)
-		return (ft_exit(ast->args, &ast, env), 0);
+		return (ft_exit(ast->args, &ast, env), g_exit_status);
 	return (-1);
 }
 
@@ -85,11 +85,10 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		ft_redir(ast, env);
 	else if (!*(*ast)->args || !(*ast)->args[0])
 		return ;
-	
 	else 
 	{
 		status = ft_check_builtins(*ast, env);
-		if ( status == -1)
+		if (status == -1)
 		{
 		tab = struc_to_char(*env);
 		if (!tab || !*tab)
@@ -97,7 +96,7 @@ void	exec_cmd(t_ast_node **ast, t_env **env)
 		ft_execve(tab, ast, env);
 		ft_free_tab(&tab);
 		}
-		else 
+		else
 			g_exit_status = status;
 	}
 }
@@ -113,6 +112,8 @@ void	ft_exec(t_ast_node **ast, t_env **env)
 void	ft_check_heredoc(t_ast_node **ast, t_env **env)
 {
 	check_heredoc(ast, env);
+	if (g_exit_status == 130)
+		return ;
 	ft_exec(ast, env);
 }
 

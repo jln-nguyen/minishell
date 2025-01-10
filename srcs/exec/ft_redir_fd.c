@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 15:51:50 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/09 13:50:37 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	mult_redir_in(int file, t_ast_node **tmp, t_env **env)
 			file = (*tmp)->fd_heredoc;
 		}
 		if (file < 0)
-			return (ft_printf(2, "Minishell: %s\n", strerror(errno)), -1);
+			return (ft_printf(2, "Minishell: %s : No such file or directory\n", (*tmp)->right->left->args[0]), -1);
 		*tmp = (*tmp)->right;
 	}
 	return (file);
@@ -44,7 +44,11 @@ int	ft_redir_in(t_ast_node *ast, t_env **env)
 	file = 0;
 	tmp = ast;
 	if (ast->right->type != TOKEN_STR)
+	{
 		file = mult_redir_in(file, &tmp, env);
+		if (file < 0)
+			return (-1);
+	}
 	if (tmp->type == TOKEN_REDIR_IN)
 	{
 		if (file > 0)
@@ -58,7 +62,7 @@ int	ft_redir_in(t_ast_node *ast, t_env **env)
 		file = tmp->fd_heredoc;
 	}
 	if (file < 0)
-		return (ft_printf(STDERR_FILENO, "Minishell: %s : No such file or directory\n", tmp->right->args[0]), -1); //protect error
+		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n", tmp->right->args[0], strerror(errno)), -1); //protect error
 	return (file);
 }
 
@@ -79,7 +83,7 @@ static int	mult_redir_out(int file, t_ast_node **tmp)
 			file = open((*tmp)->right->left->args[0], O_CREAT | O_RDWR | O_APPEND, 0644);
 		}
 		if (file < 0)
-			return (ft_printf(STDERR_FILENO, "Minishell: %s : No such file or directory\n", (*tmp)->right->args[0]), -1); //protect error	
+			return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n", (*tmp)->right->left->args[0], strerror(errno)), -1); //protect error	
 		*tmp = (*tmp)->right;
 	}
 	return (file);
@@ -93,7 +97,11 @@ int	ft_redir_out(t_ast_node *ast)
 	file = 0;
 	tmp = ast;
 	if (ast->right->type != TOKEN_STR)
+	{
 		file = mult_redir_out(file, &tmp);
+		if (file < 0)
+			return (-1);
+	}
 	if (tmp->type == TOKEN_REDIR_OUT)
 	{
 		if (file)
@@ -107,6 +115,6 @@ int	ft_redir_out(t_ast_node *ast)
 		file = open(tmp->right->args[0], O_CREAT | O_RDWR | O_APPEND, 0644);
 	}
 	if (file < 0)
-		return (ft_printf(STDERR_FILENO, "Minishell: %s : No such file or directory\n", tmp->right->args[0]), -1); //protect error
+		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n", tmp->right->args[0], strerror(errno)), -1); //protect error
 	return (file);
 }
