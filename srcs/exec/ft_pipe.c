@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/07 15:30:08 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:21:37 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 {
 	pid_t	pid;
 
-	// if ((*ast)->right->type == TOKEN_PIPE)
-	// 	ft_exec(&(*ast)->right, env);
+	if ((*ast)->right->type == TOKEN_PIPE)
+	{
+		ft_exec(&(*ast)->right, env);
+		return (-1);
+	}
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
@@ -72,7 +75,6 @@ static int	handle_right_pipe(t_ast_node **ast, t_env **env, int *pipefd)
 		ft_exec(&((*ast)->right), env);
 		ft_free_ast(ast);
 		ft_free_env(env);
-		printf("%d\n", g_exit_status);
 		exit(g_exit_status);
 	}
 	return (pid);
