@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/07 14:59:56 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:20:09 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,8 @@ long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
 
 void	ft_exit(char **args, t_ast_node **ast, t_env **env)
 {
-	int		i;
 	long	nb;
 
-	i = 0;
 	(void)ast;
 	(void)env;
 	if (!args[1])
