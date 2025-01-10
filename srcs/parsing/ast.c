@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/18 16:22:21 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/10 18:41:56 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,14 @@ void	ft_free_ast(t_ast_node **ast)
 	int	i;
 
 	i = 0;
-	if (!*ast)
+	if (!ast || !*ast)
 		return ;
 	ft_free_ast(&(*ast)->left);
 	ft_free_ast(&(*ast)->right);
 	if ((*ast)->args)
 	{
 		while ((*ast)->args[i])
-			i++;
-		while (i-- > 0)
-			free((*ast)->args[i]);
+			free((*ast)->args[i++]);
 		free((*ast)->args);
 	}
 	if ((*ast)->fd_heredoc > 0)
@@ -79,7 +77,7 @@ void	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 	node = NULL;
 	node = parsing_token(tok, limit);
 	if (!node)
-		return ;//free exit
+		return ; // free exit
 	add_node(ast, node, c);
 }
 

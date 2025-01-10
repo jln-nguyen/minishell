@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:47:05 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/10/23 09:57:21 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/10 19:32:02 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	ft_free_tab(char ***tab)
 	int	i;
 
 	i = 0;
-	if (!*tab || !**tab)
+	if (!tab || !*tab || !**tab)
 		return ;
 	while ((*tab)[i])
 	{
-		free((*tab)[i]);
+		if ((*tab)[i])
+		{
+			free((*tab)[i]);
+			(*tab)[i] = NULL;
+		}
 		i++;
 	}
 	free(*tab);
