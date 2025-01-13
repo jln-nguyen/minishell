@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/07 14:43:28 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:41:43 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,21 +106,23 @@ void	ft_process(char **env, t_ast_node **ast, t_env **envp)
 	exit(126);
 }
 
-void	ft_execve(char **env, t_ast_node **ast, t_env **envp)
+int	ft_execve(char **env, t_ast_node **ast, t_env **envp)
 {
 	int	pid;
+	int	exit_code;
 
+	exit_code = 0;
 	pid = fork();
 	signal(SIGINT, &sigint_process);
 	signal(SIGQUIT, &sigint_process);
 	if (pid == -1)
-		return ;
+		return (EXIT_FAILURE);
 	if (pid == 0)
 		ft_process(env, ast, envp);
 	else
 		wait(&pid);
 	if (WIFEXITED(pid))
-		g_exit_status = WEXITSTATUS(pid);
-	return ;
+		exit_code = WEXITSTATUS(pid);
+	return (exit_code);
 }
 

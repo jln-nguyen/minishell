@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/09 16:00:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/13 16:15:24 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	heredoc_sig(int signal)
 {
 	(void)signal;
-	g_exit_status = 130;
+	g_signal = 130;
 	close(STDIN_FILENO);
 	printf("\n");
 	rl_replace_line("", 0);
@@ -32,7 +32,7 @@ void	ft_read(char *end, t_env **env, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (g_exit_status == 130)
+		if (g_signal == 130)
 		{
 			dup2(old_stdin, STDIN_FILENO);
 			close(old_stdin);
@@ -74,7 +74,7 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	if (fd < 0)
 		return (-1);
 	ft_read(ast->args[0], env, fd);
-	if (g_exit_status == 130)
+	if (g_signal == 130)
 	{
 		unlink(file);
 		close(fd);
@@ -97,7 +97,7 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 
 	i = 0;
 	tmp = *ast;
-	g_exit_status = 0;
+	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, heredoc_sig);
 	while (tmp)
@@ -113,13 +113,13 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 			if (tmp->right->type == TOKEN_STR)
 			{
 				tmp->fd_heredoc = ft_heredoc(tmp->right, env, i);
-				if (g_exit_status == 130)
+				if (g_signal == 130)
 					return ;
 			}
 			else
 			{
 				tmp->fd_heredoc = ft_heredoc(tmp->right->left, env, i);
-				if (g_exit_status == 130)
+				if (g_signal == 130)
 					return ;
 			}
 			i++;

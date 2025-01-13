@@ -6,30 +6,30 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/10 11:52:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:43:44 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_status;
+int	g_signal;
 
 void	sigint_process(int signal)
 {
 	if (signal == SIGQUIT)
 	{
-		g_exit_status = 131;
+		g_signal = 131;
 		printf("Quit (core dumped)");
 	}
 	else
-		g_exit_status = 130;
+		g_signal = 130;
 	printf("\n");
 }
 
 void	sigint_handler(int signal)
 {
 	(void)signal;
-	g_exit_status = 130;
+	g_signal = 130;
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_on_new_line();
@@ -39,7 +39,7 @@ void	sigint_handler(int signal)
 void	sigquit_handler(int signal)
 {
 	(void)signal;
-	g_exit_status = 131;
+	g_signal = 131;
 	printf("Quit (core dumped)\n");
 	rl_on_new_line();
 	rl_redisplay();
@@ -67,20 +67,18 @@ char	*color_gwd(char *gwd, t_env *env)
 	return (tmp);
 }
 
-void	prompt(t_env **env)
+void	prompt(t_data data)
 {
 	char		*tmp;
 	char		*gwd;
-	t_ast_node	*ast;
 
-	ast = NULL;
 	while (1)
 	{
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");
-		gwd = color_gwd(gwd, *env);
+		gwd = color_gwd(gwd, data.env);
 		free(tmp);
 		if (!gwd)
 			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
@@ -89,30 +87,34 @@ void	prompt(t_env **env)
 			return (printf("exit\n"), free(gwd));
 		add_history(tmp);
 		free(gwd);
-		ast = ft_parsing(tmp, *env);
-		if (ast)
+		data.ast = ft_parsing(tmp, data.env);
+		if (data.ast)
 		{
-			ft_check_heredoc(&ast, env);
-			ft_free_ast(&ast);
+			ft_check_heredoc(data);
+			ft_free_ast(&data.ast);
 		}
 	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_env		*env;
+	t_data	data;
 
-	(void)ac;
+	data.env = NULL;
+	data.ast = NULL;
+	data.exit_code = 0;
+	if (ac != 1)
+		return (-2);
 	(void)av;
 	// signal(SIGINT, sigint_handler);
 	// signal(SIGQUIT, SIG_IGN);
 	if (!envp || !*envp)
-		env = ft_create_env();
+		data.env = ft_create_env();
 	else
-		env = ft_getenv(envp);
-	if (!env)
+		data.env = ft_getenv(envp);
+	if (!data.env)
 		return (-1);
-	prompt(&env);
-	ft_free_env(&env);
+	prompt(data);
+	ft_free_env(&data.env);
 	return (0);
 }

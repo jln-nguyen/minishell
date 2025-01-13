@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:10:14 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:47:37 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*change_value(char *var, t_env *env)
 	if (!var)
 		return (NULL);
 	if (var[0] == '?')
-		return (free(var), tmp = ft_itoa(g_exit_status));
+		return (free(var), tmp = ft_itoa(g_signal)); //remettre t_data
 	while (env)
 	{
 		if (ft_strcmp(var, env->key) == 0)

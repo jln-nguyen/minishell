@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 13:52:15 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:58:39 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static char	*check_expand_var(char *str, int i, int j, t_env *env)
 			if (new_str[i] == '\0')
 				break ;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (new_str);
 }
