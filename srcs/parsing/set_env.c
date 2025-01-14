@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2024/11/27 18:03:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:59:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static t_env	*new_node_env(char *envp)
 	return (node);
 }
 
-static int	ft_expand_env(t_env **env, char **envp, int i)
+static int	ft_expand_env(t_data *data, char **envp, int i)
 {
 	t_env	*node;
 
@@ -76,26 +76,23 @@ static int	ft_expand_env(t_env **env, char **envp, int i)
 	node = new_node_env(envp[i]);
 	if (!node)
 		return (-1);
-	ft_envadd_back(env, node);
+	ft_envadd_back(&data->env, node);
 	return (0);
 }
 
-t_env	*ft_getenv(char **envp)
+void	ft_getenv(t_data *data, char **envp)
 {
-	t_env	*env;
 	int		i;
 
 	i = 0;
-	env = NULL;
-	env = new_node_env(envp[i]);
-	if (!env)
-		return (NULL);
+	data->env = new_node_env(envp[i]);
+	if (!data->env)
+		return ; //protect
 	i++;
 	while (envp[i])
 	{
-		if (ft_expand_env(&env, envp, i) == -1)
-			return (ft_free_env(&env), NULL);
+		if (ft_expand_env(data, envp, i) == -1)
+			return (ft_free_env(&data->env), (void)0);
 		i++;
 	}
-	return (env);
 }

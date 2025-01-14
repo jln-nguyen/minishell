@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 18:41:43 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:55:00 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*find_path(char *cmd, char **env)
 	return (path);
 }
 
-void	ft_process(char **env, t_ast_node **ast, t_env **envp)
+void	ft_process(char **env, t_ast_node **ast, t_data *data)
 {
 	char	*path;
 
@@ -71,8 +71,8 @@ void	ft_process(char **env, t_ast_node **ast, t_env **envp)
 				ft_printf(STDERR_FILENO, "Malloc error\n");
 				free(path);
 				ft_free_tab(&env);
-				ft_free_ast(ast);
-				ft_free_env(envp);
+				ft_free_ast(&data->ast);
+				ft_free_env(&data->env);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -81,8 +81,8 @@ void	ft_process(char **env, t_ast_node **ast, t_env **envp)
 			ft_printf(STDERR_FILENO, "Minishell: %s: No such file or directory\n", (*ast)->args[0]);
 			free(path);
 			ft_free_tab(&env);
-			ft_free_ast(ast);
-			ft_free_env(envp);
+			ft_free_ast(&data->ast);
+			ft_free_env(&data->env);
 			exit(127);
 		}
 	}
@@ -93,20 +93,20 @@ void	ft_process(char **env, t_ast_node **ast, t_env **envp)
 		ft_printf(STDERR_FILENO, "Minishell: %s: command not found\n", (*ast)->args[0]);
 		free(path);
 		ft_free_tab(&env);
-		ft_free_ast(ast);
-		ft_free_env(envp);
+		ft_free_ast(&data->ast);
+		ft_free_env(&data->env);
 		exit(127);
 	}
 	execve(path, (*ast)->args, env);
 	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n", (*ast)->args[0]);
 	free(path);
 	ft_free_tab(&env);
-	ft_free_ast(ast);
-	ft_free_env(envp);
+	ft_free_ast(&data->ast);
+	ft_free_env(&data->env);
 	exit(126);
 }
 
-int	ft_execve(char **env, t_ast_node **ast, t_env **envp)
+int	ft_execve(char **env, t_ast_node **ast, t_data *data)
 {
 	int	pid;
 	int	exit_code;
@@ -118,11 +118,13 @@ int	ft_execve(char **env, t_ast_node **ast, t_env **envp)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (pid == 0)
-		ft_process(env, ast, envp);
+		ft_process(env, ast, data);
 	else
 		wait(&pid);
 	if (WIFEXITED(pid))
 		exit_code = WEXITSTATUS(pid);
+	else if (WIFSIGNALED(pid))
+		exit_code = 128 + WTERMSIG(pid);
 	return (exit_code);
 }
 

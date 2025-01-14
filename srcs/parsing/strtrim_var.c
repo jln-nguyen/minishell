@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 13:35:03 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 14:39:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:43:41 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*ft_strtrim_whitespace(const char *s1)
 		while (s1[i + skip] && ft_is_space(s1[i + skip]) != 0)
 			i++;
 	}
-	if (!s1[i + skip])
+	if (i == 1 && (ft_is_space(s1[0]) == 0))
 		return (NULL);
 	str = skip_ws(s1, i);
 	if (!str)

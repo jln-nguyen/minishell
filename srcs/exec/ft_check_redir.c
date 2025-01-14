@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:48 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 18:20:03 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:44:57 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,13 @@ static int	ft_dup_out(int file_out, int old_fd_out, int old_fd_in)
 	}
 	else if (file_out < 0)
 	{
-		g_signal = 1;
 		ft_reset_fd(old_fd_in, old_fd_out);
 		return (-1);
 	}
 	return (old_fd_out);
 }
 
-void	ft_redir(t_data data, t_ast_node **ast)
+void	ft_redir(t_data *data, t_ast_node **ast)
 {
 	int	old_fd_in;
 	int	old_fd_out;
@@ -58,7 +57,7 @@ void	ft_redir(t_data data, t_ast_node **ast)
 	old_fd_in = 0;
 	old_fd_out = 1;
 	search_cmd(ast);
-	file_in = ft_redir_in(*ast, &data.env);
+	file_in = ft_redir_in(*ast, &data->env);
 	if (file_in > 0)
 	{
 		old_fd_in = dup(STDIN_FILENO);
@@ -69,12 +68,12 @@ void	ft_redir(t_data data, t_ast_node **ast)
 		close(file_in);
 	}
 	if (file_in < 0)
-		return (data.exit_code = 1, ft_reset_fd(old_fd_in, old_fd_out));
+		return (data->exit_code = 1, ft_reset_fd(old_fd_in, old_fd_out));
 	file_out = ft_redir_out(*ast);
 	old_fd_out = ft_dup_out(file_out, old_fd_out, old_fd_in);
 	if (old_fd_out == -1)
 	{
-		g_signal = 1;
+		data->exit_code = 1;
 		return ;
 	}
 	exec_cmd(data, &(*ast)->left);

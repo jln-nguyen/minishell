@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 18:43:44 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:37:15 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@ int	g_signal;
 void	sigint_process(int signal)
 {
 	if (signal == SIGQUIT)
-	{
-		g_signal = 131;
 		printf("Quit (core dumped)");
-	}
-	else
-		g_signal = 130;
 	printf("\n");
 }
 
@@ -45,7 +40,7 @@ void	sigquit_handler(int signal)
 	rl_redisplay();
 }
 
-char	*color_gwd(char *gwd, t_env *env)
+char	*color_gwd(char *gwd, t_data *data)
 {
 	char	*tmp;
 	char	*home;
@@ -53,7 +48,7 @@ char	*color_gwd(char *gwd, t_env *env)
 	if (!gwd)
 		return (NULL);
 	tmp = ft_strdup("HOME");
-	home = change_value(tmp, env);
+	home = change_value(tmp, data);
 	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
 	{
 		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
@@ -67,7 +62,7 @@ char	*color_gwd(char *gwd, t_env *env)
 	return (tmp);
 }
 
-void	prompt(t_data data)
+void	prompt(t_data *data)
 {
 	char		*tmp;
 	char		*gwd;
@@ -76,22 +71,28 @@ void	prompt(t_data data)
 	{
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
+		g_signal = 0;
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");
-		gwd = color_gwd(gwd, data.env);
+		gwd = color_gwd(gwd, data);
 		free(tmp);
 		if (!gwd)
 			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
 		tmp = readline(gwd);
 		if (!tmp)
 			return (printf("exit\n"), free(gwd));
+		if (g_signal == 130)
+		{
+			data->exit_code = 130;
+			g_signal = 0;
+		}
 		add_history(tmp);
 		free(gwd);
-		data.ast = ft_parsing(tmp, data.env);
-		if (data.ast)
+		data->ast = ft_parsing(tmp, data);
+		if (data->ast)
 		{
-			ft_check_heredoc(data);
-			ft_free_ast(&data.ast);
+			ft_check_heredoc(&data->ast, data);
+			ft_free_ast(&data->ast);
 		}
 	}
 }
@@ -109,12 +110,12 @@ int	main(int ac, char **av, char **envp)
 	// signal(SIGINT, sigint_handler);
 	// signal(SIGQUIT, SIG_IGN);
 	if (!envp || !*envp)
-		data.env = ft_create_env();
+		ft_create_env(&data);
 	else
-		data.env = ft_getenv(envp);
+		ft_getenv(&data, envp); //incrementer shlvl ?
 	if (!data.env)
 		return (-1);
-	prompt(data);
+	prompt(&data);
 	ft_free_env(&data.env);
 	return (0);
 }

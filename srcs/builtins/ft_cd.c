@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/09 10:25:27 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:29:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
 	}
 }
 
-int	ft_cd(char *str, t_env **env)
+int	ft_cd(char *str, t_data *data)
 {
 	char	*pwd;
 	char	*old_pwd;
@@ -65,9 +65,9 @@ int	ft_cd(char *str, t_env **env)
 		return (EXIT_FAILURE);
 	}
 	pwd = getcwd(NULL, 0);
-	ft_change_wd(env, pwd, old_pwd);
-	if (check_if_oldpwd(env) == 0)
-		expand_env(env, "OLDPWD", old_pwd);
+	ft_change_wd(&data->env, pwd, old_pwd);
+	if (check_if_oldpwd(&data->env) == 0)
+		expand_env(data, "OLDPWD", old_pwd);
 	free(old_pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);

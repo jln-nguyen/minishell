@@ -6,24 +6,24 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/13 18:46:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:08:09 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	cleanup_child(t_data data, int *pipefd)
+static void	cleanup_child(t_data *data, int *pipefd)
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
-	if (data.ast)
-		ft_free_ast(&data.ast);
-	if (data.env)
-		ft_free_env(&data.env);
+	if (data->ast)
+		ft_free_ast(&data->ast);
+	if (data->env)
+		ft_free_env(&data->env);
 	exit(EXIT_FAILURE);
 }
 
-static int	handle_left_pipe(t_data data, t_ast_node **ast, int *pipefd)
+static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 {
 	pid_t	pid;
 
@@ -42,22 +42,17 @@ static int	handle_left_pipe(t_data data, t_ast_node **ast, int *pipefd)
 		}
 		close(pipefd[1]);
 		ft_exec(data, &(*ast)->left);
-		ft_free_ast(&data.ast);
-		ft_free_env(&data.env);
-		exit(data.exit_code);
+		ft_free_ast(&data->ast);
+		ft_free_env(&data->env);
+		exit(data->exit_code);
 	}
 	return (pid);
 }
 
-static int	handle_right_pipe(t_data data, t_ast_node **ast, int *pipefd)
+static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 {
 	pid_t	pid;
 
-	// if ((*ast)->right->type == TOKEN_PIPE)
-	// {
-	// 	ft_exec(data, &(*ast)->right);
-	// 	return (-1);
-	// }
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"), -1);
@@ -73,9 +68,9 @@ static int	handle_right_pipe(t_data data, t_ast_node **ast, int *pipefd)
 		}
 		close(pipefd[0]);
 		ft_exec(data, &(*ast)->right);
-		ft_free_ast(&data.ast);
-		ft_free_env(&data.env);
-		exit(data.exit_code);
+		ft_free_ast(&data->ast);
+		ft_free_env(&data->env);
+		exit(data->exit_code);
 	}
 	return (pid);
 }
@@ -89,12 +84,14 @@ static int	init_pipe(int *pipefd, t_ast_node **ast)
 	return (1);
 }
 
-void	exec_pipe(t_data data, t_ast_node **ast)
+void	exec_pipe(t_data *data, t_ast_node **ast)
 {
 	int		pipefd[2];
 	pid_t	left_pid;
 	pid_t	right_pid;
+	int		status;
 
+	status = 0;
 	if (!init_pipe(pipefd, ast))
 		return ;
 	left_pid = handle_left_pipe(data, ast, pipefd);
@@ -108,11 +105,10 @@ void	exec_pipe(t_data data, t_ast_node **ast)
 	close(pipefd[1]);
 	if (left_pid > 0)
 		waitpid(left_pid, NULL, 0);
-	if (WIFEXITED(left_pid))
-		data.exit_code = WEXITSTATUS(left_pid);
 	if (right_pid > 0)
-		waitpid(right_pid, NULL, 0);
-	if (WIFEXITED(right_pid))
-		data.exit_code = WEXITSTATUS(right_pid);
-	// ft_free_ast(ast);
+		waitpid(right_pid, &status, 0);
+	if (WIFEXITED(status))
+		data->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		data->exit_code = 128 + WTERMSIG(status);
 }

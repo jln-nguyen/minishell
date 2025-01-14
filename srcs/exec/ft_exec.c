@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/13 18:53:43 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:30:13 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ char	**struc_to_char(t_env *env)
 	return (tab);
 }
 
-int	ft_check_builtins(t_data data, t_ast_node *ast, t_env **env)
+int	ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env)
 {
 	if (ft_strcmp("cd", ast->args[0]) == 0)
-		return (ft_cd(ast->args[1], env));
+		return (ft_cd(ast->args[1], data));
 	else if (ft_strcmp("env", ast->args[0]) == 0)
 		return (ft_env(ast, env));
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
@@ -73,7 +73,7 @@ int	ft_check_builtins(t_data data, t_ast_node *ast, t_env **env)
 	return (-1);
 }
 
-void	exec_cmd(t_data data, t_ast_node **ast)
+void	exec_cmd(t_data *data, t_ast_node **ast)
 {
 	// int		status;
 	char	**tab;
@@ -87,19 +87,19 @@ void	exec_cmd(t_data data, t_ast_node **ast)
 		return ;
 	else 
 	{
-		data.exit_code = ft_check_builtins(data, (*ast), &data.env);
-		if (data.exit_code == -1)
+		data->exit_code = ft_check_builtins(data, (*ast), &data->env);
+		if (data->exit_code == -1)
 		{
-		tab = struc_to_char(data.env);
+		tab = struc_to_char(data->env);
 		if (!tab || !*tab)
 			return ; //protect
-		data.exit_code = ft_execve(tab, ast, &data.env);
+		data->exit_code = ft_execve(tab, ast, data);
 		ft_free_tab(&tab);
 		}
 	}
 }
 
-void	ft_exec(t_data data, t_ast_node **ast)
+void	ft_exec(t_data *data, t_ast_node **ast)
 {
 	if ((*ast)->type == TOKEN_PIPE)
 		exec_pipe(data, ast);
@@ -107,14 +107,15 @@ void	ft_exec(t_data data, t_ast_node **ast)
 		exec_cmd(data, ast);
 }
 
-void	ft_check_heredoc(t_data data)
+void	ft_check_heredoc(t_ast_node **ast, t_data *data)
 {
-	check_heredoc(&data.ast, &data.env);
+	check_heredoc(ast, data);
 	if (g_signal == 130)
 	{
 		g_signal = 0;
+		data->exit_code = 130;
 		return ;
 	}
-	ft_exec(data, &data.ast);
+	ft_exec(data, &data->ast);
 }
 

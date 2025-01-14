@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/13 18:53:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:28:57 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,29 @@ void		ft_print_export(t_env **env);
 void		search_cmd(t_ast_node **ast);
 void		ft_free_ast(t_ast_node **tok);
 void		ft_free_tab_var_env(char ***tab);
-void		ft_exec(t_data data, t_ast_node **ast);
+void		ft_exec(t_data *data, t_ast_node **ast);
 void		ft_unset(t_env **env, t_ast_node *tok);
 void		generate_ast_diagram(t_ast_node *root);
-void		exec_cmd(t_data data, t_ast_node **ast);
-void		ft_redir(t_data data, t_ast_node **ast);
-void		exec_pipe(t_data data, t_ast_node **ast);
+void		exec_cmd(t_data *data, t_ast_node **ast);
+void		ft_redir(t_data *data, t_ast_node **ast);
+void		exec_pipe(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		ft_tokadd_back(t_token **lst, t_token *new);
-void		check_heredoc(t_ast_node **ast, t_env **env);
-void		ft_check_heredoc(t_data data);
+void		check_heredoc(t_ast_node **ast, t_data *data);
+void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
-void		ft_exit(t_data data, char **args);
+void		ft_exit(t_data *data, char **args);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
 
-int			ft_execve(char **env, t_ast_node **ast, t_env **envp);
-int			expand_env(t_env **env, char *str_key, char *str_val);
-int			ft_check_builtins(t_data data, t_ast_node *ast, t_env **env);
+int			ft_execve(char **env, t_ast_node **ast, t_data *data);
+int			expand_env(t_data *data, char *str_key, char *str_val);
+int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_export(t_env **env, t_ast_node *tok);
 int			ft_env(t_ast_node *ast, t_env **env);
 int			ft_redir_out(t_ast_node *ast);
-int			ft_cd(char *str, t_env **env);
+int			ft_cd(char *str, t_data *data);
 int			move_index(t_token *tok);
 int			check_tok(t_token *tok);
 int			check_syntax(char *str);
@@ -114,22 +114,22 @@ int			ft_echo(char **args);
 
 char		**struc_to_char(t_env *env);
 char		*find_path(char *cmd, char **env);
-char		*change_value(char *tok, t_env *env);
+char		*change_value(char *tok, t_data *data);
 char		*handle_quote(char *str, int i, int j);
 char		*remove_quote(char *str, int i, char c);
-char		*change_str(char *new_str, int i, t_env *env);
-char		*handle_double_quote(char *str, int i, t_env *env);
+char		*change_str(char *new_str, int i, t_data *data);
+char		*handle_double_quote(char *str, int i, t_data *data);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
 char		*ft_pre_bigjoin_trim(char *new_str, char **tmp, int i, int j);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 
 t_env		*new_env(char *str_key, char *str_val);
-t_env		*ft_getenv(char **envp);
-t_env		*ft_create_env(void);
+void		ft_getenv(t_data *data, char **envp);
+void		ft_create_env(t_data *data);
 
 t_token		*ft_del_last(t_token *tok);
-t_token		*ft_token(char *str, t_env *env);
-t_token		*expand_str(t_token *tok, t_env *env);
+t_token		*ft_token(char *str, t_data *data);
+t_token		*expand_str(t_token *tok, t_data *data);
 t_token		*new_tok(t_enum_type type, char *str);
 
 t_ast_node	*parsing_token(t_token *tok, t_enum_type limit);
@@ -137,7 +137,7 @@ t_ast_node	*check_pipe(t_token *tok, t_enum_type limit);
 t_ast_node	*parse_str(t_token *tok, t_enum_type limit);
 t_ast_node	*parse_redir_out(t_token op, t_token *tok);
 t_ast_node	*parse_pipe(t_token pipe, t_token *tok);
-t_ast_node	*ft_parsing(char *cmd, t_env *env);
+t_ast_node	*ft_parsing(char *cmd, t_data *data);
 t_ast_node	*new_node(t_enum_type type);
 
 #endif

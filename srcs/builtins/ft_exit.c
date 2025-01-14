@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/13 18:45:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:46:33 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ long	ft_atol(const char *str)
 	return (num);
 }
 
-void	ft_end(t_data data, int n, char *arg)
+void	ft_end(t_data *data, int n, char *arg)
 {
 	ft_printf(STDOUT_FILENO, "exit\n");
 	if (n == -1)
 	{
-		data.exit_code = 2;
+		data->exit_code = 2;
 		ft_printf(STDERR_FILENO, "Minishell: exit: %s: numeric argument required\n", arg);
 	}
-	ft_free_ast(&data.ast);
-	ft_free_env(&data.env);
-	exit(data.exit_code);
+	ft_free_ast(&data->ast);
+	ft_free_env(&data->env);
+	exit(data->exit_code);
 }
 
-long	ft_isvalid(char *n, t_data data)
+long	ft_isvalid(char *n, t_data *data)
 {
 	long	i;
 	int		signe;
@@ -108,7 +108,7 @@ long	ft_isvalid(char *n, t_data data)
 	return (ft_atol(n));
 }
 
-void	ft_exit(t_data data, char **args)
+void	ft_exit(t_data *data, char **args)
 {
 	int		i;
 	long	nb;
@@ -118,10 +118,10 @@ void	ft_exit(t_data data, char **args)
 		ft_end(data, 0, NULL);
 	nb = ft_isvalid(args[1], data);
 	if (args[1] && args[2])
-		return (data.exit_code = 1, (void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
+		return (data->exit_code = 1, (void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
 	if (nb >= 0 && nb <= 255)
-		data.exit_code = nb;
+		data->exit_code = nb;
 	else
-		data.exit_code = nb % 256;
+		data->exit_code = nb % 256;
 	ft_end(data, 0, NULL);
 }

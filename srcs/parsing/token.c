@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 13:49:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:34:36 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	expand_lst(t_token **tok, char *str)
 	}
 }
 
-t_token	*ft_token(char *str, t_env *env)
+t_token	*ft_token(char *str, t_data *data)
 {
 	int		i;
 	t_token	*tok;
@@ -136,6 +136,6 @@ t_token	*ft_token(char *str, t_env *env)
 		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
 		return (ft_free(&tok), NULL);
 	}	
-	tok = expand_str(tok, env);
+	tok = expand_str(tok, data);
 	return (tok);
 }

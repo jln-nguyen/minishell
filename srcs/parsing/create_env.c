@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:02:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:53:05 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:01:27 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,36 +29,34 @@ t_env	*new_env(char *str_key, char *str_val)
 	return (new);
 }
 
-int	expand_env(t_env **env, char *str_key, char *str_val)
+int	expand_env(t_data *data, char *str_key, char *str_val)
 {
 	t_env	*new;
 
 	new = new_env(str_key, str_val);
 	if (!new)
 		return (-1);
-	ft_envadd_back(env, new);
+	ft_envadd_back(&data->env, new);
 	return (0);
 }
 
-t_env	*ft_create_env(void)
+void	ft_create_env(t_data *data)
 {
-	t_env	*env;
 	char	*buffer;
 
 	buffer = getcwd(NULL, 0);
 	if (!buffer)
-		return (NULL);
-	env = new_env("OLDPWD", "");
-	if (!env)
-		return (free(buffer), NULL);
-	free(env->value);
-	env->value = NULL;
-	if (expand_env(&env, "PWD", buffer) == -1)
-		return (free(buffer), ft_free_env(&env), NULL);
-	if (expand_env(&env, "SHLVL", "1") == -1)
-		return (free(buffer), ft_free_env(&env), NULL);
-	if (expand_env(&env, "_", "/usr/bin/env") == -1)
-		return (free(buffer), ft_free_env(&env), NULL);
+		return ;
+	data->env = new_env("OLDPWD", "");
+	if (!data->env)
+		return (free(buffer), (void)0);
+	free(data->env->value);
+	data->env->value = NULL;
+	if (expand_env(data, "PWD", buffer) == -1)
+		return (free(buffer), ft_free_env(&data->env), (void)0);
+	if (expand_env(data, "SHLVL", "1") == -1)
+		return (free(buffer), ft_free_env(&data->env), (void)0);
+	if (expand_env(data, "_", "/usr/bin/env") == -1)
+		return (free(buffer), ft_free_env(&data->env), (void)0);
 	free(buffer);
-	return (env);
 }

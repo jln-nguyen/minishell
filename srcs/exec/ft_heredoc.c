@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/13 16:15:24 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:12:09 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	heredoc_sig(int signal)
 	rl_on_new_line();
 }
 
-void	ft_read(char *end, t_env **env, int fd)
+void	ft_read(char *end, t_data *data, int fd)
 {
 	char		*line;
 	int			i;
@@ -48,10 +48,16 @@ void	ft_read(char *end, t_env **env, int fd)
 			free(line);
 			break ;
 		}
-		i = -1;
-		while (line[++i])
+		i = 0;
+		while (line[i])
+		{
 			if (line[i] == '$')
-				line = change_str(line, i + 1, *env);
+				line = change_str(line, i + 1, data);
+			if (line[i] == '\0')
+				break ;
+			else
+				i++;
+		}
 		if (!line)
 			return ; // protect
 		ft_putstr_fd(line, fd);
@@ -61,7 +67,7 @@ void	ft_read(char *end, t_env **env, int fd)
 	close(old_stdin);
 }
 
-int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
+int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 {
 	int		fd;
 	char	*file;
@@ -73,7 +79,7 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
-	ft_read(ast->args[0], env, fd);
+	ft_read(ast->args[0], data, fd);
 	if (g_signal == 130)
 	{
 		unlink(file);
@@ -90,21 +96,20 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	return (fd);
 }
 
-void	check_heredoc(t_ast_node **ast, t_env **env)
+void	check_heredoc(t_ast_node **ast, t_data *data)
 {
 	t_ast_node	*tmp;
 	int			i;
 
 	i = 0;
 	tmp = *ast;
-	g_signal = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, heredoc_sig);
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_PIPE)
 		{
-			check_heredoc(&(tmp)->left, env);
+			check_heredoc(&(tmp)->left, data);
 			if (tmp->fd_heredoc < 0)
 				return (ft_putstr_fd("errorbbb\n", STDERR_FILENO), (void)-1); //?
 		}
@@ -112,13 +117,13 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 		{
 			if (tmp->right->type == TOKEN_STR)
 			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right, env, i);
+				tmp->fd_heredoc = ft_heredoc(tmp->right, data, i);
 				if (g_signal == 130)
 					return ;
 			}
 			else
 			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right->left, env, i);
+				tmp->fd_heredoc = ft_heredoc(tmp->right->left, data, i);
 				if (g_signal == 130)
 					return ;
 			}
@@ -129,19 +134,3 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 		tmp = tmp->right;
 	}
 }
-
-// void	check_heredoc(t_ast_node **ast, t_env **env)
-// {
-// 	int	pid;
-
-// 	pid = fork();
-// 	signal(SIGINT, SIG_IGN);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	if (pid == -1)
-// 		return ;
-// 	if (pid == 0)
-// 		check_heredoc2(ast, env);
-// 	else
-// 		wait(&pid);
-// 	return ;
-// }
