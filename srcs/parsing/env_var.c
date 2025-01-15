@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/09 16:15:42 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:40:25 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	move_index_quote(char *str, int i, char c)
 	return (j);
 }
 
-static char	*expand_var_env(char *new_str, int i, t_env *env)
+static char	*expand_var_env(char *new_str, int i, t_data *data)
 {
 	int		j;
 	char	**tmp;
@@ -70,7 +70,7 @@ static char	*expand_var_env(char *new_str, int i, t_env *env)
 	tmp[0] = ft_substr(new_str, i, j);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
-	tmp[0] = change_value(tmp[0], env);
+	tmp[0] = change_value(tmp[0], data);
 	tmp[1] = ft_substr(new_str, 0, i - 1);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
@@ -80,7 +80,50 @@ static char	*expand_var_env(char *new_str, int i, t_env *env)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-static void	change_value_if(t_token **tok, t_env *env, int bool)
+static void	change_value_env_var(t_token **tok, t_data *data, int bool)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	tmp = NULL;
+	i = 0;
+	while ((*tok)->value[i])
+	{
+		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
+		{
+			j = (*tok)->value[i];
+			i++;
+			while ((*tok)->value[i] && (*tok)->value[i] != j)
+				i++;
+		}
+		if ((*tok)->value[i] == '$' && bool == 0)
+		{
+			if ((*tok)->value[i + 1] == '\0')
+				break ;
+			(*tok)->value = expand_var_env((*tok)->value, i + 1, data);
+		}
+		else
+			i++;
+	}
+	i = 0;
+	if ((*tok)->value[i] == '\0')
+		return ;
+	if (ft_is_space((*tok)->value[ft_strlen((*tok)->value) - 1]) == 0)
+	{
+		tmp = ft_substr((*tok)->value, 0, i -1);
+		if (!tmp)
+			return ;
+		free((*tok)->value);
+		(*tok)->value = ft_strdup(tmp);
+		if (!(*tok)->value)
+			return ;
+		free(tmp);
+	}
+
+}
+
+static void	quotes_process(t_token **tok, t_data *data, int bool)
 {
 	int	i;
 	int	j;
@@ -91,29 +134,17 @@ static void	change_value_if(t_token **tok, t_env *env, int bool)
 		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
 		{
 			j = i;
-			if ((*tok)->value[j] == 34 && bool == 0)
-				(*tok)->value = handle_double_quote((*tok)->value, j, env);
+			if ((*tok)->value[j] == 34 && bool != 1)
+				(*tok)->value = handle_double_quote((*tok)->value, j, data);
 			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
 			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
-			if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
-			{
-				i++;
-				if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
-					i++;
-			}
-		}
-		else if ((*tok)->value[i] == '$' && bool == 0)
-		{
-			if ((*tok)->value[i + 1] == '\0')
-				break ;
-			(*tok)->value = expand_var_env((*tok)->value, i + 1, env);
 		}
 		else
 			i++;
 	}
 }
 
-t_token	*expand_str(t_token *tok, t_env *env)
+t_token	*expand_str(t_token *tok, t_data *data)
 {
 	t_token	*tmp;
 	int		bool;
@@ -125,9 +156,12 @@ t_token	*expand_str(t_token *tok, t_env *env)
 		if (tok->type == TOKEN_REDIR_HEREDOC && (tok->next->type == TOKEN_STR
 				|| tok->next->type == TOKEN_ENV_VAR))
 			bool = 1;
-		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
+		else if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR
+			&& (tok->next->type == TOKEN_STR || tok->next->type == TOKEN_ENV_VAR))
+			bool = 2;
+		else if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			change_value_if(&tok, env, bool);
+			change_value_env_var(&tok, data, bool);
 			if (!tok->value)
 				return (ft_free(&tok), NULL);
 			tok->type = TOKEN_STR;
@@ -136,5 +170,22 @@ t_token	*expand_str(t_token *tok, t_env *env)
 	}
 	tok = tmp;
 	sup_node_if(&tok);
+	if (!tok)
+		return (NULL);
+	while (tok)
+	{
+		if (tok->type == TOKEN_REDIR_HEREDOC && (tok->next->type == TOKEN_STR
+				|| tok->next->type == TOKEN_ENV_VAR))
+			bool = 1;
+		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
+		{
+			quotes_process(&tok, data, bool);
+			if (!tok->value)
+				return (ft_free(&tok), NULL);
+			tok->type = TOKEN_STR;
+		}
+		tok = tok->next;
+	}
+	tok = tmp;
 	return (tok);
 }

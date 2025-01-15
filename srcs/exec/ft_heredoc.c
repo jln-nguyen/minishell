@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/09 16:00:16 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:49:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,35 @@
 void	heredoc_sig(int signal)
 {
 	(void)signal;
-	g_exit_status = 130;
-	close(STDIN_FILENO);
-	printf("\n");
+	g_signal = 130;
+	// close(STDIN_FILENO);
 	rl_replace_line("", 0);
+	printf("\n");
+	rl_redisplay();
 	rl_on_new_line();
+	rl_done = 1;
 }
 
-void	ft_read(char *end, t_env **env, int fd)
+int	event(void)
+{
+	return (0);
+}
+
+void	ft_read(char *end, t_data *data, int fd)
 {
 	char		*line;
 	int			i;
-	int			old_stdin;
+	// int			old_stdin;
 
-	old_stdin = dup(STDIN_FILENO);
+	// old_stdin = dup(STDIN_FILENO);
+	rl_event_hook = event;
 	while (1)
 	{
 		line = readline("> ");
-		if (g_exit_status == 130)
+		if (g_signal == 130)
 		{
-			dup2(old_stdin, STDIN_FILENO);
-			close(old_stdin);
+			// dup2(old_stdin, STDIN_FILENO);
+			// close(old_stdin);
 			break ;
 		}
 		if (!line)
@@ -48,20 +56,27 @@ void	ft_read(char *end, t_env **env, int fd)
 			free(line);
 			break ;
 		}
-		i = -1;
-		while (line[++i])
+		i = 0;
+		while (line[i])
+		{
 			if (line[i] == '$')
-				line = change_str(line, i + 1, *env);
+				line = change_str(line, i + 1, data);
+			if (line[i] == '\0')
+				break ;
+			else
+				i++;
+		}
 		if (!line)
 			return ; // protect
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	close(old_stdin);
+	// close(old_stdin);
 }
 
-int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
+
+int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 {
 	int		fd;
 	char	*file;
@@ -73,8 +88,8 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
-	ft_read(ast->args[0], env, fd);
-	if (g_exit_status == 130)
+	ft_read(ast->args[0], data, fd);
+	if (g_signal == 130)
 	{
 		unlink(file);
 		close(fd);
@@ -90,21 +105,20 @@ int	ft_heredoc(t_ast_node *ast, t_env **env, int i)
 	return (fd);
 }
 
-void	check_heredoc(t_ast_node **ast, t_env **env)
+void	check_heredoc(t_ast_node **ast, t_data *data)
 {
 	t_ast_node	*tmp;
 	int			i;
 
 	i = 0;
 	tmp = *ast;
-	g_exit_status = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, heredoc_sig);
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_PIPE)
 		{
-			check_heredoc(&(tmp)->left, env);
+			check_heredoc(&(tmp)->left, data);
 			if (tmp->fd_heredoc < 0)
 				return (ft_putstr_fd("errorbbb\n", STDERR_FILENO), (void)-1); //?
 		}
@@ -112,14 +126,14 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 		{
 			if (tmp->right->type == TOKEN_STR)
 			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right, env, i);
-				if (g_exit_status == 130)
+				tmp->fd_heredoc = ft_heredoc(tmp->right, data, i);
+				if (g_signal == 130)
 					return ;
 			}
 			else
 			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right->left, env, i);
-				if (g_exit_status == 130)
+				tmp->fd_heredoc = ft_heredoc(tmp->right->left, data, i);
+				if (g_signal == 130)
 					return ;
 			}
 			i++;
@@ -129,19 +143,3 @@ void	check_heredoc(t_ast_node **ast, t_env **env)
 		tmp = tmp->right;
 	}
 }
-
-// void	check_heredoc(t_ast_node **ast, t_env **env)
-// {
-// 	int	pid;
-
-// 	pid = fork();
-// 	signal(SIGINT, SIG_IGN);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	if (pid == -1)
-// 		return ;
-// 	if (pid == 0)
-// 		check_heredoc2(ast, env);
-// 	else
-// 		wait(&pid);
-// 	return ;
-// }

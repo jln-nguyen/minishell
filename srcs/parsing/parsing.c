@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:53:15 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/14 18:20:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_tok(t_token *tok)
 	return (0);
 }
 
-t_ast_node	*ft_parsing(char *cmd, t_env *env)
+t_ast_node	*ft_parsing(char *cmd, t_data *data)
 {
 	t_ast_node	*ast;
 	t_token		*tok;
@@ -43,21 +43,14 @@ t_ast_node	*ft_parsing(char *cmd, t_env *env)
 	ast = NULL;
 	tok = NULL;
 	if (check_syntax(cmd) != 0)
-		return (free(cmd), NULL);
-	tok = ft_token(cmd, env);
+		return (data->exit_code = 1,free(cmd), NULL);
+	tok = ft_token(cmd, data);
 	if (!tok)
 		return (free(cmd), NULL);
-	// if (check_tok(tok) == -1)
-	// {
-	// 	ft_putstr_fd("Syntax error\n", STDERR_FILENO);
-	// 	return (free(cmd), ft_free(&tok), NULL);
-	// }	
-	// print_token(tok); //a supp
 	free(cmd);
 	ast = parsing_token(tok, -1);
 	if (!ast)
 		return (ft_free(&tok), NULL);
-	generate_ast_diagram(ast); // a supp
 	ft_free(&tok);
 	return (ast);
 }

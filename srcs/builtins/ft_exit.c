@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/10 16:20:09 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:26:24 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@ long	ft_atol(const char *str)
 	return (num);
 }
 
-void	ft_end(t_ast_node **ast, t_env **env, int n, char *arg)
+void	ft_end(t_data *data, int n, char *arg)
 {
 	ft_printf(STDOUT_FILENO, "exit\n");
 	if (n == -1)
 	{
-		g_exit_status = 2;
+		data->exit_code = 2;
 		ft_printf(STDERR_FILENO, "Minishell: exit: %s: numeric argument required\n", arg);
 	}
-	ft_free_ast(ast);
-	ft_free_env(env);
-	exit(g_exit_status);
+	ft_free_ast(&data->ast);
+	ft_free_env(&data->env);
+	exit(data->exit_code);
 }
 
-long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
+long	ft_isvalid(char *n, t_data *data)
 {
 	long	i;
 	int		signe;
@@ -68,13 +68,13 @@ long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
 	while (n[i])
 	{
 		if (!n[i] || n[i] < '0' || n[i] > '9')
-			ft_end(ast, env, -1, n);
+			ft_end(data, -1, n);
 		i++;
 	}
 	if ((i >= 19 && signe == 0) || (i >= 20 && signe == -1))
 	{
 		if ((i > 20 && signe == -1) || (i > 19 && signe == 0))
-			ft_end(ast, env, -1, n);
+			ft_end(data, -1, n);
 		else
 		{
 			if (i == 19)
@@ -85,7 +85,7 @@ long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
 			if (i > 9223372036 || i < -9223372036)
 			{
 				free(tmp[0]);
-				ft_end(ast, env, -1, n);
+				ft_end(data, -1, n);
 			}
 			if (i == 9223372036 || i == -9223372036)
 			{
@@ -98,7 +98,7 @@ long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
 				{
 					free(tmp[0]);
 					free(tmp[1]);
-					ft_end(ast, env, -1, n);
+					ft_end(data, -1, n);
 				}
 			}
 			free(tmp[0]);
@@ -108,20 +108,18 @@ long	ft_isvalid(char *n, t_ast_node **ast, t_env **env)
 	return (ft_atol(n));
 }
 
-void	ft_exit(char **args, t_ast_node **ast, t_env **env)
+void	ft_exit(t_data *data, char **args)
 {
 	long	nb;
 
-	(void)ast;
-	(void)env;
 	if (!args[1])
-		ft_end(ast, env, 0, NULL);
-	nb = ft_isvalid(args[1], ast, env);
+		ft_end(data, 0, NULL);
+	nb = ft_isvalid(args[1], data);
 	if (args[1] && args[2])
-		return (g_exit_status = 1, (void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
+		return (data->exit_code = 1, (void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
 	if (nb >= 0 && nb <= 255)
-		g_exit_status = nb;
+		data->exit_code = nb;
 	else
-		g_exit_status = nb % 256;
-	ft_end(ast, env, 0, NULL);
+		data->exit_code = nb % 256;
+	ft_end(data, 0, NULL);
 }

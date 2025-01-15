@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
+#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2024/12/12 10:48:46 by bvictoir         ###   ########.fr        #
+#    Updated: 2025/01/14 18:26:30 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,7 @@ SRC_PATH = srcs/
 OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
-SRC		= a_supp.c					\
-		ast_visu.c					\
-		main.c						\
+SRC		= main.c						\
 		parsing/syntax_checker.c	\
 		parsing/tok_utils.c			\
 		parsing/token.c				\

@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/09 16:13:12 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 13:38:34 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*change_str(char *str, int i, t_env *env)
+char	*change_str(char *str, int i, t_data *data)
 {
 	int		j;
 	char	**tmp;
@@ -36,7 +36,7 @@ char	*change_str(char *str, int i, t_env *env)
 	tmp[0] = ft_substr(str, i, j);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
-	tmp[0] = change_value(tmp[0], env);
+	tmp[0] = change_value(tmp[0], data);
 	tmp[1] = ft_substr(str, 0, i - 1);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
@@ -46,7 +46,7 @@ char	*change_str(char *str, int i, t_env *env)
 	return (ft_free_tab_var_env(&tmp), str);
 }
 
-static char	*check_expand_var(char *str, int i, int j, t_env *env)
+static char	*check_expand_var(char *str, int i, int j, t_data *data)
 {
 	char	*new_str;
 
@@ -59,18 +59,19 @@ static char	*check_expand_var(char *str, int i, int j, t_env *env)
 	{
 		if (new_str[i] == '$')
 		{
-			new_str = change_str(new_str, i + 1, env);
+			new_str = change_str(new_str, i + 1, data);
 			if (!new_str)
 				return (NULL);
 			if (new_str[i] == '\0')
 				break ;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (new_str);
 }
 
-char	*handle_double_quote(char *str, int i, t_env *env)
+char	*handle_double_quote(char *str, int i, t_data *data)
 {
 	int		j;
 	char	**tmp;
@@ -90,7 +91,7 @@ char	*handle_double_quote(char *str, int i, t_env *env)
 	tmp[1] = ft_substr(str, 0, i);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), NULL);
-	tmp[0] = check_expand_var(str, i, j, env);
+	tmp[0] = check_expand_var(str, i, j, data);
 	if (!tmp[0]) 
 		return (ft_free_tab_var_env(&tmp), NULL);
 	new_str = ft_pre_bigjoin(str, tmp, i, j);
@@ -134,8 +135,8 @@ char	*remove_quote(char *str, int i, char c)
 	i++;
 	while (str[i + j] && str[i + j] != c)
 		j++;
-	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
-		return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
+	// if (j == 0 && i == 1 && str[i + j + 1] == '\0')
+	// 	return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
 	new_str = handle_quote(str, i, j);
 	free(str);
 	if (!new_str)

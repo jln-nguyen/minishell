@@ -6,33 +6,81 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 13:35:03 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:17:24 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:43:41 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*skip_ws(const char *s1, int i)
+{
+	int		skip;
+	char	*str;
+
+	skip = 0;
+	str = malloc(sizeof(char) * (i + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (s1[i + skip])
+	{
+		if (ft_is_space(s1[i + skip]) == 0)
+		{
+			str[i] = s1[i + skip];
+			i++;
+		}
+		while (s1[i + skip] && ft_is_space(s1[i + skip]) == 0)
+			skip++;
+		while (s1[i + skip] && ft_is_space(s1[i + skip]) != 0)
+		{
+			str[i] = s1[i + skip];
+			i++;
+		}
+	}
+	str[i] = '\0';
+	return (str);
+}
+
 static char	*ft_strtrim_whitespace(const char *s1)
 {
-	size_t	start;
-	size_t	end;
+	int		skip;
+	int		i;
 	char	*str;
 
 	if (!s1)
 		return (NULL);
-	start = 0;
-	if (s1[start] == '"')
-		start++;
-	while (s1[start] && ft_is_space(s1[start]) == 0)
-		start++;
-	end = ft_strlen(s1);
-	while (end > start && ft_is_space(s1[end - 1]) == 0)
-		end--;
-	str = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!str)
+	skip = 0;
+	i = 0;
+	while (s1[i + skip])
+	{
+		if (ft_is_space(s1[i + skip]) == 0)
+			i++;
+		while (s1[i + skip] && ft_is_space(s1[i + skip]) == 0)
+			skip++;
+		while (s1[i + skip] && ft_is_space(s1[i + skip]) != 0)
+			i++;
+	}
+	if (i == 1 && (ft_is_space(s1[0]) == 0))
 		return (NULL);
-	ft_strlcpy(str, s1 + start, end - start + 1);
+	str = skip_ws(s1, i);
+	if (!str)
+		return (NULL); //protect
 	return (str);
+}
+
+static char	*ft_remove_space(char *str, int n)
+{
+	char	*new_str;
+
+	new_str = NULL;
+	if (n == 0)
+		new_str = ft_substr(str, 1, ft_strlen(str));
+	else
+		new_str = ft_substr(str, 0, ft_strlen(str) - 1);
+	if (!new_str)
+		return (NULL);
+	free(str);
+	return (new_str);
 }
 
 void	check_whitespace(char **tmp)
@@ -41,20 +89,34 @@ void	check_whitespace(char **tmp)
 
 	str = ft_strtrim_whitespace(tmp[0]);
 	if (!str)
+	{
+		free(tmp[0]);
+		tmp[0] = NULL;
 		return ; //protect malloc
+	}
 	free(tmp[0]);
-	if (ft_strlen(tmp[1]) > 0 && ft_strlen(tmp[2]) > 0)
-		tmp[0] = ft_strbigjoin(" ", str, " ");
-	else if (ft_strlen(tmp[1]) > 0
-		&& ft_is_space(tmp[1][ft_strlen(tmp[1]) - 1]) == 1)
-		tmp[0] = ft_strjoin(" ", str);
-	else if (ft_strlen(tmp[2]) > 0 && ft_is_space(tmp[2][0]) == '$')
-		tmp[0] = ft_strjoin(str, " ");
-	else
-		tmp[0] = ft_strdup(str);
-	if (!tmp[0])
-		return ; //protect malloc
+	if (ft_strlen(tmp[1]) == 0 || (ft_strlen(tmp[1]) > 0 && ft_is_space(tmp[1][ft_strlen(tmp[1]) - 1]) == 0))
+	{
+		if (ft_is_space(str[0]) == 0)
+		{
+			str = ft_remove_space(str, 0);
+			if (!str)
+				return ; //protect
+		}
+	}
+	if (ft_strlen(tmp[2]) == 0 || (ft_strlen(tmp[2]) > 0 && ft_is_space(tmp[2][0]) == 0))
+	{
+		if (ft_is_space(str[ft_strlen(str) - 1]) == 0)
+		{
+			str = ft_remove_space(str, 1);
+			if (!str)
+				return ; //protect
+		}
+	}
+	tmp[0] = ft_strdup(str);
 	free(str);
+	if (!tmp[0])
+		return ; //protect
 }
 
 char	*ft_pre_bigjoin_trim(char *new_str, char **tmp, int i, int j)

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/19 18:10:14 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:31:18 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,27 @@ char	*ft_strbigjoin(const char *s1, const char *s2, const char *s3)
 	return (str);
 }
 
-char	*change_value(char *var, t_env *env)
+char	*change_value(char *var, t_data *data)
 {
 	char	*tmp;
+	t_env	*tmp_env;
 
 	tmp = NULL;
 	if (!var)
 		return (NULL);
+	tmp_env = data->env;
 	if (var[0] == '?')
-		return (free(var), tmp = ft_itoa(g_exit_status));
-	while (env)
+		return (free(var), tmp = ft_itoa(data->exit_code)); //remettre t_data
+	while (tmp_env)
 	{
-		if (ft_strcmp(var, env->key) == 0)
+		if (ft_strcmp(var, tmp_env->key) == 0)
 		{
-			tmp = ft_strdup(env->value);
+			tmp = ft_strdup(tmp_env->value);
 			if (!tmp)
 				return (NULL);
 			return (free(var), tmp);
 		}
-		env = env->next;
+		tmp_env = tmp_env->next;
 	}
 	return (free(var), NULL);
 }
