@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 16:37:15 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 13:11:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	g_signal;
 void	sigint_process(int signal)
 {
 	if (signal == SIGQUIT)
-		printf("Quit (core dumped)");
-	printf("\n");
+		printf("Quit (core dumped)\n");
+	// printf("\n");
 }
 
 void	sigint_handler(int signal)
@@ -80,7 +80,13 @@ void	prompt(t_data *data)
 			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
 		tmp = readline(gwd);
 		if (!tmp)
-			return (printf("exit\n"), free(gwd));
+		{
+			printf("exit\n");
+			ft_free_env(&data->env);
+			if (g_signal != 0)
+				exit(g_signal);
+			exit(data->exit_code);
+		}
 		if (g_signal == 130)
 		{
 			data->exit_code = 130;
@@ -94,6 +100,7 @@ void	prompt(t_data *data)
 			ft_check_heredoc(&data->ast, data);
 			ft_free_ast(&data->ast);
 		}
+		// rl_clear_history();
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/14 15:12:09 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:49:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,34 @@ void	heredoc_sig(int signal)
 {
 	(void)signal;
 	g_signal = 130;
-	close(STDIN_FILENO);
-	printf("\n");
+	// close(STDIN_FILENO);
 	rl_replace_line("", 0);
+	printf("\n");
+	rl_redisplay();
 	rl_on_new_line();
+	rl_done = 1;
+}
+
+int	event(void)
+{
+	return (0);
 }
 
 void	ft_read(char *end, t_data *data, int fd)
 {
 	char		*line;
 	int			i;
-	int			old_stdin;
+	// int			old_stdin;
 
-	old_stdin = dup(STDIN_FILENO);
+	// old_stdin = dup(STDIN_FILENO);
+	rl_event_hook = event;
 	while (1)
 	{
 		line = readline("> ");
 		if (g_signal == 130)
 		{
-			dup2(old_stdin, STDIN_FILENO);
-			close(old_stdin);
+			// dup2(old_stdin, STDIN_FILENO);
+			// close(old_stdin);
 			break ;
 		}
 		if (!line)
@@ -64,8 +72,9 @@ void	ft_read(char *end, t_data *data, int fd)
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	close(old_stdin);
+	// close(old_stdin);
 }
+
 
 int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 {

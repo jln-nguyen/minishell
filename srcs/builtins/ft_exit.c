@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/14 13:46:33 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 12:22:49 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ long	ft_isvalid(char *n, t_data *data)
 
 void	ft_exit(t_data *data, char **args)
 {
-	int		i;
+	// int		i;
 	long	nb;
 
-	i = 0;
+	// i = 0;
 	if (!args[1])
 		ft_end(data, 0, NULL);
 	nb = ft_isvalid(args[1], data);
