@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 18:20:17 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:38:43 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_ast_node	*ft_parsing(char *cmd, t_data *data)
 	ast = NULL;
 	tok = NULL;
 	if (check_syntax(cmd) != 0)
-		return (data->exit_code = 1,free(cmd), NULL);
+		return (data->exit_code = 2,free(cmd), NULL);
 	tok = ft_token(cmd, data);
 	if (!tok)
 		return (free(cmd), NULL);

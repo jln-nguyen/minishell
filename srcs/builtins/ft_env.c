@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:35 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/08 14:02:24 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 15:38:12 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_env(t_ast_node *ast, t_env **env)
 	else if (ast->args[1])
 	{
 		ft_printf(2, "too many argument\n");
-		return (EXIT_FAILURE);
+		return (127);
 	}
 	tmp = *env;
 	while (tmp)

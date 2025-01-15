@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/15 13:11:12 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 18:16:15 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	prompt(t_data *data)
 		if (!gwd)
 			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
 		tmp = readline(gwd);
+		free(gwd);
 		if (!tmp)
 		{
 			printf("exit\n");
@@ -93,7 +94,6 @@ void	prompt(t_data *data)
 			g_signal = 0;
 		}
 		add_history(tmp);
-		free(gwd);
 		data->ast = ft_parsing(tmp, data);
 		if (data->ast)
 		{

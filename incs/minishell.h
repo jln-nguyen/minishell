@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/14 18:28:57 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 18:04:39 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,21 @@ typedef struct s_data
 
 extern int	g_signal;
 
-void		ft_pwd(void);
-void		print_env(t_env *env);
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
-void		print_token(t_token *tok); //a supp
-void		print_ast(t_ast_node *ast);
 void		sigint_handler(int signal);
 void		sigint_process(int signal);
+void		ft_create_env(t_data *data);
 void		sigquit_handler(int signal);
 void		check_whitespace(char **tmp);
 void		ft_print_export(t_env **env);
 void		search_cmd(t_ast_node **ast);
 void		ft_free_ast(t_ast_node **tok);
 void		ft_free_tab_var_env(char ***tab);
+void		ft_exit(t_data *data, char **args);
+void		ft_getenv(t_data *data, char **envp);
 void		ft_exec(t_data *data, t_ast_node **ast);
 void		ft_unset(t_env **env, t_ast_node *tok);
-void		generate_ast_diagram(t_ast_node *root);
 void		exec_cmd(t_data *data, t_ast_node **ast);
 void		ft_redir(t_data *data, t_ast_node **ast);
 void		exec_pipe(t_data *data, t_ast_node **ast);
@@ -94,21 +92,21 @@ void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
-void		ft_exit(t_data *data, char **args);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
 
-int			ft_execve(char **env, t_ast_node **ast, t_data *data);
-int			expand_env(t_data *data, char *str_key, char *str_val);
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
+int			expand_env(t_data *data, char *str_key, char *str_val);
+int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_export(t_env **env, t_ast_node *tok);
+int			check_syntax(char *str);
 int			ft_env(t_ast_node *ast, t_env **env);
 int			ft_redir_out(t_ast_node *ast);
 int			ft_cd(char *str, t_data *data);
 int			move_index(t_token *tok);
 int			check_tok(t_token *tok);
-int			check_syntax(char *str);
+int			ft_pwd(t_ast_node *ast);
 int			ft_is_space(char str);
 int			ft_echo(char **args);
 
@@ -124,8 +122,6 @@ char		*ft_pre_bigjoin_trim(char *new_str, char **tmp, int i, int j);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 
 t_env		*new_env(char *str_key, char *str_val);
-void		ft_getenv(t_data *data, char **envp);
-void		ft_create_env(t_data *data);
 
 t_token		*ft_del_last(t_token *tok);
 t_token		*ft_token(char *str, t_data *data);

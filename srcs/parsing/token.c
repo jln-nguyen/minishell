@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 13:34:36 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:02:24 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ t_token	*ft_token(char *str, t_data *data)
 	if (check_tok(tok) == -1)
 	{
 		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
+		data->exit_code = 2;
 		return (ft_free(&tok), NULL);
 	}	
 	tok = expand_str(tok, data);

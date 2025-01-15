@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/08 13:59:39 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 17:40:17 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	ft_check_key(char *str)
 			return (0);
 		i++;
 	}
-	return (1);
+	return (2);
 }
 
 static void	ft_update_env(t_env **env, char *key, char *value, int bool)
@@ -36,10 +36,13 @@ static void	ft_update_env(t_env **env, char *key, char *value, int bool)
 	tmp = *env;
 	while (tmp)
 	{
-		if (!ft_strcmp(tmp->key, key) && bool)
+		if (!ft_strcmp(tmp->key, key))
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
+			if (bool)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(value);
+			}
 			return ;
 		}
 		if (!ft_strcmp(tmp->next->key, "_"))
@@ -92,11 +95,19 @@ static int	ft_process_arg(t_env **env, t_ast_node *ast, int i)
 
 static int	ft_exporting(t_env **env, t_ast_node *ast)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
+	char	*sub;
 
 	i = 0;
 	status = EXIT_SUCCESS;
+	if (ast->args[1][0] == '-' && ast->args[1][1])
+	{
+		sub = ft_substr(ast->args[1], 0, 2);
+		printf("export: %s: invalid option\n", sub);
+		free(sub);
+		return (2);
+	}
 	while (ast->args[++i])
 	{
 		if (ft_process_arg(env, ast, i) == EXIT_FAILURE)

@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:04 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/07 14:45:57 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:23:19 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	ft_echo(char **args)
 
 	i = 1;
 	if (!args || !*args || !args[1])
-		return (printf("\n"));
+	{
+		printf("\n");
+		return (EXIT_SUCCESS);
+	}
 	n = ft_option(args[i]);
 	while (args[i] && ft_option(args[i]))
 		i++;
