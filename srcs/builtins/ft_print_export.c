@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2024/12/20 15:52:33 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 21:14:56 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,48 @@ void	ft_print_export(t_env **env)
 	}
 	tab = malloc(sizeof(t_env *) * count);
 	if (!tab)
-		return ; // protect
+		return ;
 	order_tab(tab, env, count);
 	i = -1;
 	while (++i < count)
 		ft_is_print(tab[i]);
 	free(tab);
+}
+
+static void	ft_add_env(t_env *tmp, char *key, char *value)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return ;
+	new->key = ft_strdup(key);
+	new->value = NULL;
+	if (value)
+		new->value = ft_strdup(value);
+	new->next = tmp->next;
+	tmp->next = new;
+}
+
+void	ft_update_env(t_env **env, char *key, char *value, int bool)
+{
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, key))
+		{
+			if (bool)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(value);
+			}
+			return ;
+		}
+		if (!ft_strcmp(tmp->next->key, "_"))
+			break ;
+		tmp = tmp->next;
+	}
+	ft_add_env(tmp, key, value);
 }

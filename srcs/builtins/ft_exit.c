@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 14:26:24 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 23:05:05 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,65 +45,115 @@ void	ft_end(t_data *data, int n, char *arg)
 	if (n == -1)
 	{
 		data->exit_code = 2;
-		ft_printf(STDERR_FILENO, "Minishell: exit: %s: numeric argument required\n", arg);
+		ft_printf(STDERR_FILENO, 
+			"Minishell: exit: %s: numeric argument required\n", arg);
 	}
+	free(arg);
 	ft_free_ast(&data->ast);
 	ft_free_env(&data->env);
 	exit(data->exit_code);
 }
 
-long	ft_isvalid(char *n, t_data *data)
+static void	check_long_lims(char *n, t_data *data, int signe, char *tmp[2])
 {
 	long	i;
-	int		signe;
-	char	*tmp[3];
 
-	i = 0;
-	signe = 0;
-	if (n[i] == '-')
+	if (signe == 0)
+		tmp[1] = ft_substr(n, 10, ft_strlen(n));
+	else
+		tmp[1] = ft_substr(n, 11, ft_strlen(n));
+	i = ft_atol(tmp[1]);
+	if ((i > 854775807 && (signe == 0 || signe == 1)) || (i > 854775808
+			&& signe == -1))
 	{
-		i++;
-		signe = -1;
+		free(tmp[0]);
+		free(tmp[1]);
+		ft_end(data, -1, n);
 	}
+	free(tmp[0]);
+	free(tmp[1]);
+}
+
+static void	handle_long_num(char *n, t_data *data, int signe, long len)
+{
+	char	*tmp[2];
+	long	i;
+
+	if (len == 19)
+		tmp[0] = ft_substr(n, 0, 10);
+	else
+		tmp[0] = ft_substr(n, 0, 11);
+	i = ft_atol(tmp[0]);
+	if (i > 9223372036 || i < -9223372036)
+	{
+		free(tmp[0]);
+		ft_end(data, -1, n);
+	}
+	if (i == 9223372036 || i == -9223372036)
+		check_long_lims(n, data, signe, tmp);
+	else
+		free(tmp[0]);
+}
+
+static char	*ft_supp_before_zero(char *n)
+{
+	size_t	start;
+	size_t	end;
+	char	*str;
+	char	sign;
+
+	if (!n)
+		return (ft_strdup(""));
+	start = 0;
+	sign = 0;
+	if (n[start] == '+' || n[start] == '-')
+	{
+		sign = n[start];
+		start++;
+	}
+	while (n[start] && n[start] == '0')
+		start++;
+	end = ft_strlen(n);
+	str = (char *)malloc(sizeof(char) * (end - start + 2));
+	if (!str)
+		return (NULL);
+	if (sign)
+		str[0] = sign;
+	ft_strlcpy(str + (sign != 0), n + start, end - start + 1);
+	return (str);
+}
+
+static void	check_sign(char *n, t_data *data, long *i, int *signe)
+{
+	if (n[*i] == '+' || n[*i] == '-')
+	{
+		if (n[*i] == '-')
+			*signe = -1;
+		if (n[*i] == '+')
+			*signe = 1;
+		if (n[*i + 1] == '+' || n[*i + 1] == '-')
+			ft_end(data, -1, n);
+		(*i)++;
+	}
+}
+
+static long	ft_isnum(char *n, t_data *data, long i, int signe)
+{
+	check_sign(n, data, &i, &signe);
 	while (n[i])
 	{
 		if (!n[i] || n[i] < '0' || n[i] > '9')
 			ft_end(data, -1, n);
 		i++;
 	}
-	if ((i >= 19 && signe == 0) || (i >= 20 && signe == -1))
+	if ((i >= 20 && signe == 1) || (i >= 19 && signe == 0) || (i >= 20
+			&& signe == -1))
 	{
-		if ((i > 20 && signe == -1) || (i > 19 && signe == 0))
+		if ((i > 20 && signe == -1) || (i > 19 && signe == 0) || (i > 20
+				&& signe == 1))
 			ft_end(data, -1, n);
 		else
-		{
-			if (i == 19)
-				tmp[0] = ft_substr(n, 0, 10);
-			else
-				tmp[0] = ft_substr(n, 0, 11);
-			i = ft_atol(tmp[0]);
-			if (i > 9223372036 || i < -9223372036)
-			{
-				free(tmp[0]);
-				ft_end(data, -1, n);
-			}
-			if (i == 9223372036 || i == -9223372036)
-			{
-				if (signe == 0)
-					tmp[1] = ft_substr(n, 10, ft_strlen(n));
-				else
-					tmp[1] = ft_substr(n, 11, ft_strlen(n));
-				i = ft_atol(tmp[1]);
-				if ((i > 854775807 && signe == 0) || (i > 854775808 && signe == -1))
-				{
-					free(tmp[0]);
-					free(tmp[1]);
-					ft_end(data, -1, n);
-				}
-			}
-			free(tmp[0]);
-			free(tmp[1]);
-		}
+			handle_long_num(n, data, signe, i);
 	}
 	return (ft_atol(n));
 }
@@ -111,12 +161,21 @@ long	ft_isvalid(char *n, t_data *data)
 void	ft_exit(t_data *data, char **args)
 {
 	long	nb;
+	char	*tmp;
 
 	if (!args[1])
 		ft_end(data, 0, NULL);
-	nb = ft_isvalid(args[1], data);
+	tmp = ft_supp_before_zero(args[1]);
+	if (!tmp)
+		ft_end(data, -1, args[1]);
+	nb = ft_isnum(tmp, data, 0, 0);
+	free(tmp);
 	if (args[1] && args[2])
-		return (data->exit_code = 1, (void)ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n"));
+	{
+		data->exit_code = 1;
+		ft_printf(STDERR_FILENO, "Minishell: exit: too many arguments\n");
+		return ;
+	}
 	if (nb >= 0 && nb <= 255)
 		data->exit_code = nb;
 	else

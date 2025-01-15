@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 17:40:17 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/15 21:13:41 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,38 +26,6 @@ static int	ft_check_key(char *str)
 		i++;
 	}
 	return (2);
-}
-
-static void	ft_update_env(t_env **env, char *key, char *value, int bool)
-{
-	t_env	*tmp;
-	t_env	*new;
-
-	tmp = *env;
-	while (tmp)
-	{
-		if (!ft_strcmp(tmp->key, key))
-		{
-			if (bool)
-			{
-				free(tmp->value);
-				tmp->value = ft_strdup(value);
-			}
-			return ;
-		}
-		if (!ft_strcmp(tmp->next->key, "_"))
-			break ;
-		tmp = tmp->next;
-	}
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return ;
-	new->key = ft_strdup(key);
-	new->value = NULL;
-	if (value)
-		new->value = ft_strdup(value);
-	new->next = tmp->next;
-	tmp->next = new;
 }
 
 static char	*ft_get_key(t_ast_node *ast, t_env **env, char *key, int i)
