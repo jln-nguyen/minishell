@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 13:24:43 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:43:05 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ int	main(int ac, char **av, char **envp)
 	data.env = NULL;
 	data.ast = NULL;
 	data.exit_code = 0;
+	data.fd_in = 0;
+	data.fd_out = 0;
+	data.old_fd_in = 0;
+	data.old_fd_out = 0;
 	if (ac != 1)
 		return (-2);
 	(void)av;

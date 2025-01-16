@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:00 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:54:21 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	ft_free_tab(&env);
 	ft_free_ast(&data->ast);
 	ft_free_env(&data->env);
+	ft_reset_fd(data->old_fd_in, data->old_fd_out);
 	exit(126);
 }
 
@@ -118,7 +119,10 @@ int	ft_execve(char **env, t_ast_node **ast, t_data *data)
 	if (pid == -1)
 		return (EXIT_FAILURE);
 	if (pid == 0)
+	{
 		ft_process(env, ast, data);
+		ft_reset_fd(data->old_fd_in, data->old_fd_out);
+	}
 	else
 		wait(&pid);
 	if (WIFEXITED(pid))

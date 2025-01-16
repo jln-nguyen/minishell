@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 14:00:13 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:01:26 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ char	*handle_double_quote(char *str, int i, t_data *data)
 		return (NULL);
 	tmp[3] = 0;
 	tmp[1] = ft_substr(str, 0, i);
-	printf("%s\n", tmp[1]);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), NULL);
 	tmp[0] = check_expand_var(str, i, j, data);
