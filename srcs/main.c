@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/15 18:16:15 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/16 13:24:43 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ char	*color_gwd(char *gwd, t_data *data)
 	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
 	{
 		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
-		free(home);
 		free(gwd);
 		gwd = ft_strjoin("~", tmp);
 		free(tmp);
 	}
+	free(home);
 	tmp = ft_strbigjoin("\001\033[0;36m\033[1m\002", gwd, "\001\033[0m\002");
 	free(gwd);
 	return (tmp);

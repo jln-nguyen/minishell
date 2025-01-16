@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 18:40:25 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/16 14:00:40 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static void	quotes_process(t_token **tok, t_data *data, int bool)
 	i = 0;
 	while ((*tok)->value[i])
 	{
-		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
+		if (bool == 2 || (*tok)->value[i] == 39 || (*tok)->value[i] == 34)
 		{
 			j = i;
 			if ((*tok)->value[j] == 34 && bool != 1)
@@ -156,9 +156,9 @@ t_token	*expand_str(t_token *tok, t_data *data)
 		if (tok->type == TOKEN_REDIR_HEREDOC && (tok->next->type == TOKEN_STR
 				|| tok->next->type == TOKEN_ENV_VAR))
 			bool = 1;
-		else if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR
-			&& (tok->next->type == TOKEN_STR || tok->next->type == TOKEN_ENV_VAR))
-			bool = 2;
+		// else if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR && tok->type != TOKEN_PIPE
+		// 	&& (tok->next->type == TOKEN_STR || tok->next->type == TOKEN_ENV_VAR))
+		// 	bool = 2;
 		else if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
 			change_value_env_var(&tok, data, bool);
