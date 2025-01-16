@@ -6,53 +6,11 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 23:05:05 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/16 10:09:22 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-long	ft_atol(const char *str)
-{
-	int		i;
-	long	num;
-	long	signe;
-
-	signe = 1;
-	num = 0;
-	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			signe = -1;
-		i++;
-	}
-	while (ft_isdigit(str[i]))
-	{
-		num = (num * 10) + (str[i] - '0');
-		i++;
-	}
-	if (signe == -1)
-		num *= signe;
-	return (num);
-}
-
-void	ft_end(t_data *data, int n, char *arg)
-{
-	ft_printf(STDOUT_FILENO, "exit\n");
-	if (n == -1)
-	{
-		data->exit_code = 2;
-		ft_printf(STDERR_FILENO, 
-			"Minishell: exit: %s: numeric argument required\n", arg);
-	}
-	free(arg);
-	ft_free_ast(&data->ast);
-	ft_free_env(&data->env);
-	exit(data->exit_code);
-}
 
 static void	check_long_lims(char *n, t_data *data, int signe, char *tmp[2])
 {
@@ -95,6 +53,27 @@ static void	handle_long_num(char *n, t_data *data, int signe, long len)
 		free(tmp[0]);
 }
 
+static long	ft_isnum(char *n, t_data *data, long i, int signe)
+{
+	check_sign(n, data, &i, &signe);
+	while (n[i])
+	{
+		if (!n[i] || n[i] < '0' || n[i] > '9')
+			ft_end(data, -1, n);
+		i++;
+	}
+	if ((i >= 20 && signe == 1) || (i >= 19 && signe == 0) || (i >= 20
+			&& signe == -1))
+	{
+		if ((i > 20 && signe == -1) || (i > 19 && signe == 0) || (i > 20
+				&& signe == 1))
+			ft_end(data, -1, n);
+		else
+			handle_long_num(n, data, signe, i);
+	}
+	return (ft_atol(n));
+}
+
 static char	*ft_supp_before_zero(char *n)
 {
 	size_t	start;
@@ -121,41 +100,6 @@ static char	*ft_supp_before_zero(char *n)
 		str[0] = sign;
 	ft_strlcpy(str + (sign != 0), n + start, end - start + 1);
 	return (str);
-}
-
-static void	check_sign(char *n, t_data *data, long *i, int *signe)
-{
-	if (n[*i] == '+' || n[*i] == '-')
-	{
-		if (n[*i] == '-')
-			*signe = -1;
-		if (n[*i] == '+')
-			*signe = 1;
-		if (n[*i + 1] == '+' || n[*i + 1] == '-')
-			ft_end(data, -1, n);
-		(*i)++;
-	}
-}
-
-static long	ft_isnum(char *n, t_data *data, long i, int signe)
-{
-	check_sign(n, data, &i, &signe);
-	while (n[i])
-	{
-		if (!n[i] || n[i] < '0' || n[i] > '9')
-			ft_end(data, -1, n);
-		i++;
-	}
-	if ((i >= 20 && signe == 1) || (i >= 19 && signe == 0) || (i >= 20
-			&& signe == -1))
-	{
-		if ((i > 20 && signe == -1) || (i > 19 && signe == 0) || (i > 20
-				&& signe == 1))
-			ft_end(data, -1, n);
-		else
-			handle_long_num(n, data, signe, i);
-	}
-	return (ft_atol(n));
 }
 
 void	ft_exit(t_data *data, char **args)
