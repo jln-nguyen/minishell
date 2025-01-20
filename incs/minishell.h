@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/16 10:11:27 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:44:34 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ typedef struct s_env
 typedef struct s_data
 {
 	int			exit_code;
+	int			fd_in;
+	int			fd_out;
+	int			old_fd_in;
+	int			old_fd_out;
 	t_env		*env;
 	t_ast_node	*ast;
 }	t_data;
@@ -97,6 +101,7 @@ void		check_sign(char *n, t_data *data, long *i, int *signe);
 void		ft_update_env(t_env **env, char *key, char *value, int bool);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
+void	ft_reset_fd(int old_fd_in, int old_fd_out);
 
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
@@ -123,7 +128,7 @@ char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i, t_data *data);
 char		*handle_double_quote(char *str, int i, t_data *data);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
-char		*ft_pre_bigjoin_trim(char *new_str, char **tmp, int i, int j);
+char		*ft_pre_bigjoin_trim(char **tmp);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 
 t_env		*new_env(char *str_key, char *str_val);

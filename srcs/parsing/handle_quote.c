@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 13:38:34 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:01:26 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,17 @@ static char	*check_expand_var(char *str, int i, int j, t_data *data)
 	{
 		if (new_str[i] == '$')
 		{
-			new_str = change_str(new_str, i + 1, data);
-			if (!new_str)
-				return (NULL);
-			if (new_str[i] == '\0')
-				break ;
+			if (new_str[i + 1] == '\0' || ft_is_space(new_str[i + 1]) == 0
+				|| new_str[i + 1] == 39 || new_str[i + 1] == 34)
+				i++;
+			else
+			{
+				new_str = change_str(new_str, i + 1, data);
+				if (!new_str)
+					return (NULL);
+				if (new_str[i] == '\0')
+					break ;
+			}
 		}
 		else
 			i++;

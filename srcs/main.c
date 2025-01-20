@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 11:24:02 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:43:04 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ char	*color_gwd(char *gwd, t_data *data)
 	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
 	{
 		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
-		free(home);
 		free(gwd);
 		gwd = ft_strjoin("~", tmp);
 		free(tmp);
 	}
+	free(home);
 	tmp = ft_strbigjoin("\001\033[0;36m\033[1m\002", gwd, "\001\033[0m\002");
 	free(gwd);
 	return (tmp);
@@ -113,6 +113,10 @@ int	main(int ac, char **av, char **envp)
 	data.env = NULL;
 	data.ast = NULL;
 	data.exit_code = 0;
+	data.fd_in = 0;
+	data.fd_out = 0;
+	data.old_fd_in = 0;
+	data.old_fd_out = 0;
 	if (ac != 1)
 		return (-2);
 	(void)av;
