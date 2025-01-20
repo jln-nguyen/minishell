@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:07:33 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/16 10:12:06 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:54:32 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	ft_end(t_data *data, int n, char *arg)
 {
+	int	fd;
+
+	fd = 3;
 	ft_printf(STDOUT_FILENO, "exit\n");
 	if (n == -1)
 	{
@@ -24,6 +27,8 @@ void	ft_end(t_data *data, int n, char *arg)
 	free(arg);
 	ft_free_ast(&data->ast);
 	ft_free_env(&data->env);
+	while (fd < 1024)
+		close(fd++);
 	exit(data->exit_code);
 }
 

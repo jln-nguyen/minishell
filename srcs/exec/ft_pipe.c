@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 14:26:57 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:01:51 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		ft_exec(data, &(*ast)->left);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
+		pid = 3;
+		while (pid < 1024)
+			close(pid++);
 		exit(data->exit_code);
 	}
 	return (pid);
@@ -70,6 +73,9 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		ft_exec(data, &(*ast)->right);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
+		pid = 3;
+		while (pid < 1024)
+			close(pid++);
 		exit(data->exit_code);
 	}
 	return (pid);
