@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/15 18:16:15 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:24:02 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	prompt(t_data *data)
 			data->exit_code = 130;
 			g_signal = 0;
 		}
+		if (tmp[0] == '\0')
+			continue ;
 		add_history(tmp);
 		data->ast = ft_parsing(tmp, data);
 		if (data->ast)

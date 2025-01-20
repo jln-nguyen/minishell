@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 14:55:00 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/20 11:20:24 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,12 @@ char	*find_path(char *cmd, char **env)
 void	ft_process(char **env, t_ast_node **ast, t_data *data)
 {
 	char	*path;
+	int		fd;
 
 	path = NULL;
+	fd = 3;
+	while (fd < 1024)
+		close(fd++);
 	if (ft_strnstr((*ast)->args[0], "/", ft_strlen((*ast)->args[0])) != NULL)
 	{
 		if (access((*ast)->args[0], F_OK | X_OK) == 0)
