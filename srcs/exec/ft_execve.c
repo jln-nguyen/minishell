@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 17:54:21 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:43:01 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	char	*path;
 
 	path = NULL;
+	int i = 3;
+	while (i < 1024)
+		close(i++);
 	if (ft_strnstr((*ast)->args[0], "/", ft_strlen((*ast)->args[0])) != NULL)
 	{
 		if (access((*ast)->args[0], F_OK | X_OK) == 0)
@@ -88,7 +91,7 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	}
 	else
 		path = find_path((*ast)->args[0], env);
-	if (path == NULL)
+	if (path == NULL || (*ast)->args[0][0] == '\0')
 	{
 		ft_printf(STDERR_FILENO, "Minishell: %s: command not found\n", (*ast)->args[0]);
 		free(path);
@@ -103,7 +106,6 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	ft_free_tab(&env);
 	ft_free_ast(&data->ast);
 	ft_free_env(&data->env);
-	ft_reset_fd(data->old_fd_in, data->old_fd_out);
 	exit(126);
 }
 

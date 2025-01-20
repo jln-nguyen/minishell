@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 13:35:03 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 14:39:57 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/20 18:28:42 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,28 +119,28 @@ void	check_whitespace(char **tmp)
 		return ; //protect
 }
 
-char	*ft_pre_bigjoin_trim(char **tmp)
-{
-	int	n;
+// char	*ft_pre_bigjoin_trim(char **tmp)
+// {
+// 	int	n;
 
-	n = 0;
-	// tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str) - i - j);
-	// if (!tmp[2])
-	// 	return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
-	// free(new_str);
-	if (tmp[0])
-	{
-		while (tmp[0][n])
-		{
-			if (ft_is_space(tmp[0][n]) == 0)
-			{
-				check_whitespace(tmp);
-				break ;
-			}
-			n++;
-		}
-	}
-	// new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
-	// return (new_str);
-	return (tmp[0]);
-}
+// 	n = 0;
+// 	// tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str) - i - j);
+// 	// if (!tmp[2])
+// 	// 	return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
+// 	// free(new_str);
+// 	if (tmp[0])
+// 	{
+// 		while (tmp[0][n])
+// 		{
+// 			if (ft_is_space(tmp[0][n]) == 0)
+// 			{
+// 				check_whitespace(tmp);
+// 				break ;
+// 			}
+// 			n++;
+// 		}
+// 	}
+// 	// new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
+// 	// return (new_str);
+// 	return (tmp[0]);
+// }

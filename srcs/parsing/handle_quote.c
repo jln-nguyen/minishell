@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 15:01:26 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:28:52 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*handle_double_quote(char *str, int i, t_data *data)
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), NULL);
 	tmp[0] = check_expand_var(str, i, j, data);
-	if (!tmp[0]) 
+	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), NULL);
 	new_str = ft_pre_bigjoin(str, tmp, i, j);
 	if (!new_str)
@@ -141,8 +141,8 @@ char	*remove_quote(char *str, int i, char c)
 	i++;
 	while (str[i + j] && str[i + j] != c)
 		j++;
-	// if (j == 0 && i == 1 && str[i + j + 1] == '\0')
-	// 	return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
+	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
+		return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
 	new_str = handle_quote(str, i, j);
 	free(str);
 	if (!new_str)

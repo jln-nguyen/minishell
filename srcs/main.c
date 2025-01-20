@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 17:43:05 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/20 12:22:32 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	prompt(t_data *data)
 			data->exit_code = 130;
 			g_signal = 0;
 		}
+		if (tmp[0] == '\0')
+			continue ;
 		add_history(tmp);
 		data->ast = ft_parsing(tmp, data);
 		if (data->ast)
