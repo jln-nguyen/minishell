@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 16:43:13 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:04:50 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	}
 	else
 		path = find_path((*ast)->args[0], env);
-	if (path == NULL)
+	if (path == NULL || (*ast)->args[0][0] == '\0')
 	{
 		ft_printf(STDERR_FILENO, "Minishell: %s: command not found\n", (*ast)->args[0]);
 		free(path);
@@ -107,7 +107,6 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	ft_free_tab(&env);
 	ft_free_ast(&data->ast);
 	ft_free_env(&data->env);
-	ft_reset_fd(data->old_fd_in, data->old_fd_out);
 	exit(126);
 }
 
