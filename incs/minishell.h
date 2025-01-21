@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/16 17:44:34 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:26:48 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_export(t_env **env, t_ast_node *tok);
 int			ft_env(t_ast_node *ast, t_env **env);
-int			ft_cd(char *str, t_data *data);
+int			ft_cd(char **str, t_data *data);
 int			ft_redir_out(t_ast_node *ast);
 int			move_index(t_token *tok);
 int			ft_pwd(t_ast_node *ast);
@@ -117,6 +117,7 @@ int			check_tok(t_token *tok);
 int			check_syntax(char *str);
 int			ft_is_space(char str);
 int			ft_echo(char **args);
+int			pwd_err(char *str);
 
 long		ft_atol(const char *str);
 
@@ -128,7 +129,7 @@ char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i, t_data *data);
 char		*handle_double_quote(char *str, int i, t_data *data);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
-char		*ft_pre_bigjoin_trim(char **tmp);
+// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 
 t_env		*new_env(char *str_key, char *str_val);

@@ -6,11 +6,19 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:17:43 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 18:06:23 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:43:18 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	pwd_err(char *str)
+{
+	ft_printf(STDERR_FILENO, "%s: error retrieving current directory:", str);
+	ft_printf(STDERR_FILENO, " getcwd: cannot access parent directories:");
+	ft_printf(STDERR_FILENO, " No such file or directory\n");
+	return (EXIT_FAILURE);
+}
 
 int	ft_pwd(t_ast_node *ast)
 {
@@ -31,6 +39,8 @@ int	ft_pwd(t_ast_node *ast)
 		}
 	}
 	pwd = getcwd(NULL, 0);
+	if  (!pwd)
+		return (pwd_err("pwd"));
 	printf("%s\n", pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
