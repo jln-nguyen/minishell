@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/21 14:26:48 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:49:00 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void		exec_cmd(t_data *data, t_ast_node **ast);
 void		ft_redir(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
+void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
@@ -101,7 +102,6 @@ void		check_sign(char *n, t_data *data, long *i, int *signe);
 void		ft_update_env(t_env **env, char *key, char *value, int bool);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
-void	ft_reset_fd(int old_fd_in, int old_fd_out);
 
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
@@ -122,6 +122,7 @@ int			pwd_err(char *str);
 long		ft_atol(const char *str);
 
 char		**struc_to_char(t_env *env);
+// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*find_path(char *cmd, char **env);
 char		*change_value(char *tok, t_data *data);
 char		*handle_quote(char *str, int i, int j);
@@ -129,7 +130,6 @@ char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i, t_data *data);
 char		*handle_double_quote(char *str, int i, t_data *data);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
-// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 
 t_env		*new_env(char *str_key, char *str_val);
