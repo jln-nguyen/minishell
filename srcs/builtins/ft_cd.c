@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/21 15:18:16 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:37:01 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,12 @@ static char	*get_home(t_env **env)
 	return (NULL);	
 }
 
-static int	ft_cd_update(t_data *data)
+static int	ft_cd_update(t_data *data, char *old_pwd)
 {	
 	char	*pwd;
-	char	*old_pwd;
 
-	old_pwd = getcwd(NULL, 0);
 	pwd = getcwd(NULL, 0);
 	ft_change_wd(&data->env, pwd, old_pwd);
-	if (check_if_oldpwd(&data->env) == 0)
-		expand_env(data, "OLDPWD", old_pwd);
 	free(old_pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
@@ -86,7 +82,9 @@ static int	ft_cd_update(t_data *data)
 int	ft_cd(char **str, t_data *data)
 {
 	char	*home;
+	char	*old_pwd;
 
+	old_pwd = getcwd(NULL, 0);
 	if (str[1] == NULL)
 	{
 		home = get_home(&data->env);
@@ -100,16 +98,18 @@ int	ft_cd(char **str, t_data *data)
 	}
 	else if (str[2])
 	{
+		free(old_pwd);
 		ft_printf(STDERR_FILENO, "Minishell: cd : too many arguments\n");
 		return (EXIT_FAILURE);
 	}
 	else if (!str[1][0])
-		return (EXIT_SUCCESS);
+		return (ft_cd_update(data, old_pwd));
 	else if (chdir(str[1]) < 0)
 	{
 		ft_printf(STDERR_FILENO, "Minishell: cd : %s: %s\n", str[1],
 			strerror(errno));
+		free(old_pwd);
 		return (EXIT_FAILURE);
 	}
-	return (ft_cd_update(data));
+	return (ft_cd_update(data, old_pwd));
 }

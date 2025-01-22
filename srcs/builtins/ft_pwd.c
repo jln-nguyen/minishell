@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:17:43 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/21 11:43:18 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:04:37 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_pwd(t_ast_node *ast)
 		}
 	}
 	pwd = getcwd(NULL, 0);
-	if  (!pwd)
+	if (!pwd)
 		return (pwd_err("pwd"));
 	printf("%s\n", pwd);
 	free(pwd);

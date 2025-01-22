@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/21 14:26:44 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:53:20 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	exec_cmd(t_data *data, t_ast_node **ast)
 	else 
 	{
 		data->exit_code = ft_check_builtins(data, (*ast), &data->env);
+
 		if (data->exit_code == -1)
 		{
 		tab = struc_to_char(data->env);
