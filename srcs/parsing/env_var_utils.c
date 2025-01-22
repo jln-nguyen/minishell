@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 15:28:49 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:23:26 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,21 @@ char	*ft_strbigjoin(const char *s1, const char *s2, const char *s3)
 	return (str);
 }
 
-char	*change_value(char *var, t_data *data)
+char	*get_value(t_env *env, t_data *data, t_token **head, char **split)
+{
+	char	*str;
+
+	str = NULL;
+	str = ft_strdup(env->value);
+	if (!str)
+	{
+		ft_free_tab(&split);
+		error_malloc_tok(head, data);
+	}
+	return (str);
+}
+
+char	*change_value(char *var, t_data *data, t_token **head, char **split)
 {
 	char	*tmp;
 	t_env	*tmp_env;
@@ -69,17 +83,20 @@ char	*change_value(char *var, t_data *data)
 		return (NULL);
 	tmp_env = data->env;
 	if (var[0] == '?')
-		return (free(var), tmp = ft_itoa(data->exit_code)); //remettre t_data
+	{
+		tmp = ft_itoa(data->exit_code);
+		if (!tmp)
+		{
+			ft_free_tab(&split);
+			error_malloc_tok(head, data);
+		}
+		return (free(var), tmp);
+	}
 	while (tmp_env)
 	{
 		if (ft_strcmp(var, tmp_env->key) == 0)
-		{
-			tmp = ft_strdup(tmp_env->value);
-			if (!tmp)
-				return (NULL);
-			return (free(var), tmp);
-		}
+			tmp = get_value(tmp_env, data, head, split);
 		tmp_env = tmp_env->next;
 	}
-	return (free(var), NULL);
+	return (free(var), tmp);
 }

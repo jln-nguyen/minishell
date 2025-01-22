@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/21 15:35:54 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:25:37 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_data
 
 extern int	g_signal;
 
+void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
 void		sigint_handler(int signal);
@@ -101,7 +102,8 @@ void		check_sign(char *n, t_data *data, long *i, int *signe);
 void		ft_update_env(t_env **env, char *key, char *value, int bool);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
-void	ft_reset_fd(int old_fd_in, int old_fd_out);
+void		ft_reset_fd(int old_fd_in, int old_fd_out);
+char		**init_tmp(void);
 
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
@@ -123,7 +125,7 @@ long		ft_atol(const char *str);
 
 char		**struc_to_char(t_env *env);
 char		*find_path(char *cmd, char **env);
-char		*change_value(char *tok, t_data *data);
+char		*change_value(char *tok, t_data *data, t_token **head, char **split);
 char		*handle_quote(char *str, int i, int j);
 char		*remove_quote(char *str, int i, char c);
 char		*change_str(char *new_str, int i, t_data *data);

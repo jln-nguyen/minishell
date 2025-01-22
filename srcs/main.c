@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 12:22:32 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:22:07 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*color_gwd(char *gwd, t_data *data)
 	if (!gwd)
 		return (NULL);
 	tmp = ft_strdup("HOME");
-	home = change_value(tmp, data);
+	home = change_value(tmp, data, NULL, NULL); //changer la fn
 	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
 	{
 		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
@@ -74,7 +74,7 @@ void	prompt(t_data *data)
 		g_signal = 0;
 		tmp = getcwd(NULL, 0);
 		gwd = ft_strjoin(tmp, "$ ");
-		gwd = color_gwd(gwd, data);
+		// gwd = color_gwd(gwd, data);
 		free(tmp);
 		if (!gwd)
 			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));

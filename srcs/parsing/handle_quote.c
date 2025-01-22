@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 15:28:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:27:08 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*change_str(char *str, int i, t_data *data)
 	tmp[0] = ft_substr(str, i, j);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
-	tmp[0] = change_value(tmp[0], data);
+	tmp[0] = change_value(tmp[0], data, NULL, tmp);
 	tmp[1] = ft_substr(str, 0, i - 1);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
@@ -63,13 +63,11 @@ static char	*check_expand_var(char *str, int i, int j, t_data *data)
 				|| new_str[i + 1] == 39 || new_str[i + 1] == 34)
 				i++;
 			else
-			{
 				new_str = change_str(new_str, i + 1, data);
-				if (!new_str)
-					return (NULL);
-				if (new_str[i] == '\0')
-					break ;
-			}
+			if (!new_str)
+				return (NULL);
+			if (new_str[i] == '\0')
+				break ;
 		}
 		else
 			i++;
@@ -90,10 +88,9 @@ char	*handle_double_quote(char *str, int i, t_data *data)
 	if (j == 0)
 		return (str);
 	j += 2;
-	tmp = malloc(sizeof(char *) * 4);
+	tmp = init_tmp();
 	if (!tmp)
-		return (NULL);
-	tmp[3] = 0;
+		return (free(str), NULL);
 	tmp[1] = ft_substr(str, 0, i);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), NULL);
@@ -142,7 +139,7 @@ char	*remove_quote(char *str, int i, char c)
 	while (str[i + j] && str[i + j] != c)
 		j++;
 	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
-		return (str); //je sais plus pourquoi ne pas enlever les quotes si vide
+		return (str);
 	new_str = handle_quote(str, i, j);
 	free(str);
 	if (!new_str)
