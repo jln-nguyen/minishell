@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/22 10:37:01 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:19:07 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,23 @@ void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
 	}
 }
 
-static char	*get_home(t_env **env)
-{
-	t_env	*tmp;
-	char	*home;
+// static char	*get_home(t_env **env)
+// {
+// 	t_env	*tmp;
+// 	char	*home;
 
-	tmp = *env;
-	while (tmp)
-	{
-		if (ft_strncmp("HOME", tmp->key, 6) == 0)
-		{
-			home = ft_strdup(tmp->value);
-			return (home);
-		}
-		tmp = tmp->next;
-	}
-	return (NULL);	
-}
+// 	tmp = *env;
+// 	while (tmp)
+// 	{
+// 		if (ft_strncmp("HOME", tmp->key, 6) == 0)
+// 		{
+// 			home = ft_strdup(tmp->value);
+// 			return (home);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (NULL);
+// }
 
 static int	ft_cd_update(t_data *data, char *old_pwd)
 {	
@@ -78,23 +78,41 @@ static int	ft_cd_update(t_data *data, char *old_pwd)
 	return (EXIT_SUCCESS);
 }
 
+static int	ft_cd_home(t_data *data, char *old_pwd)
+{
+	t_env	*tmp;
+	char	*home;
+
+	tmp = data->env;
+	home = NULL;
+	while (tmp)
+	{
+		if (ft_strncmp("HOME", tmp->key, 6) == 0)
+		{
+			home = ft_strdup(tmp->value);
+		}
+		tmp = tmp->next;
+	}
+	if (!home)
+	{
+		free(old_pwd);
+		ft_printf(STDERR_FILENO, "Minishell: cd : HOME not set\n");
+		return (EXIT_FAILURE);
+	}
+	chdir(home);
+	free(home);
+	return (EXIT_SUCCESS);
+}
 
 int	ft_cd(char **str, t_data *data)
 {
-	char	*home;
 	char	*old_pwd;
 
 	old_pwd = getcwd(NULL, 0);
 	if (str[1] == NULL)
 	{
-		home = get_home(&data->env);
-		if (!home)
-		{
-			ft_printf(STDERR_FILENO, "Minishell: cd : HOME not set\n");
+		if (ft_cd_home(data, old_pwd))
 			return (EXIT_FAILURE);
-		}
-		chdir(home);
-		free(home);
 	}
 	else if (str[2])
 	{
