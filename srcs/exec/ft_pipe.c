@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/20 17:01:51 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:41:01 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	exec_pipe(t_data *data, t_ast_node **ast)
 	right_pid = handle_right_pipe(data, ast, pipefd);
 	if (right_pid == -1 && left_pid > 0)
 		return ((void)(close(pipefd[0]), close(pipefd[1]), waitpid(left_pid,
-					NULL, 0), ft_free_ast(ast)));
+				NULL, 0), ft_free_ast(ast)));
 	close(pipefd[0]);
 	close(pipefd[1]);
 	if (left_pid > 0)

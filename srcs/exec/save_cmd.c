@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:17:11 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/11 16:26:15 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:41:49 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	search_cmd(t_ast_node **ast)
 	{
 		tmp = tmp->right;
 		if (tmp->left->args[1])
-			(*ast)->left->args = save_cmd((*ast)->left->args, &tmp->left->args[1]);
+			(*ast)->left->args = save_cmd((*ast)->left->args,
+					&tmp->left->args[1]);
 	}
 	if (tmp->right->args[1])
 		(*ast)->left->args = save_cmd((*ast)->left->args, &tmp->right->args[1]);

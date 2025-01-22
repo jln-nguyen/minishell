@@ -6,13 +6,13 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 10:53:20 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:40:16 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env_size(t_env *env)
+static int	ft_env_size(t_env *env)
 {
 	int		i;
 	t_env	*tmp;
@@ -73,33 +73,6 @@ int	ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env)
 	return (-1);
 }
 
-void	exec_cmd(t_data *data, t_ast_node **ast)
-{
-	// int		status;
-	char	**tab;
-
-	tab = NULL;
-	if (!*ast || !ast)
-		return ;
-	if ((*ast)->type != TOKEN_STR)
-		ft_redir(data, ast);
-	else if (!*(*ast)->args || !(*ast)->args[0])
-		return ;
-	else 
-	{
-		data->exit_code = ft_check_builtins(data, (*ast), &data->env);
-
-		if (data->exit_code == -1)
-		{
-		tab = struc_to_char(data->env);
-		if (!tab || !*tab)
-			return ; //protect
-		data->exit_code = ft_execve(tab, ast, data);
-		ft_free_tab(&tab);
-		}
-	}
-}
-
 void	ft_exec(t_data *data, t_ast_node **ast)
 {
 	if ((*ast)->type == TOKEN_PIPE)
@@ -119,4 +92,3 @@ void	ft_check_heredoc(t_ast_node **ast, t_data *data)
 	}
 	ft_exec(data, &data->ast);
 }
-
