@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:17:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 14:41:49 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/23 10:11:50 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static void	create_left_node(t_ast_node **ast)
 
 	node = new_node(TOKEN_STR);
 	if (!node)
-		return ; //protect malloc
+		return ; // protect malloc
 	node->args = malloc(sizeof(char *) * 1);
 	if (!node->args)
-		return ; //protect malloc
+		return ; // protect malloc
 	node->args[0] = 0;
 	add_node(ast, node, 'L');
 }

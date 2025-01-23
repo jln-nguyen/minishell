@@ -6,11 +6,19 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/16 10:14:19 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/23 10:18:13 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	file_err(t_ast_node *ast, int file)
+{
+	if (file < 0)
+		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
+				ast->right->args[0], strerror(errno)), -1); // protect error
+	return (file);
+}
 
 static int	mult_redir_in(int file, t_ast_node **tmp, t_env **env)
 {
@@ -62,10 +70,7 @@ int	ft_redir_in(t_ast_node *ast, t_env **env)
 			close(file);
 		file = tmp->fd_heredoc;
 	}
-	if (file < 0)
-		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
-				tmp->right->args[0], strerror(errno)), -1); // protect error
-	return (file);
+	return (file_err(tmp, file));
 }
 
 static int	mult_redir_out(int file, t_ast_node **tmp)
@@ -89,7 +94,7 @@ static int	mult_redir_out(int file, t_ast_node **tmp)
 		if (file < 0)
 			return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
 					(*tmp)->right->left->args[0], strerror(errno)), -1);
-				// protect error
+		// protect error
 		*tmp = (*tmp)->right;
 	}
 	return (file);
@@ -120,8 +125,5 @@ int	ft_redir_out(t_ast_node *ast)
 			close(file);
 		file = open(tmp->right->args[0], O_CREAT | O_RDWR | O_APPEND, 0644);
 	}
-	if (file < 0)
-		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
-				tmp->right->args[0], strerror(errno)), -1); // protect error
-	return (file);
+	return (file_err(tmp, file));
 }

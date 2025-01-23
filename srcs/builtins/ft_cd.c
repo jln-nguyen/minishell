@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/22 14:19:07 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/23 10:10:06 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,6 @@ void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
 		tmp = tmp->next;
 	}
 }
-
-// static char	*get_home(t_env **env)
-// {
-// 	t_env	*tmp;
-// 	char	*home;
-
-// 	tmp = *env;
-// 	while (tmp)
-// 	{
-// 		if (ft_strncmp("HOME", tmp->key, 6) == 0)
-// 		{
-// 			home = ft_strdup(tmp->value);
-// 			return (home);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (NULL);
-// }
 
 static int	ft_cd_update(t_data *data, char *old_pwd)
 {	

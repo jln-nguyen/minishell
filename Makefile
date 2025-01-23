@@ -6,7 +6,7 @@
 #    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2025/01/22 14:39:06 by bvictoir         ###   ########.fr        #
+#    Updated: 2025/01/23 11:01:39 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRC		= main.c						\
 		exec/ft_exec.c				\
 		exec/ft_exec_utils.c		\
 		exec/ft_execve.c			\
+		exec/ft_execve_utils.c		\
 		exec/ft_check_redir.c		\
 		exec/ft_redir_fd.c			\
 		exec/save_cmd.c				\

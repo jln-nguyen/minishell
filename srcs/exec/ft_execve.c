@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/21 10:04:50 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/23 11:28:45 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,33 @@ char	*find_path(char *cmd, char **env)
 	return (path);
 }
 
+static void	ft_abs_path(t_data *data, t_ast_node **ast, char **env, char *path)
+{
+	if (access((*ast)->args[0], F_OK | X_OK) == 0)
+	{
+		path = ft_strdup((*ast)->args[0]);
+		if (!path)
+		{
+			ft_printf(STDERR_FILENO, "Malloc error\n");
+			free(path);
+			ft_free_tab(&env);
+			ft_free_ast(&data->ast);
+			ft_free_env(&data->env);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		ft_printf(STDERR_FILENO, "Minishell: %s: No such file or directory\n",
+			(*ast)->args[0]);
+		free(path);
+		ft_free_tab(&env);
+		ft_free_ast(&data->ast);
+		ft_free_env(&data->env);
+		exit(127);
+	}
+}
+
 void	ft_process(char **env, t_ast_node **ast, t_data *data)
 {
 	char	*path;
@@ -66,43 +93,14 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	while (fd < 1024)
 		close(fd++);
 	if (ft_strnstr((*ast)->args[0], "/", ft_strlen((*ast)->args[0])) != NULL)
-	{
-		if (access((*ast)->args[0], F_OK | X_OK) == 0)
-		{
-			path = ft_strdup((*ast)->args[0]);
-			if (!path)
-			{
-				ft_printf(STDERR_FILENO, "Malloc error\n");
-				free(path);
-				ft_free_tab(&env);
-				ft_free_ast(&data->ast);
-				ft_free_env(&data->env);
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			ft_printf(STDERR_FILENO, "Minishell: %s: No such file or directory\n", (*ast)->args[0]);
-			free(path);
-			ft_free_tab(&env);
-			ft_free_ast(&data->ast);
-			ft_free_env(&data->env);
-			exit(127);
-		}
-	}
+		ft_abs_path(data, ast, env, path);
 	else
 		path = find_path((*ast)->args[0], env);
 	if (path == NULL || (*ast)->args[0][0] == '\0')
-	{
-		ft_printf(STDERR_FILENO, "Minishell: %s: command not found\n", (*ast)->args[0]);
-		free(path);
-		ft_free_tab(&env);
-		ft_free_ast(&data->ast);
-		ft_free_env(&data->env);
-		exit(127);
-	}
+		ft_no_path(data, ast, env, path);
 	execve(path, (*ast)->args, env);
-	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n", (*ast)->args[0]);
+	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n",
+		(*ast)->args[0]);
 	free(path);
 	ft_free_tab(&env);
 	ft_free_ast(&data->ast);
@@ -134,4 +132,3 @@ int	ft_execve(char **env, t_ast_node **ast, t_data *data)
 		exit_code = 128 + WTERMSIG(pid);
 	return (exit_code);
 }
-

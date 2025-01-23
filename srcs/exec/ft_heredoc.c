@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 12:49:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/23 10:27:18 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	heredoc_sig(int signal)
 {
 	(void)signal;
 	g_signal = 130;
-	// close(STDIN_FILENO);
 	rl_replace_line("", 0);
 	printf("\n");
 	rl_redisplay();
@@ -31,10 +30,10 @@ int	event(void)
 
 void	ft_read(char *end, t_data *data, int fd)
 {
-	char		*line;
-	int			i;
-	// int			old_stdin;
+	char	*line;
+	int		i;
 
+	// int			old_stdin;
 	// old_stdin = dup(STDIN_FILENO);
 	rl_event_hook = event;
 	while (1)
@@ -48,7 +47,9 @@ void	ft_read(char *end, t_data *data, int fd)
 		}
 		if (!line)
 		{
-			ft_printf(STDERR_FILENO, "Minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", end);
+			ft_printf(STDERR_FILENO,
+				"Minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
+				end);
 			break ;
 		}
 		if (!ft_strcmp(line, end))
@@ -74,7 +75,6 @@ void	ft_read(char *end, t_data *data, int fd)
 	}
 	// close(old_stdin);
 }
-
 
 int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 {
@@ -120,7 +120,7 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 		{
 			check_heredoc(&(tmp)->left, data);
 			if (tmp->fd_heredoc < 0)
-				return (ft_putstr_fd("errorbbb\n", STDERR_FILENO), (void)-1); //?
+				return (ft_putstr_fd("error\n", STDERR_FILENO), (void)-1); //?
 		}
 		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{
@@ -138,7 +138,7 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 			}
 			i++;
 			if (tmp->fd_heredoc < 0)
-				return (ft_putstr_fd("erroraaa\n", STDERR_FILENO), (void)-1); //?
+				return (ft_putstr_fd("error\n", STDERR_FILENO), (void)-1); //?
 		}
 		tmp = tmp->right;
 	}
