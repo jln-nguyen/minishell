@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/22 18:25:37 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/23 18:32:51 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_data
 
 extern int	g_signal;
 
-void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
 void		sigint_handler(int signal);
@@ -94,16 +93,16 @@ void		exec_cmd(t_data *data, t_ast_node **ast);
 void		ft_redir(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
+void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
+void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		check_sign(char *n, t_data *data, long *i, int *signe);
 void		ft_update_env(t_env **env, char *key, char *value, int bool);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
-void		ft_reset_fd(int old_fd_in, int old_fd_out);
-char		**init_tmp(void);
 
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
@@ -123,24 +122,28 @@ int			expand_lst(t_token **tok, char *str);
 
 long		ft_atol(const char *str);
 
+char		**init_tmp(void);
 char		**struc_to_char(t_env *env);
+
+// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*find_path(char *cmd, char **env);
-char		*change_value(char *tok, t_data *data, t_token **head, char **split);
-char		*handle_quote(char *str, int i, int j);
-char		*remove_quote(char *str, int i, char c);
-char		*change_str(char *new_str, int i, t_data *data);
-char		*handle_double_quote(char *str, int i, t_data *data);
+char		*handle_quote(char *str, int *i, int j);
+char		*remove_quote(char *str, int *i, int j, char c);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
-char		*ft_pre_bigjoin_trim(char **tmp);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
+char		*change_str(char *new_str, int i, t_data *data, t_token **head);
+char		*change_value(char *tok, t_data *data, t_token **head,
+				char **split);
+char		*handle_double_quote(char *str, int *i, t_data *data,
+				t_token **head);
 
 t_env		*new_env(char *str_key, char *str_val);
 
 t_token		*ft_del_last(t_token *tok);
 t_token		*ft_token(char *str, t_data *data);
+t_token		*check_token(char *str, t_token *tok);
 t_token		*new_tok(t_enum_type type, char *str);
 t_token		*expand_str(t_token *tok, t_data *data);
-t_token		*check_token(char *str, t_token *tok);
 
 t_ast_node	*parsing_token(t_token *tok, t_enum_type limit);
 t_ast_node	*check_pipe(t_token *tok, t_enum_type limit);

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 18:46:51 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/23 18:37:15 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ static void	sup_node_if(t_token **begin_list)
 	}
 }
 
-static int	move_index_quote(char *str, int i, char c)
-{
-	int		j;
+// static int	move_index_quote(char *str, int i, char c)
+// {
+// 	int		j;
 
-	j = 0;
-	while (str[i + j] && str[i + j] != c)
-		j++;
-	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
-		return (2);
-	return (j);
-}
+// 	j = 0;
+// 	while (str[i + j] && str[i + j] != c)
+// 		j++;
+// 	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
+// 		return (2);
+// 	return (j);
+// }
 
 static int	search_end_var(char *new_str, int i)
 {
@@ -70,7 +70,7 @@ static int	search_end_var(char *new_str, int i)
 	return (j);
 }
 
-static char	**init_tmp(void)
+char	**init_tmp(void)
 {
 	char	**tmp;
 
@@ -141,12 +141,18 @@ static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 			j = i;
 			if ((*tok)->value[j] == 34 && bool != 1)
 			{
-				(*tok)->value = handle_double_quote((*tok)->value, j, data);
+				(*tok)->value = handle_double_quote((*tok)->value, &i, data, head);
 				if (!(*tok)->value)
 					error_malloc_tok(head, data);
+				(*tok)->value = remove_quote((*tok)->value, &i - 1, j, (*tok)->value[j]);
+				printf("i = %d\n", i);
+				// i--;
 			}
-			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
-			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
+			else
+				(*tok)->value = remove_quote((*tok)->value, &i, j, (*tok)->value[j]);
+			// i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
+			// printf("j = %d\n", j);
+			// (*tok)->value = remove_quote((*tok)->value, j, i, (*tok)->value[j]);
 			if (!(*tok)->value)
 				error_malloc_tok(head, data);
 		}

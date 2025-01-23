@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 12:49:52 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:59:44 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_read(char *end, t_data *data, int fd)
 		while (line[i])
 		{
 			if (line[i] == '$')
-				line = change_str(line, i + 1, data);
+				line = change_str(line, i + 1, data, NULL); // changez fonction
 			if (line[i] == '\0')
 				break ;
 			else
