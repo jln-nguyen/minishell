@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:04:35 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/02 14:13:54 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:18:06 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	ft_check_redirect(char *str, char c)
 		i++;
 	if (str[i] == c || str[i] == d)
 	{
-		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
+		ft_putstr_fd("Minishell: Syntax error\n", STDERR_FILENO);
 		return (0);
 	}
 	return (i);
@@ -38,11 +38,14 @@ static int	check_op(char *str, int i)
 
 	j = 0;
 	if (str[i] == '&' && str[i + 1] == '&')
-		ft_putstr_fd("Non supported operators\n", STDERR_FILENO);
+		ft_putstr_fd("Minishell: Non supported operators\n", STDERR_FILENO);
 	else if (str[i] == '|')
 	{
 		if (str[i + 1] == '|')
-			return (ft_putstr_fd("Non supported operators\n", STDERR_FILENO), 0);
+		{
+			ft_putstr_fd("Minishell: Non supported operators\n", STDERR_FILENO);
+			return (0);
+		}
 		j++;
 	}
 	else if (str[i] == '>' || str[i] == '<')
@@ -57,7 +60,7 @@ static int	check_end_quote(char *str, char c)
 	i = 1;
 	if (!str[i])
 	{
-		ft_putstr_fd("Non closed quote\n", STDERR_FILENO);
+		ft_putstr_fd("Minishell: Non closed quote\n", STDERR_FILENO);
 		return (-1);
 	}
 	while (str[i])
@@ -66,14 +69,17 @@ static int	check_end_quote(char *str, char c)
 			return (i);
 		i++;
 	}
-	ft_putstr_fd("Non closed quote\n", STDERR_FILENO);
+	ft_putstr_fd("Minishell: Non closed quote\n", STDERR_FILENO);
 	return (-1);
 }
 
 static int	check_invalid_char(char c)
 {
 	if (c == ';' || c == '\\' || c == '(' || c == ')' || c == '&')
-		return (ft_putstr_fd("Invalid Character\n", STDERR_FILENO), -1);
+	{
+		ft_putstr_fd("Minishell: Invalid Character\n", STDERR_FILENO);
+		return (-1);
+	}
 	return (0);
 }
 

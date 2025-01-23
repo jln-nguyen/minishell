@@ -6,11 +6,19 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/20 18:47:39 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:46:51 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	error_malloc_tok(t_token **tok, t_data *data)
+{
+	ft_free(tok);
+	ft_free_env(&data->env);
+	ft_printf(STDERR_FILENO, "Minishell: Malloc error\n");
+	exit(EXIT_FAILURE);
+}
 
 static void	sup_node_if(t_token **begin_list)
 {
@@ -46,7 +54,38 @@ static int	move_index_quote(char *str, int i, char c)
 	return (j);
 }
 
-static char	*expand_var_env(char *new_str, int *i, t_data *data)
+static int	search_end_var(char *new_str, int i)
+{
+	int	j;
+
+	j = 0;
+	if (new_str[i] == '?')
+		j = 1;
+	else
+	{
+		while (new_str[i + j] && new_str[i + j] != '$'
+			&& new_str[i + j] != 39 && new_str[i + j] != 34)
+			j++;
+	}
+	return (j);
+}
+
+static char	**init_tmp(void)
+{
+	char	**tmp;
+
+	tmp = NULL;
+	tmp = malloc(sizeof(char *) * 4);
+	if (!tmp)
+		return (NULL);
+	tmp[0] = 0;
+	tmp[1] = 0;
+	tmp[2] = 0;
+	tmp[3] = 0;
+	return (tmp);
+}
+
+static char	*expand_var_env(char *new_str, int *i, t_data *data, t_token **head)
 {
 	int		j;
 	char	**tmp;
@@ -54,23 +93,14 @@ static char	*expand_var_env(char *new_str, int *i, t_data *data)
 	tmp = NULL;
 	if (new_str[*i] == '\0')
 		return (new_str);
-	tmp = malloc(sizeof(char *) * 4);
+	tmp = init_tmp();
 	if (!tmp)
 		return (free(new_str), NULL);
-	tmp[3] = 0;
-	j = 0;
-	if (new_str[*i] == '?')
-		j = 1;
-	else
-	{
-		while (new_str[*i + j] && new_str[*i + j] != '$' && new_str[*i + j] != 39
-			&& new_str[*i + j] != 34)
-			j++;
-	}
+	j = search_end_var(new_str, *i);
 	tmp[0] = ft_substr(new_str, *i, j);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
-	tmp[0] = change_value(tmp[0], data);
+	tmp[0] = change_value(tmp[0], data, head, tmp);
 	tmp[1] = ft_substr(new_str, 0, *i - 1);
 	if (!tmp[1])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
@@ -78,64 +108,27 @@ static char	*expand_var_env(char *new_str, int *i, t_data *data)
 	if (!tmp[2])
 		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
 	free(new_str);
-	// new_str = ft_pre_bigjoin_trim(new_str, tmp, i, j);
-	// if (!new_str)
-	// 	return (ft_free_tab_var_env(&tmp), NULL);
-	// if (bool == -1)
-	// {
-	// 	tmp[0] = ft_pre_bigjoin_trim(tmp);
-	// 	if (!tmp[0])
-	// 		return (ft_free_tab_var_env(&tmp), NULL);
-	// }
 	*i += ft_strlen(tmp[0]) - 1;
 	new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
-	return (ft_free_tab_var_env(&tmp), new_str);
+	ft_free_tab_var_env(&tmp);
+	return (new_str);
 }
 
-// static void	change_value_env_var(t_token **tok, t_data *data, int bool)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*tmp;
+static void	check_no_quote(t_token **head, t_token **tok, t_data *data, int *i)
+{
+	int	n;
 
-// 	tmp = NULL;
-// 	i = 0;
-// 	while ((*tok)->value[i])
-// 	{
-// 		if ((*tok)->value[i] == 39 || (*tok)->value[i] == 34)
-// 		{
-// 			j = (*tok)->value[i];
-// 			i++;
-// 			while ((*tok)->value[i] && (*tok)->value[i] != j)
-// 				i++;
-// 		}
-// 		if ((*tok)->value[i] == '$' && bool != 1)
-// 		{
-// 			if ((*tok)->value[i + 1] == '\0')
-// 				break ;
-// 			(*tok)->value = expand_var_env((*tok)->value, i + 1, data, bool);
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	i = 0;
-// 	if ((*tok)->value[i] == '\0')
-// 		return ;
-// 	if (ft_is_space((*tok)->value[ft_strlen((*tok)->value) - 1]) == 0)
-// 	{
-// 		tmp = ft_substr((*tok)->value, 0, i -1);
-// 		if (!tmp)
-// 			return ;
-// 		free((*tok)->value);
-// 		(*tok)->value = ft_strdup(tmp);
-// 		if (!(*tok)->value)
-// 			return ;
-// 		free(tmp);
-// 	}
+	n = *i;
+	if ((*tok)->value[n + 1] == '\0')
+		return ;
+	n++;
+	(*tok)->value = expand_var_env((*tok)->value, &n, data, head);
+	if (!(*tok)->value)
+		error_malloc_tok(head, data);
+	*i = n;
+}
 
-// }
-
-static void	quotes_process(t_token **tok, t_data *data, int bool)
+static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 {
 	int	i;
 	int	j;
@@ -147,19 +140,39 @@ static void	quotes_process(t_token **tok, t_data *data, int bool)
 		{
 			j = i;
 			if ((*tok)->value[j] == 34 && bool != 1)
+			{
 				(*tok)->value = handle_double_quote((*tok)->value, j, data);
+				if (!(*tok)->value)
+					error_malloc_tok(head, data);
+			}
 			i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
 			(*tok)->value = remove_quote((*tok)->value, j, (*tok)->value[j]);
+			if (!(*tok)->value)
+				error_malloc_tok(head, data);
 		}
 		else if ((*tok)->value[i] == '$' && bool != 1)
-		{
-			if ((*tok)->value[i + 1] == '\0')
-				break ;
-			i++;
-			(*tok)->value = expand_var_env((*tok)->value, &i, data);
-		}
+			check_no_quote(head, tok, data, &i);
 		else
 			i++;
+	}
+}
+
+static void	remove_empty_quotes(t_token **tok, t_data *data)
+{
+	t_token	*tmp;
+
+	tmp = *tok;
+	while (tmp)
+	{
+		if ((tmp->value[0] == 34 && tmp->value[1] == 34)
+			|| (tmp->value[0] == 39 && tmp->value[1] == 39))
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup("");
+			if (!tmp->value)
+				error_malloc_tok(tok, data);
+		}
+		tmp = tmp->next;
 	}
 }
 
@@ -170,25 +183,6 @@ t_token	*expand_str(t_token *tok, t_data *data)
 
 	tmp = tok;
 	bool = 0;
-	// while (tok)
-	// {
-	// 	if (tok->type == TOKEN_REDIR_HEREDOC && (tok->next->type == TOKEN_STR
-	// 			|| tok->next->type == TOKEN_ENV_VAR))
-	// 		bool = 1;
-	// 	else if (tok->type != TOKEN_STR && tok->type != TOKEN_ENV_VAR && tok->type != TOKEN_PIPE
-	// 		&& (tok->next->type == TOKEN_STR || tok->next->type == TOKEN_ENV_VAR))
-	// 		bool = 2;
-	// 	else if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
-	// 	{
-	// 		change_value_env_var(&tok, data, bool);
-	// 		if (!tok->value)
-	// 			return (ft_free(&tok), NULL);
-	// 		tok->type = TOKEN_STR;
-	// 		bool = 0;
-	// 	}
-	// 	tok = tok->next;
-	// }
-	// tok = tmp;
 	if (!tok)
 		return (NULL);
 	while (tok)
@@ -198,24 +192,13 @@ t_token	*expand_str(t_token *tok, t_data *data)
 			bool = 1;
 		if (tok->type == TOKEN_STR || tok->type == TOKEN_ENV_VAR)
 		{
-			quotes_process(&tok, data, bool);
-			if (!tok->value)
-				return (ft_free(&tok), NULL);
+			check_str(&tmp, &tok, data, bool);
 			tok->type = TOKEN_STR;
 		}
 		tok = tok->next;
 	}
 	tok = tmp;
 	sup_node_if(&tok);
-	while (tok)
-	{
-		if (tok->value[0] == 34 && tok->value[1] == 34)
-		{
-			free(tok->value);
-			tok->value = ft_strdup("");
-		}
-		tok = tok->next;
-	}
-	tok = tmp;
+	remove_empty_quotes(&tok, data);
 	return (tok);
 }

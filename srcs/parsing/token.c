@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:24:48 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/15 14:02:24 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:34:28 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static t_token	*check_redirect(char *str)
 	return (tok);
 }
 
-static t_token	*check_token(char *str, t_token *tok)
+t_token	*check_token(char *str, t_token *tok)
 {
 	int		i;
 	t_token	*element;	
@@ -86,13 +86,13 @@ static t_token	*check_token(char *str, t_token *tok)
 	return (tok);
 }
 
-static void	expand_lst(t_token **tok, char *str)
+int	expand_lst(t_token **tok, char *str)
 {
 	int		i;
 
 	i = 0;
 	if (!str[i])
-		return ;
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
@@ -101,42 +101,9 @@ static void	expand_lst(t_token **tok, char *str)
 		{
 			*tok = check_token(&str[i], *tok);
 			if (!tok)
-				return ;
+				return (-1);
 			i += move_index(*tok);
 		}
 	}
-}
-
-t_token	*ft_token(char *str, t_data *data)
-{
-	int		i;
-	t_token	*tok;
-
-	i = 0;
-	tok = NULL;
-	if (!str)
-		return (NULL);
-	while (str[i] && tok == NULL)
-	{
-		if (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-			i++;
-		else
-		{
-			tok = check_token(&str[i], tok);
-			if (!tok)
-				return (NULL);
-			i += move_index(tok);
-		}
-	}
-	if (!tok)
-		return (NULL);
-	expand_lst(&tok, &str[i]);
-	if (check_tok(tok) == -1)
-	{
-		ft_putstr_fd("Syntax error\n", STDERR_FILENO);
-		data->exit_code = 2;
-		return (ft_free(&tok), NULL);
-	}	
-	tok = expand_str(tok, data);
-	return (tok);
+	return (0);
 }
