@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/23 18:37:15 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:46:56 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,17 +142,10 @@ static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 			if ((*tok)->value[j] == 34 && bool != 1)
 			{
 				(*tok)->value = handle_double_quote((*tok)->value, &i, data, head);
-				if (!(*tok)->value)
-					error_malloc_tok(head, data);
-				(*tok)->value = remove_quote((*tok)->value, &i - 1, j, (*tok)->value[j]);
-				printf("i = %d\n", i);
-				// i--;
+				(*tok)->value = remove_double_quote((*tok)->value, &i, j + 1);
 			}
 			else
-				(*tok)->value = remove_quote((*tok)->value, &i, j, (*tok)->value[j]);
-			// i += move_index_quote((*tok)->value, i + 1, (*tok)->value[j]);
-			// printf("j = %d\n", j);
-			// (*tok)->value = remove_quote((*tok)->value, j, i, (*tok)->value[j]);
+				(*tok)->value = remove_quote((*tok)->value, &i, (*tok)->value[j]);
 			if (!(*tok)->value)
 				error_malloc_tok(head, data);
 		}
