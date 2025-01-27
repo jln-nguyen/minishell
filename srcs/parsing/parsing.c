@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/21 15:40:42 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/27 10:11:55 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ t_token	*ft_token(char *str, t_data *data)
 	if (!str)
 		return (NULL);
 	tok = init_tok(str, &i);
+	if (!tok)
+		return (NULL);
 	if (expand_lst(&tok, &str[i]) == -1)
 	{
 		free(str);
