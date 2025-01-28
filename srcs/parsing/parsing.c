@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 10:11:55 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:06:14 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	check_tok(t_token *tok)
 	return (0);
 }
 
-
 static t_token	*init_tok(char *str, int *i)
 {
 	t_token	*tok;
@@ -93,16 +92,14 @@ t_token	*ft_token(char *str, t_data *data)
 	if (expand_lst(&tok, &str[i]) == -1)
 	{
 		free(str);
-		ft_free(&tok);
-		ft_printf(STDERR_FILENO, "Minishell: Malloc error\n");
-		exit(EXIT_FAILURE);
+		error_malloc_tok(&tok, data);
 	}
 	if (check_tok(tok) == -1)
 	{
 		data->exit_code = 2;
 		return (ft_free(&tok), NULL);
 	}
-	tok = expand_str(tok, data); //j'en suis la
+	tok = expand_str(tok, data);
 	return (tok);
 }
 

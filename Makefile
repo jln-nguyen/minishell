@@ -6,7 +6,7 @@
 #    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2025/01/23 11:01:39 by bvictoir         ###   ########.fr        #
+#    Updated: 2025/01/28 15:05:15 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ SRC_PATH = srcs/
 OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
-SRC		= main.c						\
+SRC		= main.c					\
+		parsing/ft_free.c			\
+		parsing/no_quote_var.c		\
+		parsing/handle_dble_quote.c	\
 		parsing/syntax_checker.c	\
 		parsing/tok_utils.c			\
 		parsing/token.c				\
@@ -31,7 +34,6 @@ SRC		= main.c						\
 		parsing/parsing.c			\
 		parsing/env_var_utils.c		\
 		parsing/create_env.c		\
-		parsing/strtrim_var.c		\
 		builtins/ft_echo.c			\
 		builtins/ft_env.c			\
 		builtins/ft_exit.c			\

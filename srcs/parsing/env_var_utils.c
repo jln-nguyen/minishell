@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 13:47:45 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:05:59 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,6 @@ int	ft_is_space(char str)
 	if (str == 32 || (str >= 9 && str <= 13))
 		return (0);
 	return (1);
-}
-
-void	ft_free_tab_var_env(char ***tab)
-{
-	free((*tab)[0]);
-	free((*tab)[1]);
-	free((*tab)[2]);
-	free((*tab)[3]);
-	free(*tab);
-	*tab = NULL;
 }
 
 char	*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j)
