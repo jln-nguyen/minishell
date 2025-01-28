@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/23 10:27:18 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:43:40 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_read(char *end, t_data *data, int fd)
 		while (line[i])
 		{
 			if (line[i] == '$')
-				line = change_str(line, i + 1, data);
+				line = change_str(line, i + 1, data, NULL); // changez fonction
 			if (line[i] == '\0')
 				break ;
 			else

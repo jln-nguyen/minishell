@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/23 11:27:02 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:43:34 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_data
 }	t_data;
 
 extern int	g_signal;
+
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
 void		sigint_handler(int signal);
@@ -92,6 +93,7 @@ void		exec_cmd(t_data *data, t_ast_node **ast);
 void		ft_redir(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
+void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
@@ -134,13 +136,17 @@ char		*change_str(char *new_str, int i, t_data *data);
 char		*handle_double_quote(char *str, int i, t_data *data);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
+char		*change_str(char *new_str, int i, t_data *data, t_token **head);
 char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
+char		*handle_double_quote(char *str, int *i, t_data *data,
+				t_token **head);
 
 t_env		*new_env(char *str_key, char *str_val);
 
 t_token		*ft_del_last(t_token *tok);
 t_token		*ft_token(char *str, t_data *data);
+t_token		*check_token(char *str, t_token *tok);
 t_token		*new_tok(t_enum_type type, char *str);
 t_token		*check_token(char *str, t_token *tok);
 t_token		*expand_str(t_token *tok, t_data *data);
