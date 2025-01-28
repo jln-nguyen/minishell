@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 21:13:41 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:17:55 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,24 @@ static int	ft_check_key(char *str)
 	return (2);
 }
 
-static char	*ft_get_key(t_ast_node *ast, t_env **env, char *key, int i)
+static char	*ft_get_key(t_ast_node *ast, t_data *data, char *key, int i)
 {
 	key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
 			- ast->args[i]);
 	if (ft_strchr(ast->args[i], '='))
-		ft_update_env(env, key, ft_strchr(ast->args[i], '=') + 1, 1);
+		ft_update_env(data, key, ft_strchr(ast->args[i], '=') + 1, 1);
 	else
-		ft_update_env(env, key, NULL, 0);
+		ft_update_env(data, key, NULL, 0);
 	return (key);
 }
 
-static int	ft_process_arg(t_env **env, t_ast_node *ast, int i)
+static int	ft_process_arg(t_data *data, t_ast_node *ast, int i)
 {
 	char	*key;
 
 	key = ft_substr(ast->args[i], 0, 2);
+	if (!key)
+		ft_malloc_err(data);
 	if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(key, "_="))
 	{
 		free(key);
@@ -56,12 +58,12 @@ static int	ft_process_arg(t_env **env, t_ast_node *ast, int i)
 		return (EXIT_FAILURE);
 	}
 	free(key);
-	key = ft_get_key(ast, env, key, i);
+	key = ft_get_key(ast, data, key, i);
 	free(key);
 	return (EXIT_SUCCESS);
 }
 
-static int	ft_exporting(t_env **env, t_ast_node *ast)
+static int	ft_exporting(t_data *data, t_ast_node *ast)
 {
 	int		i;
 	int		status;
@@ -72,25 +74,28 @@ static int	ft_exporting(t_env **env, t_ast_node *ast)
 	if (ast->args[1][0] == '-' && ast->args[1][1])
 	{
 		sub = ft_substr(ast->args[1], 0, 2);
+		if (!sub)
+			ft_malloc_err(data);
 		printf("export: %s: invalid option\n", sub);
 		free(sub);
 		return (2);
 	}
 	while (ast->args[++i])
 	{
-		if (ft_process_arg(env, ast, i) == EXIT_FAILURE)
+		if (ft_process_arg(data, ast, i) == EXIT_FAILURE)
 			status = EXIT_FAILURE;
 	}
 	return (status);
 }
 
-int	ft_export(t_env **env, t_ast_node *ast)
+int	ft_export(t_data *data, t_env **env, t_ast_node *ast)
 {
+	(void)env;
 	if (!ast->args[1])
 	{
-		ft_print_export(env);
+		ft_print_export(data);
 		return (EXIT_SUCCESS);
 	}
 	else
-		return (ft_exporting(env, ast));
+		return (ft_exporting(data, ast));
 }
