@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 19:46:56 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:43:18 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,6 @@ static void	sup_node_if(t_token **begin_list)
 		sup_node_if(&cur->next);
 	}
 }
-
-// static int	move_index_quote(char *str, int i, char c)
-// {
-// 	int		j;
-
-// 	j = 0;
-// 	while (str[i + j] && str[i + j] != c)
-// 		j++;
-// 	if (j == 0 && i == 1 && str[i + j + 1] == '\0')
-// 		return (2);
-// 	return (j);
-// }
 
 static int	search_end_var(char *new_str, int i)
 {
@@ -141,11 +129,11 @@ static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 			j = i;
 			if ((*tok)->value[j] == 34 && bool != 1)
 			{
-				(*tok)->value = handle_double_quote((*tok)->value, &i, data, head);
-				(*tok)->value = remove_double_quote((*tok)->value, &i, j + 1);
+				(*tok)->value = dble_quote((*tok)->value, &i, data, head);
+				(*tok)->value = rem_double_quote((*tok)->value, &i, j + 1);
 			}
 			else
-				(*tok)->value = remove_quote((*tok)->value, &i, (*tok)->value[j]);
+				(*tok)->value = rem_quote((*tok)->value, &i, (*tok)->value[j]);
 			if (!(*tok)->value)
 				error_malloc_tok(head, data);
 		}

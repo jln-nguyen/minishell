@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/27 15:49:10 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:42:59 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,14 @@ char		**struc_to_char(t_env *env);
 
 // char		*ft_pre_bigjoin_trim(char **tmp);
 char		*find_path(char *cmd, char **env);
-char		*remove_double_quote(char *str, int *i, int j);
-char		*remove_quote(char *str, int *i, char c);
+char		*rem_double_quote(char *str, int *i, int j);
+char		*rem_quote(char *str, int *i, char c);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 char		*change_str(char *new_str, int i, t_data *data, t_token **head);
 char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
-char		*handle_double_quote(char *str, int *i, t_data *data,
+char		*dble_quote(char *str, int *i, t_data *data,
 				t_token **head);
 
 t_env		*new_env(char *str_key, char *str_val);

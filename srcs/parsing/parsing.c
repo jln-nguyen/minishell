@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/21 15:40:42 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:40:57 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ t_token	*ft_token(char *str, t_data *data)
 	if (expand_lst(&tok, &str[i]) == -1)
 	{
 		free(str);
-		ft_free(&tok);
-		ft_printf(STDERR_FILENO, "Minishell: Malloc error\n");
-		exit(EXIT_FAILURE);
+		error_malloc_tok(&tok, data);
 	}
 	if (check_tok(tok) == -1)
 	{

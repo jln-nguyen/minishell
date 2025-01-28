@@ -6,11 +6,27 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 19:49:04 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:18:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	get_index(char *str, int i)
+{
+	int	j;
+
+	j = 0;
+	if (str[i] == '?')
+		j = 1;
+	else
+	{
+		while (ft_is_space(str[i + j]) && str[i + j] && str[i + j] != '$'
+			&& str[i + j] != 39 && str[i + j] != 34)
+			j++;
+	}
+	return (j);
+}
 
 char	*change_str(char *str, int i, t_data *data, t_token **head)
 {
@@ -24,15 +40,7 @@ char	*change_str(char *str, int i, t_data *data, t_token **head)
 	if (!tmp)
 		return (free(str), NULL);
 	tmp[3] = 0;
-	j = 0;
-	if (str[i] == '?')
-		j = 1;
-	else
-	{
-		while (ft_is_space(str[i + j]) && str[i + j] && str[i + j] != '$'
-			&& str[i + j] != 39 && str[i + j] != 34)
-			j++;
-	}
+	j = get_index(str, i);
 	tmp[0] = ft_substr(str, i, j);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
@@ -71,7 +79,18 @@ static char	*check_expand_var(char *str, t_data *data, t_token **head)
 	return (str);
 }
 
-char	*handle_double_quote(char *str, int *i, t_data *data, t_token **head)
+char	**split_str(char **tmp, char *str, int *i, int j)
+{
+	tmp[1] = ft_substr(str, 0, *i);
+	if (!tmp[1])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	tmp[0] = ft_substr(str, *i, j);
+	if (!tmp[0])
+		return (ft_free_tab_var_env(&tmp), NULL);
+	return (tmp);
+}
+
+char	*dble_quote(char *str, int *i, t_data *data, t_token **head)
 {
 	int		j;
 	char	**tmp;
@@ -87,12 +106,9 @@ char	*handle_double_quote(char *str, int *i, t_data *data, t_token **head)
 	tmp = init_tmp();
 	if (!tmp)
 		return (free(str), NULL);
-	tmp[1] = ft_substr(str, 0, *i);
-	if (!tmp[1])
-		return (ft_free_tab_var_env(&tmp), free(str), NULL);
-	tmp[0] = ft_substr(str, *i, j);
-	if (!tmp[0])
-		return (ft_free_tab_var_env(&tmp), free(str), NULL);
+	tmp = split_str(tmp, str, i, j);
+	if (!tmp)
+		return (free(str), NULL);
 	tmp[0] = check_expand_var(tmp[0], data, head);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), free(str), NULL);
@@ -103,7 +119,7 @@ char	*handle_double_quote(char *str, int *i, t_data *data, t_token **head)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-char	*remove_double_quote(char *str, int *i, int j)
+char	*rem_double_quote(char *str, int *i, int j)
 {
 	char	**tmp;
 	char	*new_str;
@@ -128,9 +144,8 @@ char	*remove_double_quote(char *str, int *i, int j)
 	new_str = ft_strbigjoin(tmp[0], tmp[1], tmp[2]);
 	if (!new_str)
 		return (ft_free_tab_var_env(&tmp), NULL);
-	free(str);
 	*i = ft_strlen(tmp[0]) + ft_strlen(tmp[1]);
-	return (ft_free_tab_var_env(&tmp), new_str);
+	return (ft_free_tab_var_env(&tmp), free(str), new_str);
 }
 
 char	*handle_quote(char *str, int **i, int j)
@@ -139,10 +154,9 @@ char	*handle_quote(char *str, int **i, int j)
 	char	*new_str;
 
 	new_str = NULL;
-	tmp = malloc(sizeof(char *) * 4);
+	tmp = init_tmp();
 	if (!tmp)
 		return (free(new_str), NULL);
-	tmp[3] = 0;
 	tmp[0] = ft_substr(str, 0, **i - 1);
 	if (!tmp[0])
 		return (ft_free_tab_var_env(&tmp), NULL);
@@ -159,7 +173,7 @@ char	*handle_quote(char *str, int **i, int j)
 	return (ft_free_tab_var_env(&tmp), new_str);
 }
 
-char	*remove_quote(char *str, int *i, char c)
+char	*rem_quote(char *str, int *i, char c)
 {
 	int		j;
 	char	*new_str;
