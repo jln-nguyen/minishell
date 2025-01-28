@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 15:06:14 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:47:07 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ t_token	*ft_token(char *str, t_data *data)
 
 t_ast_node	*ft_parsing(char *cmd, t_data *data)
 {
-	t_ast_node	*ast;
+	// t_ast_node	*ast;
 	t_token		*tok;
 
-	ast = NULL;
+	// ast = NULL;
 	tok = NULL;
 	if (check_syntax(cmd) != 0)
 		return (data->exit_code = 2, free(cmd), NULL);
@@ -116,9 +116,9 @@ t_ast_node	*ft_parsing(char *cmd, t_data *data)
 	if (!tok)
 		return (free(cmd), NULL);
 	free(cmd);
-	ast = parsing_token(tok, -1);
-	if (!ast)
-		return (ft_free(&tok), NULL);
+	data->ast = parsing_token(tok, -1);
+	if (!data->ast)
+		error_malloc_tok(&tok, data);
 	ft_free(&tok);
-	return (ast);
+	return (data->ast);
 }

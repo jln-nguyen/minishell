@@ -3,35 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/10 18:41:56 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:05:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_free_ast(t_ast_node **ast)
-{
-	int	i;
-
-	i = 0;
-	if (!ast || !*ast)
-		return ;
-	ft_free_ast(&(*ast)->left);
-	ft_free_ast(&(*ast)->right);
-	if ((*ast)->args)
-	{
-		while ((*ast)->args[i])
-			free((*ast)->args[i++]);
-		free((*ast)->args);
-	}
-	if ((*ast)->fd_heredoc > 0)
-		close((*ast)->fd_heredoc);
-	free(*ast);
-	*ast = NULL;
-}
 
 t_ast_node	*new_node(t_enum_type type)
 {
@@ -70,15 +49,26 @@ void	add_node(t_ast_node **lst, t_ast_node *new, char c)
 	}
 }
 
-void	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
+int	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 {
 	t_ast_node	*node;
 
 	node = NULL;
 	node = parsing_token(tok, limit);
 	if (!node)
-		return ; // free exit
+		return (-1); // free exit
 	add_node(ast, node, c);
+}
+
+static int	if_pipe(t_token *tok)
+{
+	while (tok)
+	{
+		if (tok->type == TOKEN_PIPE)
+			return (1);
+		tok = tok->next;
+	}
+	return (-1);
 }
 
 t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
@@ -90,9 +80,13 @@ t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
 	ast = NULL;
 	if (!tok || tok->type == limit)
 		return (NULL);
-	ast = check_pipe(tok, limit);
-	if (ast)
-		return (ast);
+	if (if_pipe(tok) == 1)
+	{
+		ast = check_pipe(tok, limit);
+		if (ast)
+			return (ast);
+		return (NULL);
+	}
 	while (tmp && tmp->next && tmp->next->type != limit)
 	{
 		if (tmp->type != TOKEN_STR && tmp->type != TOKEN_ENV_VAR)

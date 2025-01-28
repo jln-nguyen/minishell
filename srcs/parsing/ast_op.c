@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_op.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:52:57 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:00:04 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ t_ast_node	*parse_pipe(t_token pipe, t_token *tok)
 	ast = new_node(pipe.type);
 	if (!ast)
 		return (NULL);
-	expand_ast(&ast, tok, TOKEN_PIPE, 'L');
+	if (expand_ast(&ast, tok, TOKEN_PIPE, 'L') == -1)
+		return (ft_free_ast(&ast), NULL);
 	while (tok->type != pipe.type)
 		tok = tok->next;
 	tok = tok->next;
-	expand_ast(&ast, &(*tok), -1, 'R');
+	if (expand_ast(&ast, &(*tok), -1, 'R') == -1)
+		return (ft_free_ast(&ast), NULL);
 	return (ast);
 }
 
@@ -115,7 +117,5 @@ t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 		tok = tok->next;
 	tok = tok->next;
 	expand_ast(&ast, &(*tok), TOKEN_PIPE, 'R');
-	// if (!ast->left)
-	// 	ast = check_command(ast);
 	return (ast);
 }

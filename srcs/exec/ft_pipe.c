@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 13:14:51 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:55:19 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 	if (pid == 0)
 	{
 		signal(SIGINT, sigint_process);
-		
 		signal(SIGQUIT, sigint_process);
 		close(pipefd[1]);
 		if (dup2(pipefd[0], STDIN_FILENO) == -1)
