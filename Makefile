@@ -6,7 +6,7 @@
 #    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2025/01/28 15:05:15 by bvictoir         ###   ########.fr        #
+#    Updated: 2025/01/28 18:31:32 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
 SRC		= main.c					\
+		ft_malloc_err.c				\
 		parsing/ft_free.c			\
 		parsing/no_quote_var.c		\
 		parsing/handle_dble_quote.c	\

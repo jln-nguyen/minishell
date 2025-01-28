@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 14:40:16 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:40:34 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("env", ast->args[0]) == 0)
 		return (ft_env(ast, env));
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
-		return (ft_pwd(ast));
+		return (ft_pwd(data , ast));
 	else if (ft_strcmp("echo", ast->args[0]) == 0)
 		return (ft_echo(ast->args));
 	else if (ft_strcmp("export", ast->args[0]) == 0)

@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 14:40:32 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:48:10 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,12 @@ static void	ft_abs_path(t_data *data, t_ast_node **ast, char **env, char **path)
 	}
 	else
 	{
-		ft_printf(STDERR_FILENO, "Minishell: %s: %s\n",
-			(*ast)->args[0], strerror(errno));
+		ft_printf(STDERR_FILENO, "Minishell: %s: %s\n", (*ast)->args[0],
+			strerror(errno));
 		free(*path);
 		ft_free_tab(&env);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
-		printf("%d\n", errno);
 		if (errno == 13)
 			exit(126);
 		exit(127);

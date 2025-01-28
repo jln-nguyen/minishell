@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 15:05:53 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:47:06 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
 void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_reset_fd(int old_fd_in, int old_fd_out);
+void		ft_malloc_err(t_ast_node *ast, t_env **env);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
 void		error_malloc_tok(t_token **tok, t_data *data);
@@ -107,12 +108,12 @@ int			expand_env(t_data *data, char *str_key, char *str_val);
 int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_export(t_env **env, t_ast_node *tok);
+int			ft_pwd(t_data *data, t_ast_node *ast);
 int			expand_lst(t_token **tok, char *str);
 int			ft_env(t_ast_node *ast, t_env **env);
 int			ft_cd(char **str, t_data *data);
 int			ft_redir_out(t_ast_node *ast);
 int			move_index(t_token *tok);
-int			ft_pwd(t_ast_node *ast);
 int			check_tok(t_token *tok);
 int			check_syntax(char *str);
 int			ft_is_space(char str);

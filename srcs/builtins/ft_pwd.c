@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:17:43 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/22 14:59:01 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 18:49:46 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	pwd_err(char *str)
 	return (EXIT_FAILURE);
 }
 
-int	ft_pwd(t_ast_node *ast)
+int	ft_pwd(t_data *data, t_ast_node *ast)
 {
 	char	*pwd;
 	int		i;
@@ -34,6 +34,8 @@ int	ft_pwd(t_ast_node *ast)
 		if (ast->args[1][i] != '\0' || i > 2)
 		{
 			pwd = ft_substr(ast->args[1], 0, 2);
+			if (!pwd)
+				ft_malloc_err(data->ast, &data->env);
 			printf("Minishell: pwd: %s: invalid option\n", pwd);
 			free(pwd);
 			return (2);
