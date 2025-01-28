@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 18:23:26 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:47:45 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	*get_value(t_env *env, t_data *data, t_token **head, char **split)
 	char	*str;
 
 	str = NULL;
+	if (!env->value)
+		return (NULL);
 	str = ft_strdup(env->value);
 	if (!str)
 	{
