@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 10:43:34 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:52:44 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,9 @@ long		ft_atol(const char *str);
 
 char		**init_tmp(void);
 char		**struc_to_char(t_env *env);
-// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*find_path(char *cmd, char **env);
-char		*handle_quote(char *str, int i, int j);
-char		*remove_quote(char *str, int i, char c);
-char		*change_str(char *new_str, int i, t_data *data);
-char		*handle_double_quote(char *str, int i, t_data *data);
+char		*remove_quote(char *str, int *i, char c);
+char		*remove_double_quote(char *str, int *i, int j);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 char		*change_str(char *new_str, int i, t_data *data, t_token **head);
@@ -141,8 +138,6 @@ char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
 char		*handle_double_quote(char *str, int *i, t_data *data,
 				t_token **head);
-
-t_env		*new_env(char *str_key, char *str_val);
 
 t_token		*ft_del_last(t_token *tok);
 t_token		*ft_token(char *str, t_data *data);
@@ -158,5 +153,7 @@ t_ast_node	*parse_redir_out(t_token op, t_token *tok);
 t_ast_node	*parse_pipe(t_token pipe, t_token *tok);
 t_ast_node	*ft_parsing(char *cmd, t_data *data);
 t_ast_node	*new_node(t_enum_type type);
+
+t_env		*new_env(char *str_key, char *str_val);
 
 #endif
