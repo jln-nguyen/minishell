@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:03:07 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/23 10:46:54 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:29:43 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,16 @@ static void	check_no_quote(t_token **head, t_token **tok, t_data *data, int *i)
 	*i = n;
 }
 
+// static int	ft_dollar(t_token **head, t_token **tok, t_data *data, int i)
+// {
+// 	if ((*tok)->value[i] == '$')
+// 		if (ft_isalnum((*tok)->value[i + 1]))
+// 			return (1);
+// 		else if ((*tok)->value[i + 1] == '?' || (*tok)->value[i + 1] == '$')
+		
+		
+// }
+
 static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 {
 	int	i;
@@ -150,7 +160,7 @@ static void	check_str(t_token **head, t_token **tok, t_data *data, int bool)
 			if (!(*tok)->value)
 				error_malloc_tok(head, data);
 		}
-		else if ((*tok)->value[i] == '$' && bool != 1)
+		else if ((*tok)->value[i] == '$' && bool != 1 && (*tok)->value[i + 1])
 			check_no_quote(head, tok, data, &i);
 		else
 			i++;
