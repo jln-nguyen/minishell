@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 12:40:57 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:36:54 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	check_tok(t_token *tok)
 	}
 	return (0);
 }
-
 
 static t_token	*init_tok(char *str, int *i)
 {
@@ -98,7 +97,7 @@ t_token	*ft_token(char *str, t_data *data)
 		data->exit_code = 2;
 		return (ft_free(&tok), NULL);
 	}
-	tok = expand_str(tok, data); //j'en suis la
+	tok = expand_str(tok, data);
 	return (tok);
 }
 

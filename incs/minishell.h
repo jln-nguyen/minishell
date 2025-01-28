@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 12:42:59 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:18:38 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 # include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
-// # define OLDFD_IN 0
-// # define FD_HEREDOC 1
-// # define OLDFD_OUT 2
-// # define FD_OUT 3
-// # define FD_IN 4
 
 typedef enum e_enum_type
 {
@@ -73,13 +67,14 @@ typedef struct s_data
 
 extern int	g_signal;
 
+void		check_no_quote(t_token **head, t_token **tok,
+				t_data *data, int *i);
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
 void		sigint_handler(int signal);
 void		sigint_process(int signal);
 void		ft_create_env(t_data *data);
 void		sigquit_handler(int signal);
-void		check_whitespace(char **tmp);
 void		ft_print_export(t_env **env);
 void		search_cmd(t_ast_node **ast);
 void		ft_free_ast(t_ast_node **tok);
@@ -125,7 +120,6 @@ long		ft_atol(const char *str);
 char		**init_tmp(void);
 char		**struc_to_char(t_env *env);
 
-// char		*ft_pre_bigjoin_trim(char **tmp);
 char		*find_path(char *cmd, char **env);
 char		*rem_double_quote(char *str, int *i, int j);
 char		*rem_quote(char *str, int *i, char c);
