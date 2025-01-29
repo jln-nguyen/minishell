@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 14:48:09 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:57:41 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	cleanup_child(t_data *data, int *pipefd)
 		ft_free_ast(&data->ast);
 	if (data->env)
 		ft_free_env(&data->env);
+	close_fds();
 	exit(EXIT_FAILURE);
 }
 
@@ -44,9 +45,7 @@ static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		ft_exec(data, &(*ast)->left);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
-		pid = 3;
-		while (pid < 1024)
-			close(pid++);
+		close_fds();
 		exit(data->exit_code);
 	}
 	return (pid);
@@ -73,9 +72,7 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		ft_exec(data, &(*ast)->right);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
-		pid = 3;
-		while (pid < 1024)
-			close(pid++);
+		close_fds();
 		exit(data->exit_code);
 	}
 	return (pid);

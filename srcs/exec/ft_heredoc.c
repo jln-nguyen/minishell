@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 15:05:41 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:04:25 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 
 	nb_file = ft_itoa(i);
 	if (!nb_file)
-		ft_malloc_err(data);
+		ft_err(data, "Malloc");
 	file = ft_strjoin(".heredoc", nb_file);
 	if (!file)
-		(free(nb_file), free(file), ft_malloc_err(data));
+		(free(nb_file), free(file), ft_err(data, "Malloc"));
 	free(nb_file);
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)

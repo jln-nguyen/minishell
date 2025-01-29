@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 12:23:14 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:03:01 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	check_long_lims(char *n, t_data *data, int signe, char *tmp[2])
 	else
 		tmp[1] = ft_substr(n, 11, ft_strlen(n));
 	if (!tmp[1])
-		(free(n), free(tmp[0]), ft_malloc_err(data));
+		(free(n), free(tmp[0]), ft_err(data, "Malloc"));
 	i = ft_atol(tmp[1]);
 	if ((i > 854775807 && (signe == 0 || signe == 1)) || (i > 854775808
 			&& signe == -1))
@@ -44,7 +44,7 @@ static void	handle_long_num(char *n, t_data *data, int signe, long len)
 	else
 		tmp[0] = ft_substr(n, 0, 11);
 	if (!tmp[0])
-		(free(n), ft_malloc_err(data));
+		(free(n), ft_err(data, "Malloc"));
 	i = ft_atol(tmp[0]);
 	if (i > 9223372036 || i < -9223372036)
 	{
@@ -99,7 +99,7 @@ static char	*ft_supp_before_zero(char *n, t_data *data)
 	end = ft_strlen(n);
 	str = (char *)malloc(sizeof(char) * (end - start + 2));
 	if (!str)
-		ft_malloc_err(data);
+		ft_err(data, "Malloc");
 	if (sign)
 		str[0] = sign;
 	ft_strlcpy(str + (sign != 0), n + start, end - start + 1);
@@ -115,7 +115,7 @@ void	ft_exit(t_data *data, char **args)
 		ft_end(data, 0, NULL);
 	tmp = ft_supp_before_zero(args[1], data);
 	if (!tmp)
-		ft_malloc_err(data);
+		ft_err(data, "Malloc");
 	nb = ft_isnum(tmp, data, 0, 0);
 	free(tmp);
 	if (args[1] && args[2])

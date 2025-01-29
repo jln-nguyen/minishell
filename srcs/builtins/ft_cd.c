@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 17:26:19 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:01:29 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static void	ft_change_wd(t_data *data, char *pwd, char *old_pwd)
 			free(tmp->value);
 			tmp->value = ft_strdup(pwd);
 			if (!tmp->value)
-				(free(pwd), free(old_pwd), ft_malloc_err(data));
+				(free(pwd), free(old_pwd), ft_err(data, "Malloc"));
 		}
 		if (ft_strncmp("OLDPWD", tmp->key, 6) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(old_pwd);
 			if (old_pwd &&!tmp->value)
-				(free(pwd), free(old_pwd), ft_malloc_err(data));
+				(free(pwd), free(old_pwd), ft_err(data, "Malloc"));
 		}
 		tmp = tmp->next;
 	}
@@ -75,7 +75,7 @@ static int	ft_cd_home(t_data *data, char *old_pwd)
 		{
 			home = ft_strdup(tmp->value);
 			if (!home)
-				(free(old_pwd), ft_malloc_err(data));
+				(free(old_pwd), ft_err(data, "Malloc"));
 		}
 		tmp = tmp->next;
 	}

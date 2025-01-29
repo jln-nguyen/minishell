@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:17:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 14:43:48 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:09:14 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static void	create_left_node(t_ast_node **ast, t_data *data)
 
 	node = new_node(TOKEN_STR);
 	if (!node)
-		ft_malloc_err(data);
+		ft_err(data, "Malloc");
 	node->args = malloc(sizeof(char *) * 1);
 	if (!node->args)
-		(free(node), ft_malloc_err(data));
+		(free(node), ft_err(data, "Malloc"));
 	node->args[0] = 0;
 	add_node(ast, node, 'L');
 }
@@ -37,7 +37,7 @@ static void	ft_fill_cmd(char **cmd, char **new_cmd, t_data *data)
 		if (!new_cmd[i])
 		{
 			ft_free_tab(&new_cmd);
-			ft_malloc_err(data);
+			ft_err(data, "Malloc");
 		}
 		i++;
 	}
@@ -58,7 +58,7 @@ static char	**save_cmd(char **cmd, char **arg, t_data *data)
 		j++;
 	new_cmd = malloc(sizeof(char *) * (i + j + 1));
 	if (!new_cmd)
-		(ft_malloc_err(data), ft_free_tab(&cmd));
+		(ft_err(data, "Malloc"), ft_free_tab(&cmd));
 	new_cmd[i + j] = 0;
 	ft_fill_cmd(cmd, new_cmd, data);
 	ft_fill_cmd(arg, &new_cmd[i], data);
