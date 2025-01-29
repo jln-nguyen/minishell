@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:48 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 13:38:26 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:08:00 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,36 +47,6 @@ static int	ft_dup_out(int file_out, int old_fd_out, int old_fd_in)
 	return (old_fd_out);
 }
 
-// void	ft_redir(t_data *data, t_ast_node **ast)
-// {
-// 	data->old_fd_in = 0;
-// 	data->old_fd_out = 1;
-// 	search_cmd(ast);
-// 	data->fd_in = ft_redir_in(*ast, &data->env);
-// 	if (data->fd_in > 0)
-// 	{
-// 		data->old_fd_in = dup(STDIN_FILENO);
-// 		if (data->old_fd_in == -1)
-// 			return ;
-// 		if (dup2(data->fd_in, STDIN_FILENO) == -1)
-// 			return ; //return protect
-// 		close(data->fd_in);
-// 	}
-// 	if (data->fd_in < 0)
-// 		return (data->exit_code = 1, ft_reset_fd(data->old_fd_in,
-// 				data->old_fd_out));
-// 	data->fd_out = ft_redir_out(*ast);
-// 	data->old_fd_out = ft_dup_out(data->fd_out, data->old_fd_out,
-// 			data->old_fd_in);
-// 	if (data->old_fd_out == -1)
-// 	{
-// 		data->exit_code = 1;
-// 		return ;
-// 	}
-// 	exec_cmd(data, &(*ast)->left);
-// 	ft_reset_fd(data->old_fd_in, data->old_fd_out);
-// }
-
 void	ft_redir(t_data *data, t_ast_node **ast)
 {
 	int	old_fd_in;
@@ -92,9 +62,9 @@ void	ft_redir(t_data *data, t_ast_node **ast)
 	{
 		old_fd_in = dup(STDIN_FILENO);
 		if (old_fd_in == -1)
-			return ;
+			ft_err(data, "dup");
 		if (dup2(file_in, STDIN_FILENO) == -1)
-			return ; // return protect
+			ft_err(data, "dup2");
 		close(file_in);
 	}
 	if (file_in < 0)

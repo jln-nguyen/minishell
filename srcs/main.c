@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 10:07:03 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:35:50 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	prompt(t_data *data)
 		{
 			printf("exit\n");
 			ft_free_env(&data->env);
+			close_fds();
 			if (g_signal != 0)
 				exit(g_signal);
 			exit(data->exit_code);

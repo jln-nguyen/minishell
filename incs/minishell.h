@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 17:59:18 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:56:22 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ long		ft_atol(const char *str);
 
 char		**init_tmp(void);
 char		**struc_to_char(t_env *env);
-char		*find_path(char *cmd, char **env);
 char		*rem_quote(char *str, int *i, char c);
 char		*rem_double_quote(char *str, int *i, int j);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);

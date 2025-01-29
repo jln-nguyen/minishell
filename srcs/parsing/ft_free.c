@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:02:46 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 17:58:36 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:08:57 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ void	ft_err(t_data *data, char *str)
 	if (data->env)
 		ft_free_env(&data->env);
 	close_fds();
-	exit(2);
+	exit(EXIT_FAILURE);
 }

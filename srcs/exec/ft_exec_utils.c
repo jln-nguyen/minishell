@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 14:37:57 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/22 14:40:41 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:22:37 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exec_cmd(t_data *data, t_ast_node **ast)
 {
 	char	**tab;
-	// int		status;
+	
 	tab = NULL;
 	if (!*ast || !ast)
 		return ;

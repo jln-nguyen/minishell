@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 17:57:41 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:45:35 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		close(pipefd[0]);
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2");
+			perror("Minishell: dup2");
 			cleanup_child(data, pipefd);
 		}
 		close(pipefd[1]);
@@ -65,7 +65,7 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		close(pipefd[1]);
 		if (dup2(pipefd[0], STDIN_FILENO) == -1)
 		{
-			perror("dup2");
+			perror("Minishell: dup2");
 			cleanup_child(data, pipefd);
 		}
 		close(pipefd[0]);
@@ -83,7 +83,7 @@ static int	init_pipe(int *pipefd, t_ast_node **ast)
 	if (!ast || !*ast)
 		return (0);
 	if (pipe(pipefd) == -1)
-		return (perror("pipe"), 0);
+		return (perror("Minishell: pipe"), 0);
 	return (1);
 }
 
