@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 14:15:32 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:26:19 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	ft_change_wd(t_data *data, char *pwd, char *old_pwd)
 }
 
 static int	ft_cd_update(t_data *data, char *old_pwd)
-{	
+{
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
