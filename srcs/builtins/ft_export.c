@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:09 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 19:17:55 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 10:34:09 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static char	*ft_get_key(t_ast_node *ast, t_data *data, char *key, int i)
 {
 	key = ft_substr(ast->args[i], 0, ft_strchr(ast->args[i], '=')
 			- ast->args[i]);
+	if (!key)
+		(free(key), ft_malloc_err(data));
 	if (ft_strchr(ast->args[i], '='))
 		ft_update_env(data, key, ft_strchr(ast->args[i], '=') + 1, 1);
 	else
@@ -47,10 +49,7 @@ static int	ft_process_arg(t_data *data, t_ast_node *ast, int i)
 	if (!key)
 		ft_malloc_err(data);
 	if (!ft_strcmp(ast->args[i], "_") || !ft_strcmp(key, "_="))
-	{
-		free(key);
-		return (EXIT_SUCCESS);
-	}
+		return (free(key), EXIT_SUCCESS);
 	if (!ft_check_key(ast->args[i]))
 	{
 		printf("export: `%s': not a valid identifier\n", ast->args[i]);

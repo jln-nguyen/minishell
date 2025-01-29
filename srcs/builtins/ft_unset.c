@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:28 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 18:19:52 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 10:35:42 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ static void	ft_remove(t_env **env, char *key)
 				prev->next = tmp->next;
 			else
 				*env = tmp->next;
-			free(tmp->key);
-			free(tmp->value);
-			free(tmp);
+			(free(tmp->key), free(tmp->value), free(tmp));
 			break ;
 		}
 		prev = tmp;
