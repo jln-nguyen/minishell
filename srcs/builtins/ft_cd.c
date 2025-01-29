@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 11:47:47 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:15:32 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_change_wd(t_data *data, char *pwd, char *old_pwd)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(old_pwd);
-			if (!tmp->value)
+			if (old_pwd &&!tmp->value)
 				(free(pwd), free(old_pwd), ft_malloc_err(data));
 		}
 		tmp = tmp->next;
