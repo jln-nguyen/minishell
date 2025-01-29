@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 19:25:49 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:38:10 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void		sigint_process(int signal);
 void		ft_malloc_err(t_data *data);
 void		ft_create_env(t_data *data);
 void		sigquit_handler(int signal);
-void		search_cmd(t_ast_node **ast);
 void		ft_print_export(t_data *data);
 void		ft_free_ast(t_ast_node **tok);
 void		ft_free_tab_var_env(char ***tab);
@@ -89,6 +88,7 @@ void		exec_cmd(t_data *data, t_ast_node **ast);
 void		ft_redir(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
+void		search_cmd(t_ast_node **ast, t_data *data);
 void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_tokadd_back(t_token **lst, t_token *new);

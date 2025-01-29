@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:19:48 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/23 14:04:19 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:38:26 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ft_redir(t_data *data, t_ast_node **ast)
 
 	old_fd_in = 0;
 	old_fd_out = 1;
-	search_cmd(ast);
+	search_cmd(ast, data);
 	file_in = ft_redir_in(*ast, &data->env);
 	if (file_in > 0)
 	{

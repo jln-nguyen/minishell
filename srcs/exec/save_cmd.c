@@ -6,27 +6,27 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:17:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/23 10:11:50 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:06:27 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	create_left_node(t_ast_node **ast)
+static void	create_left_node(t_ast_node **ast, t_data *data)
 {
 	t_ast_node	*node;
 
 	node = new_node(TOKEN_STR);
 	if (!node)
-		return ; // protect malloc
+		ft_malloc_err(data);
 	node->args = malloc(sizeof(char *) * 1);
 	if (!node->args)
-		return ; // protect malloc
+		(free(node), ft_malloc_err(data));
 	node->args[0] = 0;
 	add_node(ast, node, 'L');
 }
 
-static void	ft_fill_cmd(char **cmd, char **new_cmd)
+static void	ft_fill_cmd(char **cmd, char **new_cmd, t_data *data)
 {
 	int	i;
 
@@ -37,13 +37,13 @@ static void	ft_fill_cmd(char **cmd, char **new_cmd)
 		if (!new_cmd[i])
 		{
 			ft_free_tab(&new_cmd);
-			return ;
+			ft_malloc_err(data);
 		}
 		i++;
 	}
 }
 
-static char	**save_cmd(char **cmd, char **arg)
+static char	**save_cmd(char **cmd, char **arg, t_data *data)
 {
 	char	**new_cmd;
 	int		i;
@@ -58,10 +58,10 @@ static char	**save_cmd(char **cmd, char **arg)
 		j++;
 	new_cmd = malloc(sizeof(char *) * (i + j + 1));
 	if (!new_cmd)
-		return (NULL);
+		(ft_malloc_err(data), ft_free_tab(&cmd));
 	new_cmd[i + j] = 0;
-	ft_fill_cmd(cmd, new_cmd);
-	ft_fill_cmd(arg, &new_cmd[i]);
+	ft_fill_cmd(cmd, new_cmd, data);
+	ft_fill_cmd(arg, &new_cmd[i], data);
 	if (cmd[0] == 0)
 		free(cmd);
 	else
@@ -69,20 +69,20 @@ static char	**save_cmd(char **cmd, char **arg)
 	return (new_cmd);
 }
 
-void	search_cmd(t_ast_node **ast)
+void	search_cmd(t_ast_node **ast, t_data *data)
 {
 	t_ast_node	*tmp;
 
 	tmp = *ast;
 	if (!tmp->left)
-		create_left_node(ast);
+		create_left_node(ast, data);
 	while (tmp->right->right)
 	{
 		tmp = tmp->right;
 		if (tmp->left->args[1])
 			(*ast)->left->args = save_cmd((*ast)->left->args,
-					&tmp->left->args[1]);
+					&tmp->left->args[1], data);
 	}
 	if (tmp->right->args[1])
-		(*ast)->left->args = save_cmd((*ast)->left->args, &tmp->right->args[1]);
+		(*ast)->left->args = save_cmd((*ast)->left->args, &tmp->right->args[1], data);
 }
