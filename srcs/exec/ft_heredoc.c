@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 10:43:40 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:05:41 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	heredoc_sig(int signal)
 	rl_done = 1;
 }
 
-int	event(void)
+static int	event(void)
 {
 	return (0);
 }
@@ -83,19 +83,18 @@ int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 	char	*nb_file;
 
 	nb_file = ft_itoa(i);
+	if (!nb_file)
+		ft_malloc_err(data);
 	file = ft_strjoin(".heredoc", nb_file);
+	if (!file)
+		(free(nb_file), free(file), ft_malloc_err(data));
 	free(nb_file);
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
 	ft_read(ast->args[0], data, fd);
 	if (g_signal == 130)
-	{
-		unlink(file);
-		close(fd);
-		free(file);
-		return (-1);
-	}
+		return (unlink(file), close(fd), free(file), -1);
 	close(fd);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
