@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:54:53 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 11:33:56 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:23:14 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,7 @@ void	ft_exit(t_data *data, char **args)
 		ft_end(data, 0, NULL);
 	tmp = ft_supp_before_zero(args[1], data);
 	if (!tmp)
-		ft_malloc_err(data); // ??
-		// ft_end(data, -1, args[1]);
+		ft_malloc_err(data);
 	nb = ft_isnum(tmp, data, 0, 0);
 	free(tmp);
 	if (args[1] && args[2])
