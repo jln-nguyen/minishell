@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 18:55:52 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:16:58 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	ft_env_size(t_env *env)
 	return (i);
 }
 
-char	**struc_to_char(t_env *env)
+char	**struc_to_char(t_env *env, t_data *data)
 {
 	char	**tab;
 	int		i;
@@ -38,14 +38,14 @@ char	**struc_to_char(t_env *env)
 	tab = NULL;
 	tab = malloc(sizeof(char *) * (ft_env_size(env) + 1));
 	if (!tab)
-		return (NULL);
+		ft_err(data, "Malloc error");
 	while (env)
 	{
 		tab[i] = ft_strbigjoin(env->key, "=", env->value);
 		if (!tab[i])
 		{
 			ft_free_tab(&tab);
-			return (NULL);
+			ft_err(data, "Malloc error");
 		}
 		i++;
 		env = env->next;

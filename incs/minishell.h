@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/29 18:56:22 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/31 15:16:59 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void		ft_err(t_data *data, char *str);
 void		ft_free_tab_var_env(char ***tab);
 void		ft_exit(t_data *data, char **args);
 void		ft_getenv(t_data *data, char **envp);
+void		ft_break_here(char *line, char *end);
 void		ft_unset(t_env **env, t_ast_node *tok);
 void		ft_end(t_data *data, int n, char *arg);
 void		ft_exec(t_data *data, t_ast_node **ast);
@@ -122,8 +123,8 @@ int			pwd_err(char *str);
 long		ft_atol(const char *str);
 
 char		**init_tmp(void);
-char		**struc_to_char(t_env *env);
 char		*rem_quote(char *str, int *i, char c);
+char		**struc_to_char(t_env *env, t_data *data);
 char		*rem_double_quote(char *str, int *i, int j);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
 char		*dble_quote(char *str, int *i, t_data *data, t_token **head);
