@@ -6,7 +6,7 @@
 /*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/02 11:21:06 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/02 13:18:09 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ void		ft_redir(t_data *data, t_ast_node **ast);
 void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
 void		search_cmd(t_ast_node **ast, t_data *data);
-void		ft_reset_fd(int old_fd_in, int old_fd_out);
-void		ft_reset_fd(int old_fd_in, int old_fd_out);
 void		ft_tokadd_back(t_token **lst, t_token *new);
 void		check_heredoc(t_ast_node **ast, t_data *data);
 void		error_malloc_tok(t_token **tok, t_data *data);
@@ -98,15 +96,17 @@ void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		check_sign(char *n, t_data *data, long *i, int *signe);
 void		ft_no_path(t_data *data, t_ast_node **ast, char **env);
+void		ft_reset_fd(int old_fd_in, int old_fd_out, t_data *data);
 void		ft_update_env(t_data *data, char *key, char *value, int bool);
 void		check_no_quote(t_token **head, t_token **tok, t_data *data, int *i);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
-
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
 int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_export(t_data *data, t_env **env, t_ast_node *ast);
+int			redic_heredoc(t_ast_node *tmp, t_data *data, int *i);
+int				ft_heredoc(t_ast_node *ast, t_data *data, int i);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_pwd(t_data *data, t_ast_node *ast);
 int			expand_lst(t_token **tok, char *str);

@@ -6,7 +6,7 @@
 /*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/31 15:45:58 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/02 13:13:13 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,9 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 		}
 		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{
-			if (tmp->right->type == TOKEN_STR)
-				tmp->fd_heredoc = ft_heredoc(tmp->right, data, i);
-			else
-				tmp->fd_heredoc = ft_heredoc(tmp->right->left, data, i);
-			if (g_signal == 130)
+			if (redic_heredoc(tmp, data, &i))
 				return ;
 			i++;
-			if (tmp->fd_heredoc < 0)
-				return (ft_putstr_fd("error\n", STDERR_FILENO), (void)-1); //?
 		}
 		tmp = tmp->right;
 	}
