@@ -6,7 +6,7 @@
 /*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/02 13:18:09 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/02 13:30:42 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			expand_env(t_data *data, char *str_key, char *str_val);
 int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_export(t_data *data, t_env **env, t_ast_node *ast);
 int			redic_heredoc(t_ast_node *tmp, t_data *data, int *i);
-int				ft_heredoc(t_ast_node *ast, t_data *data, int i);
+int			ft_heredoc(t_ast_node *ast, t_data *data, int i);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_pwd(t_data *data, t_ast_node *ast);
 int			expand_lst(t_token **tok, char *str);
