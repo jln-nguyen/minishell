@@ -6,7 +6,7 @@
 /*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/31 15:16:59 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/02 11:21:06 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		check_sign(char *n, t_data *data, long *i, int *signe);
+void		ft_no_path(t_data *data, t_ast_node **ast, char **env);
 void		ft_update_env(t_data *data, char *key, char *value, int bool);
-void		ft_no_path(t_data *data, t_ast_node **ast, char **env, char *path);
 void		check_no_quote(t_token **head, t_token **tok, t_data *data, int *i);
 void		expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);

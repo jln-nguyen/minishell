@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 17:51:28 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/02 13:00:56 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static char	*check_cmd(char *cmd, char **envp, char *path)
 		free(path);
 		i++;
 	}
-	return (NULL);
+	return ("\0");
 }
 
-char	*find_path(char *cmd, char **env)
+static char	*find_path(char *cmd, char **env, t_data *data)
 {
 	int		i;
 	char	*path;
@@ -45,13 +45,15 @@ char	*find_path(char *cmd, char **env)
 		{
 			envp = ft_split(&env[i][5], ':');
 			if (!envp || !*envp)
-				return (NULL);
+				(ft_free_tab(&env), ft_free_tab(&envp), ft_err(data, "Malloc"));
 		}
 		i++;
 	}
 	if (!envp || !*envp)
 		return (NULL);
 	path = check_cmd(cmd, envp, path);
+	if (!path)
+		(ft_free_tab(&env), ft_free_tab(&envp), ft_err(data, "Malloc"));
 	ft_free_tab(&envp);
 	return (path);
 }
@@ -64,7 +66,6 @@ static void	ft_abs_path(t_data *data, t_ast_node **ast, char **env, char **path)
 		if (!path)
 		{
 			ft_printf(STDERR_FILENO, "Malloc error\n");
-			free(*path);
 			ft_free_tab(&env);
 			(ft_free_ast(&data->ast), ft_free_env(&data->env));
 			close_fds();
@@ -94,9 +95,9 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	if (ft_strnstr((*ast)->args[0], "/", ft_strlen((*ast)->args[0])) != NULL)
 		ft_abs_path(data, ast, env, &path);
 	else
-		path = find_path((*ast)->args[0], env);
-	if (path == NULL || (*ast)->args[0][0] == '\0')
-		ft_no_path(data, ast, env, path);
+		path = find_path((*ast)->args[0], env, data);
+	if (!path || path[0] == '\0' || (*ast)->args[0][0] == '\0')
+		ft_no_path(data, ast, env);
 	execve(path, (*ast)->args, env);
 	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n",
 		(*ast)->args[0]);
