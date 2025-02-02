@@ -6,7 +6,7 @@
 /*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/31 14:16:58 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/02 13:05:49 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	**struc_to_char(t_env *env, t_data *data)
 	int		i;
 
 	i = 0;
-	tab = NULL;
 	tab = malloc(sizeof(char *) * (ft_env_size(env) + 1));
 	if (!tab)
 		ft_err(data, "Malloc error");
