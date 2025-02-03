@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/03 11:57:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:56:27 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ extern int	g_signal;
 void		close_fds(void);
 void		ft_free(t_token **tok);
 void		ft_free_env(t_env **env);
+void		ft_reset_fd(t_data *data);
 void		sigint_handler(int signal);
 void		sigint_process(int signal);
 void		ft_create_env(t_data *data);
@@ -95,7 +96,6 @@ void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
 void		check_sign(char *n, t_data *data, long *i, int *signe);
-void		ft_reset_fd(t_data *data);
 void		ft_update_env(t_data *data, char *key, char *value, int bool);
 void		ft_no_path(t_data *data, t_ast_node **ast, char **env, char *path);
 void		check_no_quote(t_token **head, t_token **tok, t_data *data, int *i);
@@ -123,6 +123,7 @@ int			pwd_err(char *str);
 long		ft_atol(const char *str);
 
 char		**init_tmp(void);
+char		*get_prompt(t_data *data);
 char		*rem_quote(char *str, int *i, char c);
 char		**struc_to_char(t_env *env, t_data *data);
 char		*rem_double_quote(char *str, int *i, int j);
@@ -132,7 +133,6 @@ char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 char		*change_str(char *new_str, int i, t_data *data, t_token **head);
 char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
-char		*get_prompt(t_data *data);
 
 t_token		*expand_str(t_token *tok, t_data *data);
 t_token		*check_token(char *str, t_token *tok);
@@ -143,9 +143,9 @@ t_token		*ft_del_last(t_token *tok);
 t_ast_node	*new_node(t_enum_type type);
 t_ast_node	*ft_parsing(char *cmd, t_data *data);
 t_ast_node	*parse_pipe(t_token pipe, t_token *tok);
+t_ast_node	*parse_redir_out(t_token op, t_token *tok);
 t_ast_node	*parse_str(t_token *tok, t_enum_type limit);
 t_ast_node	*check_pipe(t_token *tok, t_enum_type limit);
-t_ast_node	*parse_redir_out(t_token op, t_token *tok);
 t_ast_node	*parsing_token(t_token *tok, t_enum_type limit);
 
 t_env		*new_env(char *str_key, char *str_val);

@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/03 11:05:58 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:24:32 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 	return (pid);
 }
 
-static int	init_pipe(int *pipefd, t_ast_node **ast)
+static int	init_pipe(int *pipefd, t_ast_node **ast, t_data *data)
 {
 	if (!ast || !*ast)
 		return (0);
 	if (pipe(pipefd) == -1)
-		return (perror("Minishell: pipe"), 0);
+		ft_err(data, "pipe");
 	return (1);
 }
 
@@ -95,7 +95,7 @@ void	exec_pipe(t_data *data, t_ast_node **ast)
 	int		status;
 
 	status = 0;
-	if (!init_pipe(pipefd, ast))
+	if (!init_pipe(pipefd, ast, data))
 		return ;
 	left_pid = handle_left_pipe(data, ast, pipefd);
 	if (left_pid == -1)
