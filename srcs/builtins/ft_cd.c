@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:53:45 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/23 10:10:06 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:01:29 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,37 @@ int	check_if_oldpwd(t_env **env)
 	return (0);
 }
 
-void	ft_change_wd(t_env **env, char *pwd, char *old_pwd)
+static void	ft_change_wd(t_data *data, char *pwd, char *old_pwd)
 {
 	t_env	*tmp;
 
-	tmp = *env;
+	tmp = data->env;
 	while (tmp)
 	{
 		if (ft_strncmp("PWD", tmp->key, 6) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(pwd);
+			if (!tmp->value)
+				(free(pwd), free(old_pwd), ft_err(data, "Malloc"));
 		}
 		if (ft_strncmp("OLDPWD", tmp->key, 6) == 0)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(old_pwd);
+			if (old_pwd &&!tmp->value)
+				(free(pwd), free(old_pwd), ft_err(data, "Malloc"));
 		}
-		if (!tmp->value)
-			return ; // exit fn free et tout
 		tmp = tmp->next;
 	}
 }
 
 static int	ft_cd_update(t_data *data, char *old_pwd)
-{	
+{
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	ft_change_wd(&data->env, pwd, old_pwd);
+	ft_change_wd(data, pwd, old_pwd);
 	free(old_pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
@@ -72,6 +74,8 @@ static int	ft_cd_home(t_data *data, char *old_pwd)
 		if (ft_strncmp("HOME", tmp->key, 6) == 0)
 		{
 			home = ft_strdup(tmp->value);
+			if (!home)
+				(free(old_pwd), ft_err(data, "Malloc"));
 		}
 		tmp = tmp->next;
 	}

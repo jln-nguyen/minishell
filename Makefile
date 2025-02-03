@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
+#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2025/02/03 11:02:09 by junguyen         ###   ########.fr        #
+#    Updated: 2025/02/03 11:05:12 by bvictoir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC		= main.c					\
 		exec/ft_redir_fd.c			\
 		exec/save_cmd.c				\
 		exec/ft_heredoc.c			\
+		exec/ft_heredoc_utils.c		\
 		exec/ft_pipe.c
 SRCS	= ${addprefix $(SRC_PATH), $(SRC)}
 

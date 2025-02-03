@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/15 21:14:56 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 18:04:05 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	ft_is_print(t_env *tab)
 		printf("export %s=\"%s\"\n", tab->key, tab->value);
 }
 
-void	ft_print_export(t_env **env)
+void	ft_print_export(t_data *data)
 {
 	int		i;
 	int		count;
@@ -59,7 +59,7 @@ void	ft_print_export(t_env **env)
 	t_env	**tab;
 
 	count = 0;
-	tmp = *env;
+	tmp = data->env;
 	while (tmp)
 	{
 		count++;
@@ -67,34 +67,40 @@ void	ft_print_export(t_env **env)
 	}
 	tab = malloc(sizeof(t_env *) * count);
 	if (!tab)
-		return ;
-	order_tab(tab, env, count);
+		ft_err(data, "Malloc");
+	order_tab(tab, &data->env, count);
 	i = -1;
 	while (++i < count)
 		ft_is_print(tab[i]);
 	free(tab);
 }
 
-static void	ft_add_env(t_env *tmp, char *key, char *value)
+static void	ft_add_env(t_data *data, t_env *tmp, char *key, char *value)
 {
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return ;
+		(free(key), free(value), ft_err(data, "Malloc"));
 	new->key = ft_strdup(key);
+	if (!new->key)
+		(free(key), free(value), free(new), ft_err(data, "Malloc"));
 	new->value = NULL;
 	if (value)
+	{
 		new->value = ft_strdup(value);
+		if (!new->value)
+			(free(key), free(new->key), free(new), ft_err(data, "Malloc"));
+	}
 	new->next = tmp->next;
 	tmp->next = new;
 }
 
-void	ft_update_env(t_env **env, char *key, char *value, int bool)
+void	ft_update_env(t_data *data, char *key, char *value, int bool)
 {
 	t_env	*tmp;
 
-	tmp = *env;
+	tmp = data->env;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, key))
@@ -103,6 +109,8 @@ void	ft_update_env(t_env **env, char *key, char *value, int bool)
 			{
 				free(tmp->value);
 				tmp->value = ft_strdup(value);
+				if (!tmp->value)
+					(free(key), ft_err(data, "Malloc"));
 			}
 			return ;
 		}
@@ -110,5 +118,5 @@ void	ft_update_env(t_env **env, char *key, char *value, int bool)
 			break ;
 		tmp = tmp->next;
 	}
-	ft_add_env(tmp, key, value);
+	ft_add_env(data, tmp, key, value);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 15:57:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:06:11 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ void	ft_free_env(t_env **env)
 	while (*env != NULL)
 	{
 		tmp = (*env)->next;
-		free((*env)->key);
-		free((*env)->value);
-		free(*env);
+		if ((*env)->key)
+			free((*env)->key);
+		if ((*env)->value)
+			free((*env)->value);
+		if (*env)
+			free(*env);
 		*env = tmp;
 	}
 	*env = NULL;

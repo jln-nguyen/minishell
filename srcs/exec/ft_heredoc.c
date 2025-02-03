@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 10:43:40 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/02 13:13:13 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	heredoc_sig(int signal)
 	rl_done = 1;
 }
 
-int	event(void)
+static int	event(void)
 {
 	return (0);
 }
@@ -33,47 +33,27 @@ void	ft_read(char *end, t_data *data, int fd)
 	char	*line;
 	int		i;
 
-	// int			old_stdin;
-	// old_stdin = dup(STDIN_FILENO);
 	rl_event_hook = event;
 	while (1)
 	{
 		line = readline("> ");
-		if (g_signal == 130)
+		if (g_signal == 130 || !ft_strcmp(line, end) || !line)
 		{
-			// dup2(old_stdin, STDIN_FILENO);
-			// close(old_stdin);
-			break ;
-		}
-		if (!line)
-		{
-			ft_printf(STDERR_FILENO,
-				"Minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
-				end);
-			break ;
-		}
-		if (!ft_strcmp(line, end))
-		{
-			free(line);
+			ft_break_here(line, end);
 			break ;
 		}
 		i = 0;
 		while (line[i])
-		{
 			if (line[i] == '$')
 				line = change_str(line, i + 1, data, NULL); // changez fonction
-			if (line[i] == '\0')
-				break ;
-			else
-				i++;
-		}
+		else if (line[i] == '\0') // je laisse le else if au lieu de if ??
+			break ;
+		else
+			i++;
 		if (!line)
-			return ; // protect
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
+			return ; // normalement pas besoin car change_str gere les erreurs
+		(ft_putstr_fd(line, fd), ft_putstr_fd("\n", fd), free(line));
 	}
-	// close(old_stdin);
 }
 
 int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
@@ -83,19 +63,18 @@ int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 	char	*nb_file;
 
 	nb_file = ft_itoa(i);
+	if (!nb_file)
+		ft_err(data, "Malloc");
 	file = ft_strjoin(".heredoc", nb_file);
+	if (!file)
+		(free(nb_file), free(file), ft_err(data, "Malloc"));
 	free(nb_file);
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
 	ft_read(ast->args[0], data, fd);
 	if (g_signal == 130)
-	{
-		unlink(file);
-		close(fd);
-		free(file);
-		return (-1);
-	}
+		return (unlink(file), close(fd), free(file), -1);
 	close(fd);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
@@ -124,21 +103,9 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 		}
 		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{
-			if (tmp->right->type == TOKEN_STR)
-			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right, data, i);
-				if (g_signal == 130)
-					return ;
-			}
-			else
-			{
-				tmp->fd_heredoc = ft_heredoc(tmp->right->left, data, i);
-				if (g_signal == 130)
-					return ;
-			}
+			if (redic_heredoc(tmp, data, &i))
+				return ;
 			i++;
-			if (tmp->fd_heredoc < 0)
-				return (ft_putstr_fd("error\n", STDERR_FILENO), (void)-1); //?
 		}
 		tmp = tmp->right;
 	}

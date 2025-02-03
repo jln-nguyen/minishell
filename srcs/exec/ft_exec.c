@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/22 14:40:16 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/02 13:06:53 by bvkm             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,22 @@ static int	ft_env_size(t_env *env)
 	return (i);
 }
 
-char	**struc_to_char(t_env *env)
+char	**struc_to_char(t_env *env, t_data *data)
 {
 	char	**tab;
 	int		i;
 
 	i = 0;
-	tab = NULL;
 	tab = malloc(sizeof(char *) * (ft_env_size(env) + 1));
 	if (!tab)
-		return (NULL);
+		ft_err(data, "Malloc error");
 	while (env)
 	{
 		tab[i] = ft_strbigjoin(env->key, "=", env->value);
 		if (!tab[i])
 		{
 			ft_free_tab(&tab);
-			return (NULL);
+			ft_err(data, "Malloc error");
 		}
 		i++;
 		env = env->next;
@@ -61,11 +60,11 @@ int	ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("env", ast->args[0]) == 0)
 		return (ft_env(ast, env));
 	else if (ft_strcmp("pwd", ast->args[0]) == 0)
-		return (ft_pwd(ast));
+		return (ft_pwd(data, ast));
 	else if (ft_strcmp("echo", ast->args[0]) == 0)
 		return (ft_echo(ast->args));
 	else if (ft_strcmp("export", ast->args[0]) == 0)
-		return (ft_export(env, ast));
+		return (ft_export(data, env, ast));
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (ft_unset(env, ast), 0);
 	else if (ft_strcmp("exit", ast->args[0]) == 0)

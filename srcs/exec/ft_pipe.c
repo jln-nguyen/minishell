@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 16:55:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:05:58 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	cleanup_child(t_data *data, int *pipefd)
 		ft_free_ast(&data->ast);
 	if (data->env)
 		ft_free_env(&data->env);
+	close_fds();
 	exit(EXIT_FAILURE);
 }
 
@@ -37,16 +38,14 @@ static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		close(pipefd[0]);
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2");
+			perror("Minishell: dup2");
 			cleanup_child(data, pipefd);
 		}
 		close(pipefd[1]);
 		ft_exec(data, &(*ast)->left);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
-		pid = 3;
-		while (pid < 1024)
-			close(pid++);
+		close_fds();
 		exit(data->exit_code);
 	}
 	return (pid);
@@ -66,16 +65,14 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 		close(pipefd[1]);
 		if (dup2(pipefd[0], STDIN_FILENO) == -1)
 		{
-			perror("dup2");
+			perror("Minishell: dup2");
 			cleanup_child(data, pipefd);
 		}
 		close(pipefd[0]);
 		ft_exec(data, &(*ast)->right);
 		ft_free_ast(&data->ast);
 		ft_free_env(&data->env);
-		pid = 3;
-		while (pid < 1024)
-			close(pid++);
+		close_fds();
 		exit(data->exit_code);
 	}
 	return (pid);
@@ -86,7 +83,7 @@ static int	init_pipe(int *pipefd, t_ast_node **ast)
 	if (!ast || !*ast)
 		return (0);
 	if (pipe(pipefd) == -1)
-		return (perror("pipe"), 0);
+		return (perror("Minishell: pipe"), 0);
 	return (1);
 }
 
