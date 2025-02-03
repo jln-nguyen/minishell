@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:03:36 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/02 13:06:53 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/03 13:09:38 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env)
 	else if (ft_strcmp("unset", ast->args[0]) == 0)
 		return (ft_unset(env, ast), 0);
 	else if (ft_strcmp("exit", ast->args[0]) == 0)
-		return (ft_exit(data, ast->args), 0); //remettre data.exit
+		return (ft_exit(data, ast->args), 0);
 	return (-1);
 }
 

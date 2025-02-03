@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:01:11 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 14:34:45 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:02:58 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*rem_quote(char *str, int *i, char c)
 	while (str[*i + j] && str[*i + j] != c)
 		j++;
 	if (j == 0 && *i == 1 && str[*i + j + 1] == '\0')
-		return (str);
+		return (*i += 1, str);
 	new_str = handle_quote(str, &i, j);
 	free(str);
 	if (!new_str)

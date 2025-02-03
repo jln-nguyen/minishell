@@ -3,32 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/02 13:13:13 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/03 16:08:39 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	heredoc_sig(int signal)
-{
-	(void)signal;
-	g_signal = 130;
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_redisplay();
-	rl_on_new_line();
-	rl_done = 1;
-}
 
 static int	event(void)
 {
 	return (0);
 }
 
-void	ft_read(char *end, t_data *data, int fd)
+void	ft_read(char *end, t_data *data, int fd, char *file)
 {
 	char	*line;
 	int		i;
@@ -45,13 +34,13 @@ void	ft_read(char *end, t_data *data, int fd)
 		i = 0;
 		while (line[i])
 			if (line[i] == '$')
-				line = change_str(line, i + 1, data, NULL); // changez fonction
-		else if (line[i] == '\0') // je laisse le else if au lieu de if ??
+				line = expand_heredoc(line, data, &i, file);
+		else if (line[i] == '\0')
 			break ;
 		else
 			i++;
 		if (!line)
-			return ; // normalement pas besoin car change_str gere les erreurs
+			return ;
 		(ft_putstr_fd(line, fd), ft_putstr_fd("\n", fd), free(line));
 	}
 }
@@ -71,17 +60,30 @@ int	ft_heredoc(t_ast_node *ast, t_data *data, int i)
 	free(nb_file);
 	fd = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
-		return (-1);
-	ft_read(ast->args[0], data, fd);
+		return (free(file), -1);
+	ft_read(ast->args[0], data, fd, file);
 	if (g_signal == 130)
 		return (unlink(file), close(fd), free(file), -1);
 	close(fd);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (-1);
+		return (free(file), -1);
 	unlink(file);
 	free(file);
 	return (fd);
+}
+
+static int	redic_heredoc(t_ast_node *tmp, t_data *data, int *i)
+{
+	if (tmp->right->type == TOKEN_STR)
+		tmp->fd_heredoc = ft_heredoc(tmp->right, data, *i);
+	else
+		tmp->fd_heredoc = ft_heredoc(tmp->right->left, data, *i);
+	if (g_signal == 130)
+		return (1);
+	if (tmp->fd_heredoc < 0)
+		return (1);
+	return (0);
 }
 
 void	check_heredoc(t_ast_node **ast, t_data *data)
@@ -99,7 +101,7 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 		{
 			check_heredoc(&(tmp)->left, data);
 			if (tmp->fd_heredoc < 0)
-				return (ft_putstr_fd("error\n", STDERR_FILENO), (void)-1); //?
+				return ;
 		}
 		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{

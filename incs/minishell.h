@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/03 11:57:19 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:11:46 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,16 @@ void		ft_reset_fd(t_data *data);
 void		ft_update_env(t_data *data, char *key, char *value, int bool);
 void		ft_no_path(t_data *data, t_ast_node **ast, char **env, char *path);
 void		check_no_quote(t_token **head, t_token **tok, t_data *data, int *i);
+void		ft_error_hd(t_data *data, char **tmp, char *file);
+void		heredoc_sig(int signal);
+
+int			get_index(char *str, int i);
 int			expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);
 int			ft_check_builtins(t_data *data, t_ast_node *ast, t_env **env);
 int			expand_env(t_data *data, char *str_key, char *str_val);
 int			ft_execve(char **env, t_ast_node **ast, t_data *data);
 int			ft_export(t_data *data, t_env **env, t_ast_node *ast);
-int			redic_heredoc(t_ast_node *tmp, t_data *data, int *i);
 int			ft_heredoc(t_ast_node *ast, t_data *data, int i);
 int			ft_redir_in(t_ast_node *ast, t_env **env);
 int			ft_pwd(t_data *data, t_ast_node *ast);
@@ -133,6 +136,7 @@ char		*change_str(char *new_str, int i, t_data *data, t_token **head);
 char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
 char		*get_prompt(t_data *data);
+char		*expand_heredoc(char *str, t_data *data, int *i, char *file);
 
 t_token		*expand_str(t_token *tok, t_data *data);
 t_token		*check_token(char *str, t_token *tok);

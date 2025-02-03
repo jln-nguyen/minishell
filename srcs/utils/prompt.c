@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:00:55 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 11:02:11 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:31:14 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_home(t_env *env)
 	while (env)
 	{
 		if (ft_strcmp(env->key, "HOME") == 0)
-				return (1);
+			return (1);
 		env = env->next;
 	}
 	return (0);
@@ -28,7 +28,7 @@ char	*get_home(t_env *env)
 	char	*str;
 
 	str = NULL;
-	while(env)
+	while (env)
 	{
 		if (ft_strcmp("HOME", env->key) == 0)
 			str = ft_strdup(env->value);
