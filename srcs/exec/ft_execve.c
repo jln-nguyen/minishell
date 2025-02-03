@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 10:30:12 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:57:57 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	ft_execve(char **env, t_ast_node **ast, t_data *data)
 	if (pid == 0)
 	{
 		ft_process(env, ast, data);
-		ft_reset_fd(data->old_fd_in, data->old_fd_out, data);
+		ft_reset_fd(data);
 	}
 	else
 		wait(&pid);

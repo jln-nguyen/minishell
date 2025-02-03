@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redir_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/23 10:18:13 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:14:31 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	file_err(t_ast_node *ast, int file)
 {
 	if (file < 0)
 		return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
-				ast->right->args[0], strerror(errno)), -1); // protect error
+				ast->right->args[0], strerror(errno)), -1);
 	return (file);
 }
 
@@ -94,7 +94,6 @@ static int	mult_redir_out(int file, t_ast_node **tmp)
 		if (file < 0)
 			return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
 					(*tmp)->right->left->args[0], strerror(errno)), -1);
-		// protect error
 		*tmp = (*tmp)->right;
 	}
 	return (file);

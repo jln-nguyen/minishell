@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 11:04:50 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:01:06 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ void	ctrl_d(t_data *data)
 {
 	printf("exit\n");
 	ft_free_env(&data->env);
+	rl_clear_history();
+	close_fds();
 	if (g_signal != 0)
 		exit(g_signal);
-	rl_clear_history();
 	exit(data->exit_code);
 }
 
@@ -71,7 +72,7 @@ int	main(int ac, char **av, char **envp)
 	data.fd_in = 0;
 	data.fd_out = 0;
 	data.old_fd_in = 0;
-	data.old_fd_out = 0;
+	data.old_fd_out = 1;
 	if (ac != 1)
 		return (-2);
 	(void)av;

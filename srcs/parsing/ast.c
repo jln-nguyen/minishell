@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 14:47:55 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:38:47 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 	node = NULL;
 	node = parsing_token(tok, limit);
 	if (!node)
+	{
+		printf("ici\n");
 		return (-1);
+	}
 	add_node(ast, node, c);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 19:04:00 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 14:37:36 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:36:00 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,13 @@ t_ast_node	*check_pipe(t_token *tok, t_enum_type limit)
 	return (NULL);
 }
 
+static int	check_left(t_token *tok, t_enum_type limit)
+{
+	if (!tok || tok->type == limit)
+		return (0);
+	return (1);
+}
+
 t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 {
 	t_ast_node	*ast;
@@ -76,8 +83,11 @@ t_ast_node	*parse_redir_out(t_token op, t_token *tok)
 	ast = new_node(op.type);
 	if (!ast)
 		return (NULL);
-	if (expand_ast(&ast, tok, op.type, 'L') == -1)
-		return (ft_free_ast(&ast), NULL);
+	if (check_left(tok, op.type) == 1)
+	{
+		if (expand_ast(&ast, tok, op.type, 'L') == -1)
+			return (ft_free_ast(&ast), NULL);
+	}
 	while (tok->type != op.type)
 		tok = tok->next;
 	tok = tok->next;
