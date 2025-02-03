@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:05:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/29 16:28:38 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:22:40 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j)
 {
 	tmp[2] = ft_substr(new_str, i + j, ft_strlen(new_str) - i - j);
 	if (!tmp[2])
-		return (ft_free_tab_var_env(&tmp), free(new_str), NULL);
+		return (free(new_str), NULL);
 	free(new_str);
 	new_str = ft_strbigjoin(tmp[1], tmp[0], tmp[2]);
 	return (new_str);
