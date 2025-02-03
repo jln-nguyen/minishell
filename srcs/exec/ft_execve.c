@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvkm <bvkm@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/02 13:17:37 by bvkm             ###   ########.fr       */
+/*   Updated: 2025/02/03 10:30:12 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	ft_process(char **env, t_ast_node **ast, t_data *data)
 	else
 		path = find_path((*ast)->args[0], env, data);
 	if (!path || path[0] == '\0' || (*ast)->args[0][0] == '\0')
-		ft_no_path(data, ast, env);
+		ft_no_path(data, ast, env, path);
 	execve(path, (*ast)->args, env);
 	ft_printf(STDERR_FILENO, "Minishell: %s: Is a directory\n",
 		(*ast)->args[0]);
