@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/01/28 18:50:04 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:01:50 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
 char		*dble_quote(char *str, int *i, t_data *data,
 				t_token **head);
+char		*get_prompt(t_data *data);
 
 t_token		*ft_del_last(t_token *tok);
 t_token		*ft_token(char *str, t_data *data);

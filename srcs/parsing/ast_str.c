@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_str.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:50 by junguyen          #+#    #+#             */
-/*   Updated: 2024/12/20 15:53:00 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:50:47 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_fill_args(t_ast_node **head, t_token *tok, t_enum_type limit)
 				free((*head)->args[--i]);
 			free((*head)->args);
 			(*head)->args = NULL;
-			return ; //protect
+			return ;
 		}
 		i++;
 		tok = tok->next;

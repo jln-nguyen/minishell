@@ -6,26 +6,11 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 15:30:58 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 19:05:17 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:47:55 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_ast_node	*new_node(t_enum_type type)
-{
-	t_ast_node	*ast;
-
-	ast = malloc(sizeof(t_ast_node));
-	if (!ast)
-		return (NULL);
-	ast->type = type;
-	ast->args = NULL;
-	ast->left = NULL;
-	ast->right = NULL;
-	ast->fd_heredoc = 0;
-	return (ast);
-}
 
 void	add_node(t_ast_node **lst, t_ast_node *new, char c)
 {
@@ -56,19 +41,33 @@ int	expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit, char c)
 	node = NULL;
 	node = parsing_token(tok, limit);
 	if (!node)
-		return (-1); // free exit
+		return (-1);
 	add_node(ast, node, c);
+	return (0);
 }
 
-static int	if_pipe(t_token *tok)
+static int	if_pipe(t_token *tok, t_enum_type limit)
 {
-	while (tok)
+	while (tok && tok->type != limit)
 	{
 		if (tok->type == TOKEN_PIPE)
 			return (1);
 		tok = tok->next;
 	}
 	return (-1);
+}
+
+t_ast_node	*parsing_tok_next(t_token *tmp, t_token *tok, t_enum_type limit,
+				t_ast_node *ast)
+{
+	if (tmp == NULL || tmp->type == TOKEN_STR || tmp->type == TOKEN_ENV_VAR)
+		ast = parse_str(tok, limit);
+	else if (tmp->type == TOKEN_REDIR_OUT || tmp->type == TOKEN_REDIR_APPEND
+		|| tmp->type == TOKEN_REDIR_HEREDOC || tmp->type == TOKEN_REDIR_IN)
+		ast = parse_redir_out(*tmp, tok);
+	if (ast)
+		return (ast);
+	return (NULL);
 }
 
 t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
@@ -80,7 +79,7 @@ t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
 	ast = NULL;
 	if (!tok || tok->type == limit)
 		return (NULL);
-	if (if_pipe(tok) == 1)
+	if (if_pipe(tok, limit) == 1)
 	{
 		ast = check_pipe(tok, limit);
 		if (ast)
@@ -93,10 +92,8 @@ t_ast_node	*parsing_token(t_token *tok, t_enum_type limit)
 			break ;
 		tmp = tmp->next;
 	}
-	if (tmp == NULL || tmp->type == TOKEN_STR || tmp->type == TOKEN_ENV_VAR)
-		ast = parse_str(tok, limit);
-	else if (tmp->type == TOKEN_REDIR_OUT || tmp->type == TOKEN_REDIR_APPEND
-		|| tmp->type == TOKEN_REDIR_HEREDOC || tmp->type == TOKEN_REDIR_IN)
-		ast = parse_redir_out(*tmp, tok);
+	ast = parsing_tok_next(tmp, tok, limit, ast);
+	if (!ast)
+		return (NULL);
 	return (ast);
 }

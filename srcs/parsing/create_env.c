@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:02:35 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/14 14:01:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:54:57 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,14 @@ t_env	*new_env(char *str_key, char *str_val)
 	new->key = ft_strdup(str_key);
 	if (!new->key)
 		return (free(new), NULL);
-	new->value = ft_strdup(str_val);
-	if (!new->value)
-		return (free(new->key), free(new), NULL);
+	if (!str_val)
+		new->value = NULL;
+	else
+	{
+		new->value = ft_strdup(str_val);
+		if (!new->value)
+			return (free(new->key), free(new), NULL);
+	}
 	new->next = NULL;
 	return (new);
 }

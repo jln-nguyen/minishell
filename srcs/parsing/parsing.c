@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 18:47:07 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:39:44 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,8 @@ t_token	*ft_token(char *str, t_data *data)
 
 t_ast_node	*ft_parsing(char *cmd, t_data *data)
 {
-	// t_ast_node	*ast;
 	t_token		*tok;
 
-	// ast = NULL;
 	tok = NULL;
 	if (check_syntax(cmd) != 0)
 		return (data->exit_code = 2, free(cmd), NULL);

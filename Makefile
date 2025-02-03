@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+         #
+#    By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 14:41:21 by bvictoir          #+#    #+#              #
-#    Updated: 2025/01/28 15:05:15 by bvictoir         ###   ########.fr        #
+#    Updated: 2025/02/03 11:02:09 by junguyen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ OBJ_PATH = obj/
 LIBFT_PATH = libft/
 
 SRC		= main.c					\
+		utils/prompt.c				\
+		utils/signal.c				\
 		parsing/ft_free.c			\
 		parsing/no_quote_var.c		\
 		parsing/handle_dble_quote.c	\

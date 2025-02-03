@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 10:07:03 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:02:12 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,24 @@
 
 int	g_signal;
 
-void	sigint_process(int signal)
+void	ctrl_d(t_data *data)
 {
-	if (signal == SIGQUIT)
-		printf("Quit (core dumped)\n");
-	// printf("\n");
+	printf("exit\n");
+	ft_free_env(&data->env);
+	if (g_signal != 0)
+		exit(g_signal);
+	rl_clear_history();
+	exit(data->exit_code);
 }
 
-void	sigint_handler(int signal)
+void	begin_program(t_data *data, char *tmp)
 {
-	(void)signal;
-	g_signal = 130;
-	rl_replace_line("", 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-void	sigquit_handler(int signal)
-{
-	(void)signal;
-	g_signal = 131;
-	printf("Quit (core dumped)\n");
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-char	*color_gwd(char *gwd, t_data *data)
-{
-	char	*tmp;
-	char	*home;
-
-	if (!gwd)
-		return (NULL);
-	tmp = ft_strdup("HOME");
-	home = change_value(tmp, data, NULL, NULL); //changer la fn
-	if (ft_strncmp(home, gwd, ft_strlen(home)) == 0)
+	data->ast = ft_parsing(tmp, data);
+	if (data->ast)
 	{
-		tmp = ft_substr(gwd, ft_strlen(home), ft_strlen(gwd));
-		free(gwd);
-		gwd = ft_strjoin("~", tmp);
-		free(tmp);
+		ft_check_heredoc(&data->ast, data);
+		ft_free_ast(&data->ast);
 	}
-	free(home);
-	tmp = ft_strbigjoin("\001\033[0;36m\033[1m\002", gwd, "\001\033[0m\002");
-	free(gwd);
-	return (tmp);
 }
 
 void	prompt(t_data *data)
@@ -72,22 +44,11 @@ void	prompt(t_data *data)
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		g_signal = 0;
-		tmp = getcwd(NULL, 0);
-		gwd = ft_strjoin(tmp, "$ ");
-		gwd = color_gwd(gwd, data);
-		free(tmp);
-		if (!gwd)
-			return ((void)ft_printf(STDERR_FILENO, ("Malloc error\n")));
+		gwd = get_prompt(data);
 		tmp = readline(gwd);
 		free(gwd);
 		if (!tmp)
-		{
-			printf("exit\n");
-			ft_free_env(&data->env);
-			if (g_signal != 0)
-				exit(g_signal);
-			exit(data->exit_code);
-		}
+			ctrl_d(data);
 		if (g_signal == 130)
 		{
 			data->exit_code = 130;
@@ -96,13 +57,7 @@ void	prompt(t_data *data)
 		if (tmp[0] == '\0')
 			continue ;
 		add_history(tmp);
-		data->ast = ft_parsing(tmp, data);
-		if (data->ast)
-		{
-			ft_check_heredoc(&data->ast, data);
-			ft_free_ast(&data->ast);
-		}
-		// rl_clear_history();
+		begin_program(data, tmp);
 	}
 }
 
@@ -120,14 +75,12 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1)
 		return (-2);
 	(void)av;
-	// signal(SIGINT, sigint_handler);
-	// signal(SIGQUIT, SIG_IGN);
 	if (!envp || !*envp)
 		ft_create_env(&data);
 	else
-		ft_getenv(&data, envp); //incrementer shlvl ?
+		ft_getenv(&data, envp);
 	if (!data.env)
-		return (-1);
+		error_malloc_tok(NULL, &data);
 	prompt(&data);
 	ft_free_env(&data.env);
 	return (0);

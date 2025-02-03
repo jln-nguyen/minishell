@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 16:53:38 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/27 10:05:27 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:57:19 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_getenv(t_data *data, char **envp)
 	i = 0;
 	data->env = new_node_env(envp[i]);
 	if (!data->env)
-		return ; //protect
+		return ;
 	i++;
 	while (envp[i])
 	{
