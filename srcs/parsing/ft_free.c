@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:02:46 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 11:06:03 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:11:54 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void close_fds(void)
+void	close_fds(void)
 {
 	int	fd;
 
@@ -39,6 +39,7 @@ void	error_malloc_tok(t_token **tok, t_data *data)
 		ft_free_env(&data->env);
 	ft_printf(STDERR_FILENO, "Minishell: Malloc error\n");
 	close_fds();
+	rl_clear_history();
 	exit(EXIT_FAILURE);
 }
 
@@ -50,6 +51,7 @@ void	ft_err(t_data *data, char *str)
 	if (data->env)
 		ft_free_env(&data->env);
 	close_fds();
+	rl_clear_history();
 	exit(EXIT_FAILURE);
 }
 

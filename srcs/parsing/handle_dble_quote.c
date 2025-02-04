@@ -6,13 +6,13 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:33:24 by junguyen          #+#    #+#             */
-/*   Updated: 2025/01/28 14:34:27 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:12:14 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_index(char *str, int i)
+int	get_index(char *str, int i)
 {
 	int	j;
 
