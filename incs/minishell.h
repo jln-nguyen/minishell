@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/04 09:59:25 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:00:02 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,12 @@ char		*rem_quote(char *str, int *i, char c);
 char		**struc_to_char(t_env *env, t_data *data);
 char		*rem_double_quote(char *str, int *i, int j);
 char		*ft_pre_bigjoin(char *new_str, char **tmp, int i, int j);
+char		*expand_heredoc(char *str, t_data *data, int *i, char *file);
 char		*dble_quote(char *str, int *i, t_data *data, t_token **head);
 char		*ft_strbigjoin(const char *s1, const char *s2, const char *s3);
 char		*change_str(char *new_str, int i, t_data *data, t_token **head);
 char		*change_value(char *tok, t_data *data, t_token **head,
 				char **split);
-char		*get_prompt(t_data *data);
-char		*expand_heredoc(char *str, t_data *data, int *i, char *file);
 
 t_token		*expand_str(t_token *tok, t_data *data);
 t_token		*check_token(char *str, t_token *tok);
