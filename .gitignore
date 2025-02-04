@@ -5,6 +5,5 @@ obj
 libft.a
 a.out
 ast.dot
-*.supp
 tmp
 *.log

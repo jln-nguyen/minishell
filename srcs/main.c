@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:54:18 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 12:01:06 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:07:45 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int ac, char **av, char **envp)
 	else
 		ft_getenv(&data, envp);
 	if (!data.env)
-		error_malloc_tok(NULL, &data);
+		ft_err(&data, "Malloc");
 	prompt(&data);
 	ft_free_env(&data.env);
 	return (0);
