@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/04 10:32:26 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:02:34 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,28 @@ static char	*find_path(char *cmd, char **env, t_data *data)
 
 static void	ft_abs_path(t_data *data, t_ast_node **ast, char **env, char **path)
 {
+	int	error;
+
+	error = 0;
 	if (access((*ast)->args[0], F_OK | X_OK) == 0)
 	{
 		*path = ft_strdup((*ast)->args[0]);
 		if (!path)
 		{
-			ft_printf(STDERR_FILENO, "Malloc error\n");
 			ft_free_tab(&env);
-			(ft_free_ast(&data->ast), ft_free_env(&data->env));
-			close_fds();
-			exit(EXIT_FAILURE);
+			ft_err(data, "Malloc");
 		}
 	}
 	else
 	{
+		error = errno;
 		ft_printf(STDERR_FILENO, "Minishell: %s: %s\n", (*ast)->args[0],
 			strerror(errno));
 		free(*path);
 		ft_free_tab(&env);
 		(ft_free_ast(&data->ast), ft_free_env(&data->env));
 		close_fds();
-		if (errno == 13)
+		if (error == 13)
 			exit(126);
 		exit(127);
 	}

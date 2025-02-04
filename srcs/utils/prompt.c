@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:00:55 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 15:31:14 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:31:02 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ char	*get_prompt(t_data *data)
 	gwd = NULL;
 	tmp = NULL;
 	tmp = getcwd(NULL, 0);
-	if (!tmp)
-		error_malloc_tok(NULL, data);
+	// if (!tmp)
+	// 	error_malloc_tok(NULL, data);
 	gwd = ft_strjoin(tmp, "$ ");
 	free(tmp);
 	if (!gwd)

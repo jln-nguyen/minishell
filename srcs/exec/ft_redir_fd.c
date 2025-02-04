@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:21:25 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 11:14:31 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:15:25 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,14 @@ static int	mult_redir_out(int file, t_ast_node **tmp)
 			if (file > 0)
 				close(file);
 			file = open((*tmp)->right->left->args[0],
-					O_CREAT | O_RDWR | O_TRUNC, 0644);
+					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		}
 		else if ((*tmp)->type == TOKEN_REDIR_APPEND)
 		{
 			if (file > 0)
 				close(file);
 			file = open((*tmp)->right->left->args[0],
-					O_CREAT | O_RDWR | O_APPEND, 0644);
+					O_CREAT | O_WRONLY | O_APPEND, 0644);
 		}
 		if (file < 0)
 			return (ft_printf(STDERR_FILENO, "Minishell: %s : %s\n",
@@ -116,13 +116,13 @@ int	ft_redir_out(t_ast_node *ast)
 	{
 		if (file)
 			close(file);
-		file = open(tmp->right->args[0], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		file = open(tmp->right->args[0], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	}
 	else if (tmp->type == TOKEN_REDIR_APPEND)
 	{
 		if (file)
 			close(file);
-		file = open(tmp->right->args[0], O_CREAT | O_RDWR | O_APPEND, 0644);
+		file = open(tmp->right->args[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	}
 	return (file_err(tmp, file));
 }

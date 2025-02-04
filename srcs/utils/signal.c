@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 16:01:42 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 16:08:04 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:31:17 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	heredoc_sig(int signal)
 void	sigint_process(int signal)
 {
 	if (signal == SIGQUIT)
-		printf("Quit (core dumped)\n");
+		printf("Quit (core dumped)");
+	printf("\n");
 }
 
 void	sigint_handler(int signal)

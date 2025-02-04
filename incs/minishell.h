@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:14:14 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/04 10:00:02 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:35:34 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void		ft_envadd_back(t_env **head, t_env *new);
 void		exec_pipe(t_data *data, t_ast_node **ast);
 void		search_cmd(t_ast_node **ast, t_data *data);
 void		ft_tokadd_back(t_token **lst, t_token *new);
-void		check_heredoc(t_ast_node **ast, t_data *data);
 void		error_malloc_tok(t_token **tok, t_data *data);
 void		ft_check_heredoc(t_ast_node **ast, t_data *data);
 void		add_node(t_ast_node **lst, t_ast_node *new, char c);
@@ -102,6 +101,7 @@ void		check_no_quote(t_token **head, t_token **tok, t_data *data, int *i);
 void		ft_error_hd(t_data *data, char **tmp, char *file);
 void		heredoc_sig(int signal);
 
+int			check_heredoc(t_ast_node **ast, t_data *data);
 int			get_index(char *str, int i);
 int			expand_ast(t_ast_node **ast, t_token *tok, t_enum_type limit,
 				char c);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:19:55 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/04 10:24:32 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:16:05 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	ft_update_env(t_data *data, char *key, char *value, int bool)
 	t_env	*tmp;
 
 	tmp = data->env;
-	while (tmp)	
+	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, key) && ft_strcmp(tmp->key, "_"))
 		{

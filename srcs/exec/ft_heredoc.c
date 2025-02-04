@@ -6,7 +6,7 @@
 /*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 10:31:34 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/03 16:08:39 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:36:25 by junguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	redic_heredoc(t_ast_node *tmp, t_data *data, int *i)
 	return (0);
 }
 
-void	check_heredoc(t_ast_node **ast, t_data *data)
+int	check_heredoc(t_ast_node **ast, t_data *data)
 {
 	t_ast_node	*tmp;
 	int			i;
@@ -99,16 +99,17 @@ void	check_heredoc(t_ast_node **ast, t_data *data)
 	{
 		if (tmp->type == TOKEN_PIPE)
 		{
-			check_heredoc(&(tmp)->left, data);
-			if (tmp->fd_heredoc < 0)
-				return ;
+			if (check_heredoc(&(tmp)->left, data) == 1)
+				return (1);
 		}
 		else if (tmp->type == TOKEN_REDIR_HEREDOC)
 		{
-			if (redic_heredoc(tmp, data, &i))
-				return ;
+			if (redic_heredoc(tmp, data, &i) == 1)
+				return (1);
 			i++;
 		}
 		tmp = tmp->right;
+
 	}
+	return (0);
 }
