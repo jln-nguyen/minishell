@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 10:46:44 by bvictoir          #+#    #+#             */
-/*   Updated: 2025/02/03 13:24:32 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:04:45 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	handle_left_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork"), -1);
+		ft_err(data, "fork");
 	if (pid == 0)
 	{
 		signal(SIGINT, sigint_process);
@@ -57,7 +57,7 @@ static int	handle_right_pipe(t_data *data, t_ast_node **ast, int *pipefd)
 
 	pid = fork();
 	if (pid == -1)
-		return (perror("fork"), -1);
+		ft_err(data, "fork");
 	if (pid == 0)
 	{
 		signal(SIGINT, sigint_process);

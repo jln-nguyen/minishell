@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junguyen <junguyen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/03 11:57:57 by junguyen         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:07:23 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	ft_execve(char **env, t_ast_node **ast, t_data *data)
 	signal(SIGINT, &sigint_process);
 	signal(SIGQUIT, &sigint_process);
 	if (pid == -1)
-		return (EXIT_FAILURE);
+		(ft_free_tab(&env), ft_err(data, "fork"));
 	if (pid == 0)
 	{
 		ft_process(env, ast, data);
