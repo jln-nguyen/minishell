@@ -6,7 +6,7 @@
 /*   By: bvictoir <bvictoir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:05:06 by junguyen          #+#    #+#             */
-/*   Updated: 2025/02/04 10:07:23 by bvictoir         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:32:26 by bvictoir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*find_path(char *cmd, char **env, t_data *data)
 	path = NULL;
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], "PATH", 4))
+		if (ft_strnstr(env[i], "PATH", 4) && ft_strlen(env[i]) > 5)
 		{
 			envp = ft_split(&env[i][5], ':');
 			if (!envp || !*envp)
