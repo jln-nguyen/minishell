@@ -287,5 +287,6 @@ Le code de retour de la dernière commande est toujours accessible via `$?` et s
  
 <div align="center">
 *Projet réalisé dans le cadre du cursus de l'école 42*
+**Made with ❤️ by [jln-nguyen](https://github.com/jln-nguyen) and [BrendanVKM](https://github.com/BrendanVKM)*
  
 </div>
